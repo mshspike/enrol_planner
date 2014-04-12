@@ -14,7 +14,7 @@ development:
   database: enrol_planner_development
   pool: 5
   username: root
-  password:
+  password: 1234
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -26,7 +26,7 @@ test:
   database: enrol_planner_test
   pool: 5
   username: root
-  password:
+  password: 1234
   host: localhost
 
 production:
@@ -35,5 +35,5 @@ production:
   database: enrol_planner_production
   pool: 5
   username: root
-  password:
+  password: 1234
   host: localhost
