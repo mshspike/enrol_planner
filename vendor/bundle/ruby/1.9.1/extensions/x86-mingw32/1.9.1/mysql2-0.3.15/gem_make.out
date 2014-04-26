@@ -1,0 +1,32 @@
+C:/Ruby193/bin/ruby.exe extconf.rb --with-mysql-lib="c:\Program Files (x86)\MySQL\MySQL Server 5.5\lib" --with-mysql-include="c:\Program Files (x86)\MySQL\MySQL Server 5.5\include"
+checking for ruby/thread.h... no
+checking for rb_thread_blocking_region()... yes
+checking for rb_wait_for_single_fd()... yes
+checking for rb_hash_dup()... yes
+checking for rb_intern3()... yes
+-----
+Using --with-mysql-dir=c:\Program Files (x86)\MySQL\MySQL Server 5.5
+-----
+checking for main() in -llibmysql... yes
+checking for mysql.h... yes
+checking for errmsg.h... yes
+checking for mysqld_error.h... yes
+creating Makefile
+
+make  clean
+
+make
+generating mysql2-i386-mingw32.def
+compiling client.c
+client.c: In function 'finish_and_mark_inactive':
+client.c:513:3: warning: ISO C90 forbids mixed declarations and code
+compiling infile.c
+compiling mysql2_ext.c
+compiling result.c
+result.c: In function 'rb_mysql_result_fetch_fields':
+result.c:415:35: warning: comparison between signed and unsigned integer expressions
+linking shared-object mysql2/mysql2.so
+
+make  install
+/usr/bin/install -c -m 0755 mysql2.so C:/Users/PohLing/Documents/GitHub/enrol_planner/vendor/bundle/ruby/1.9.1/gems/mysql2-0.3.15/ext/mysql2/.gem.20140422-5072-1co0tjh/mysql2
+installing default mysql2 libraries

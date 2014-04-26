@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  unitName: MyString
+  semOne: false
+  semTwo: false
+  Course_id: 
+
+two:
+  unitName: MyString
+  semOne: false
+  semTwo: false
+  Course_id: 

@@ -1,0 +1,278 @@
+have_header: checking for ruby/thread.h... -------------------- no
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: int main(int argc, char **argv)
+6: {
+7:   return 0;
+8: }
+/* end */
+
+"gcc -E -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  conftest.c -o conftest.i"
+conftest.c:5:25: fatal error: ruby/thread.h: No such file or directory
+compilation terminated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: #include <ruby/thread.h>
+/* end */
+
+--------------------
+
+have_func: checking for rb_thread_blocking_region()... -------------------- yes
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { void ((*volatile p)()); p = (void ((*)()))rb_thread_blocking_region; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+
+have_func: checking for rb_wait_for_single_fd()... -------------------- yes
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+conftest.c: In function 't':
+conftest.c:7:53: error: 'rb_wait_for_single_fd' undeclared (first use in this function)
+conftest.c:7:53: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { void ((*volatile p)()); p = (void ((*)()))rb_wait_for_single_fd; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+conftest.c: In function 't':
+conftest.c:7:1: warning: implicit declaration of function 'rb_wait_for_single_fd'
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { rb_wait_for_single_fd(); return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+
+have_func: checking for rb_hash_dup()... -------------------- yes
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { void ((*volatile p)()); p = (void ((*)()))rb_hash_dup; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+
+have_func: checking for rb_intern3()... -------------------- yes
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+conftest.c: In function 't':
+conftest.c:7:53: error: 'rb_intern3' undeclared (first use in this function)
+conftest.c:7:53: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { void ((*volatile p)()); p = (void ((*)()))rb_intern3; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L.   -march=i486   -lmsvcrt-ruby191  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+conftest.c: In function 't':
+conftest.c:7:1: warning: implicit declaration of function 'rb_intern3'
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { rb_intern3(); return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+
+have_library: checking for main() in -llibmysql... -------------------- yes
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. "-Ic:\Program Files (x86)\MySQL\MySQL Server 5.5\include" -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L"c:\Program Files (x86)\MySQL\MySQL Server 5.5\lib" -L.   -march=i486   -lmsvcrt-ruby191 -llibmysql  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+conftest.c: In function 't':
+conftest.c:7:53: error: 'main' undeclared (first use in this function)
+conftest.c:7:53: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { void ((*volatile p)()); p = (void ((*)()))main; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. "-Ic:\Program Files (x86)\MySQL\MySQL Server 5.5\include" -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L"c:\Program Files (x86)\MySQL\MySQL Server 5.5\lib" -L.   -march=i486   -lmsvcrt-ruby191 -llibmysql  -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+conftest.c: In function 't':
+conftest.c:7:1: warning: implicit declaration of function 'main'
+conftest.c:10:6: warning: 'argc' is used uninitialized in this function
+conftest.c:7:5: note: 'argc' was declared here
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: 
+ 6: /*top*/
+ 7: int t() { main(); return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+
+have_header: checking for mysql.h... -------------------- yes
+
+"gcc -E -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. "-Ic:\Program Files (x86)\MySQL\MySQL Server 5.5\include" -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: #include <mysql.h>
+/* end */
+
+--------------------
+
+have_header: checking for errmsg.h... -------------------- yes
+
+"gcc -E -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. "-Ic:\Program Files (x86)\MySQL\MySQL Server 5.5\include" -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: #include <errmsg.h>
+/* end */
+
+--------------------
+
+have_header: checking for mysqld_error.h... -------------------- yes
+
+"gcc -E -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. "-Ic:\Program Files (x86)\MySQL\MySQL Server 5.5\include" -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: #include <mysqld_error.h>
+/* end */
+
+--------------------
+
+"gcc -o conftest -IC:/Ruby193/include/ruby-1.9.1/i386-mingw32 -IC:/Ruby193/include/ruby-1.9.1/ruby/backward -IC:/Ruby193/include/ruby-1.9.1 -I. "-Ic:\Program Files (x86)\MySQL\MySQL Server 5.5\include" -DFD_SETSIZE=2048  -DFD_SETSIZE=2048  -O3 -fno-omit-frame-pointer -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration conftest.c  -L. -LC:/Ruby193/lib -L"c:\Program Files (x86)\MySQL\MySQL Server 5.5\lib" -L.   -march=i486  -llibmysql  -lmsvcrt-ruby191  -Wall -funroll-loops -lshell32 -lws2_32 -limagehlp -lshlwapi  "
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: int main() {return 0;}
+/* end */
+

@@ -1,0 +1,1 @@
+--with-mysql-lib="c:\Program Files (x86)\MySQL\MySQL Server 5.5\lib" --with-mysql-include="c:\Program Files (x86)\MySQL\MySQL Server 5.5\include"
