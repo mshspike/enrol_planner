@@ -77,18 +77,20 @@
       	
 
       <div id="streamSem"> <!-- stream semester and completed units section starts here -->
-        <p>
+        <p><%= form_tag :action => "getCourseUnits" do %>
         <label for="streamSelect">Choose your stream:</label>
         <!-- This ruby method retrieves the list of courses from database and displays as SELECT OPTION. -->
         <%= select_tag "streamSelect", options_from_collection_for_select(@courselist, "id", "courseName") %>
-
         <label for="semSelect">Select starting semester:</label>
         <select name="semSelect" id="semSelect">
           <option value="1">Semester 1</option>
           <option value="2">Semester 2</option>
         </select>
         <br>
-		<p> Please click here to select completed units: <input type="button" value="Select Completed Units">
+        <!-- Note that this method currently redirects to blank page.
+             Function of updating the units in current page will be implemented. //-->
+		<p> Please click here to select completed units: <%= submit_tag "Select Completed Units" %>
+    <% end %>
       </p>
       </div>	<!-- stream semester and completed units section ends here -->
      
