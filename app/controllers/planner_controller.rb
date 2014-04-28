@@ -3,8 +3,14 @@ class PlannerController < ApplicationController
 		@courselist = Course.all
 	end
 
-	def getCourseUnits
+	def units_chooser
+		@course_units = getCourseUnits(params["streamSelect"])
+	end
+
+	def getCourseUnits(chosen_course)
 		# Awaiting for full DB structure...
 		#@courseUnitsList = Streamunits.where()
+
+		#return @courseUnitsList
 	end
 end

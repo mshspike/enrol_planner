@@ -77,7 +77,7 @@
       	
 
       <div id="streamSem"> <!-- stream semester and completed units section starts here -->
-        <p><%= form_tag :action => "getCourseUnits" do %>
+        <p><%= form_tag :action => "units_chooser" do %>
         <label for="streamSelect">Choose your stream:</label>
         <!-- This ruby method retrieves the list of courses from database and displays as SELECT OPTION. -->
         <%= select_tag "streamSelect", options_from_collection_for_select(@courselist, "id", "courseName") %>

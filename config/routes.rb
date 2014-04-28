@@ -1,6 +1,6 @@
 EnrolPlanner::Application.routes.draw do
 
-  post "planner/getCourseUnits" => "planner#getCourseUnits"
+  post "planner/units_chooser" => "planner#units_chooser"
   
   resources :courses
   resources :units
