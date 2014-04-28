@@ -1,0 +1,61 @@
+@charset "utf-8";
+		.sems
+		{
+			width: 275px;
+			height: 215px;
+			position: relative;
+			background: #EBEBEB;
+		}
+		
+		.sem1
+		{
+	float: left;
+	left: 15px;
+	top: 15px;
+		}
+		
+		.sem2
+		{
+	float: right;
+	right: 15px;
+	top: 15px;
+		}
+		
+		.yr2
+		{
+			top: 50px;
+		}
+		
+		.yr3
+		{
+			top: 85px;			
+		}
+		
+		.yr4
+		{
+			top: 120px;
+		}
+		
+		.semUnits
+		{
+			position: relative;
+			top: -10;
+		}
+		
+		.dl
+		{
+			font size: 12;
+		}
+
+		.cPoints
+		{
+			float: left;
+			line-height: 2px;
+			font-size: 1;
+			position: relative;
+			left: 25px;
+		}
+		
+		
+		
+    
