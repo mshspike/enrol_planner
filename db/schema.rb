@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430153156) do
+ActiveRecord::Schema.define(version: 20140430160204) do
 
-  create_table "courses", force: true do |t|
-    t.string   "courseName"
+  create_table "streams", force: true do |t|
+    t.string   "streamName"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -23,13 +23,13 @@ ActiveRecord::Schema.define(version: 20140430153156) do
     t.string   "unitName"
     t.boolean  "semOne"
     t.boolean  "semTwo"
-    t.integer  "Course_id"
+    t.integer  "Stream_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creditPoints"
     t.integer  "Unit_id"
   end
 
-  add_index "units", ["Course_id"], name: "index_units_on_Course_id", using: :btree
+  add_index "units", ["Stream_id"], name: "index_units_on_Stream_id", using: :btree
 
 end
