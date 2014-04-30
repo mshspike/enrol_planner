@@ -1,16 +1,14 @@
 class PlannerController < ApplicationController
 	def index
-		@courselist = Course.all
+		@streamlist = Stream.all 	# Retrieves list of courses from Model
 	end
 
 	def units_chooser
-		@course_units = getCourseUnits(params["streamSelect"])
+		#@stream_units = getCourseUnits(params["streamSelect"])
 	end
 
-	def getCourseUnits(chosen_course)
+	def getStreamUnits(chosen_course)
 		# Awaiting for full DB structure...
-		#@courseUnitsList = Streamunits.where()
 
-		#return @courseUnitsList
 	end
 end
