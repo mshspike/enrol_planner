@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430160204) do
+ActiveRecord::Schema.define(version: 20140501155820) do
+
+  create_table "requires", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "unit_id"
+    t.integer  "preUnit_id"
+  end
 
   create_table "streams", force: true do |t|
     t.string   "streamName"
@@ -19,17 +26,20 @@ ActiveRecord::Schema.define(version: 20140430160204) do
     t.datetime "updated_at"
   end
 
-  create_table "units", force: true do |t|
-    t.string   "unitName"
-    t.boolean  "semOne"
-    t.boolean  "semTwo"
-    t.integer  "Stream_id"
+  create_table "streams_units", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "creditPoints"
+    t.integer  "Stream_id"
     t.integer  "Unit_id"
   end
 
-  add_index "units", ["Stream_id"], name: "index_units_on_Stream_id", using: :btree
+  create_table "units", force: true do |t|
+    t.string   "unitName"
+    t.boolean  "semOne",       default: false
+    t.boolean  "semTwo",       default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creditPoints"
+  end
 
 end
