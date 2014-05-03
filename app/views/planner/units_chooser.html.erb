@@ -1,1 +1,7 @@
-<p>Awaiting implementation of displaying list of units of chosen course in planner index page function...</p>
+<%= "You have selected " + @selectStream.streamName + " stream." %>
+<h3>Here is the list of units of <%= @selectStream.streamName %>:</h3>
+
+<% @stream_units.each_with_index do |unit, index| %>
+
+<p><%=index+1%> : <%= unit.unitName %></p>
+<% end %>

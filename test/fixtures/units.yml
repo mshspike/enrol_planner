@@ -1,13 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  unitCode: 1
   unitName: MyString
   semOne: false
   semTwo: false
-  Course_id: 
+  preUnit: 1
+  creditPoints: 1
 
 two:
+  unitCode: 1
   unitName: MyString
   semOne: false
   semTwo: false
-  Course_id: 
+  preUnit: 1
+  creditPoints: 1
