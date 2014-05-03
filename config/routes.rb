@@ -1,6 +1,8 @@
 EnrolPlanner::Application.routes.draw do
 
-  post "planner/units_chooser" => "planner#units_chooser"
+  post "planner/unit_chooser" => "planner#unit_chooser"
+  post "planner/enrolment_planner" => "planner#enrolment_planner"
+
     resources :planner
 
   # The priority is based upon order of creation: first created -> highest priority.
