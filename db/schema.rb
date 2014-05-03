@@ -11,14 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501155820) do
+ActiveRecord::Schema.define(version: 20140503080453) do
 
-  create_table "requires", force: true do |t|
+  create_table "pre_reqs", force: true do |t|
+    t.integer  "preUnit_id"
+    t.integer  "unit_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "unit_id"
-    t.integer  "preUnit_id"
   end
+
+  add_index "pre_reqs", ["preUnit_id"], name: "index_pre_reqs_on_preUnit_id", using: :btree
+  add_index "pre_reqs", ["unit_id"], name: "index_pre_reqs_on_unit_id", using: :btree
+
+  create_table "stream_units", force: true do |t|
+    t.integer  "stream_id"
+    t.integer  "unit_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stream_units", ["stream_id"], name: "index_stream_units_on_stream_id", using: :btree
+  add_index "stream_units", ["unit_id"], name: "index_stream_units_on_unit_id", using: :btree
 
   create_table "streams", force: true do |t|
     t.string   "streamName"
@@ -26,20 +39,15 @@ ActiveRecord::Schema.define(version: 20140501155820) do
     t.datetime "updated_at"
   end
 
-  create_table "streams_units", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "Stream_id"
-    t.integer  "Unit_id"
-  end
-
   create_table "units", force: true do |t|
+    t.integer  "unitCode"
     t.string   "unitName"
-    t.boolean  "semOne",       default: false
-    t.boolean  "semTwo",       default: false
+    t.boolean  "semOne"
+    t.boolean  "semTwo"
+    t.integer  "preUnit"
+    t.integer  "creditPoints"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "creditPoints"
   end
 
 end

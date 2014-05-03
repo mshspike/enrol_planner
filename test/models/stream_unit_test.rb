@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UnitsControllerTest < ActionController::TestCase
+class StreamUnitTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

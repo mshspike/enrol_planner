@@ -4,11 +4,15 @@ class PlannerController < ApplicationController
 	end
 
 	def units_chooser
-		#@stream_units = getCourseUnits(params["streamSelect"])
+		@selectStream = Stream.find(params["streamSelect"])
+		@stream_units = getStreamUnits(@selectStream)
 	end
 
 	def getStreamUnits(chosen_course)
-		# Awaiting for full DB structure...
+		@unitlistindex = StreamUnit.where(stream_id: chosen_course)
+
+		@unitlist = Unit.where(id: @unitlistindex)
+		return @unitlist
 
 	end
 end
