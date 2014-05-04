@@ -4,4 +4,7 @@ class Unit < ActiveRecord::Base
 
 	has_many :prereq
 	has_many :preUnits, through: :prereq
+
+	has_many :unitprereqs
+	has_many :unitNames, through: :unitprereqs 
 end

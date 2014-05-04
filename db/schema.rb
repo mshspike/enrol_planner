@@ -13,17 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140504001804) do
 
-  create_table "courses", force: true do |t|
-    t.string   "courseName"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "courseCode"
-  end
-
-  create_table "pre_req", primary_key: "pCode", force: true do |t|
-    t.string "pName", limit: 100
-  end
-
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
     t.integer  "unit_id"
@@ -33,20 +22,6 @@ ActiveRecord::Schema.define(version: 20140504001804) do
 
   add_index "pre_reqs", ["preUnit_id"], name: "index_pre_reqs_on_preUnit_id", using: :btree
   add_index "pre_reqs", ["unit_id"], name: "index_pre_reqs_on_unit_id", using: :btree
-
-  create_table "stream", primary_key: "sCode", force: true do |t|
-    t.string "sName", limit: 100
-  end
-
-  create_table "stream_unit", id: false, force: true do |t|
-    t.integer "sCode",    null: false
-    t.integer "uCode",    null: false
-    t.integer "year"
-    t.integer "semester"
-  end
-
-  add_index "stream_unit", ["sCode"], name: "FK_01_idx", using: :btree
-  add_index "stream_unit", ["uCode"], name: "FK_02_idx", using: :btree
 
   create_table "stream_units", force: true do |t|
     t.integer  "stream_id"
@@ -62,14 +37,6 @@ ActiveRecord::Schema.define(version: 20140504001804) do
     t.string   "streamName"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "unit", primary_key: "uCode", force: true do |t|
-    t.string  "uName",        limit: 100
-    t.integer "creditPoints"
-    t.integer "semAvail"
-    t.string  "type",         limit: 45
-    t.string  "handbook",     limit: 100
   end
 
   create_table "unit_pre_reqs", force: true do |t|
