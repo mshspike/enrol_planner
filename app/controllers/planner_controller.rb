@@ -3,11 +3,7 @@ class PlannerController < ApplicationController
 	# START stream_chooser
 	def index
 		# Retrieves list of courses from Model
-		@streamlist = getStream
-	end
-
-	def getStream
-		return Stream.all
+		@streamlist = Stream.all
 	end
 	# END stream_chooser
 
