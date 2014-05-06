@@ -13,6 +13,16 @@
 
 ActiveRecord::Schema.define(version: 20140506075801) do
 
+  create_table "Units", force: true do |t|
+    t.integer  "unitCode"
+    t.string   "unitName"
+    t.integer  "preUnit"
+    t.integer  "creditPoints"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "semAvailable"
+  end
+
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
     t.integer  "unit_id"
@@ -39,14 +49,12 @@ ActiveRecord::Schema.define(version: 20140506075801) do
     t.datetime "updated_at"
   end
 
-  create_table "units", force: true do |t|
-    t.integer  "unitCode"
-    t.string   "unitName"
-    t.integer  "preUnit"
-    t.integer  "creditPoints"
+  create_table "unit_pre_reqs", force: true do |t|
+    t.integer  "uCode"
+    t.integer  "pCode"
+    t.string   "option"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "semAvailable"
   end
 
   create_table "users", force: true do |t|
