@@ -1,0 +1,17 @@
+Enters the following in Rails console, note that the "id" and "dates" fields will auto-filled by rails.
+
+# CREATE new Stream
+s = Stream.new(:streamCode => "", :streamName => "Computer Science")
+s.save
+
+# CREATE new Unit
+u = Unit.new(:unitCode => "10926", :unitName => "Mathematics 103", :semOne => "true", :semTwo => "false", :creditPoints => "25")
+u.save
+u = Unit.new(:unitCode => "1922", :unitName => "Data Structure and Algorithms 120", :semOne => "true", :semTwo => "false", creditPoints => "25")
+u.save
+
+# CREATE new StreamUnit (the ids map to stream and unit table)
+su = StreamUnit.new(:stream_id => "1", :unit_id => "1")
+su.save
+su = StreamUnit.new(:stream_id => "1", :unit_id => "2")
+su.save

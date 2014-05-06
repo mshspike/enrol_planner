@@ -50,14 +50,6 @@ ActiveRecord::Schema.define(version: 20140506133924) do
     t.datetime "updated_at"
   end
 
-  create_table "unit_pre_reqs", force: true do |t|
-    t.integer  "uCode"
-    t.integer  "pCode"
-    t.string   "option"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "users", force: true do |t|
     t.string   "staffID"
     t.string   "password"
