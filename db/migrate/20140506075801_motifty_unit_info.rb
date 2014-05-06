@@ -1,7 +1,7 @@
 class MotiftyUnitInfo < ActiveRecord::Migration
   def change
-  remove_column :Units, :semOne, :boolean
-  remove_column :Units, :semTwo, :boolean
-  add_column :Units, :semAvailable, :integer
+  remove_column :units, :semOne, :boolean
+  remove_column :units, :semTwo, :boolean
+  add_column :units, :semAvailable, :integer
   end
 end
