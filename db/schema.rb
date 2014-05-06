@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140504001804) do
+ActiveRecord::Schema.define(version: 20140506075801) do
 
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
@@ -39,23 +39,14 @@ ActiveRecord::Schema.define(version: 20140504001804) do
     t.datetime "updated_at"
   end
 
-  create_table "unit_pre_reqs", force: true do |t|
-    t.integer  "uCode"
-    t.integer  "pCode"
-    t.string   "option"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "units", force: true do |t|
     t.integer  "unitCode"
     t.string   "unitName"
-    t.boolean  "semOne"
-    t.boolean  "semTwo"
     t.integer  "preUnit"
     t.integer  "creditPoints"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "semAvailable"
   end
 
   create_table "users", force: true do |t|
