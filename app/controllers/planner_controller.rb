@@ -3,7 +3,7 @@ class PlannerController < ApplicationController
 	# START stream_chooser
 	def index
 		# Retrieves list of courses from Model
-		@streamlist = Stream.all
+		@streamlist = Stream.all  # instance variable, so that View has access
 	end
 	# END stream_chooser
 
@@ -14,19 +14,19 @@ class PlannerController < ApplicationController
 		# this variable refers to the id of stream in Stream Model
 
 		# find in Stream where id=streamSelect, and store the matching entry to @selectStream
-		@selectStream = Stream.find(params["streamSelect"])
+		@selected_stream = Stream.find_by_id(params["streamSelect"])
 
 		# call getStreamUnits() method to get list of units of chosen stream
-		@stream_units = getStreamUnits(@selectStream)
+		@stream_units = getStreamUnits(@selected_stream)
 	end
 
-	def getStreamUnits(chosen_course)
+	def getStreamUnits(chosen_stream)
 		# find in StreamUnit where stream_id equals to the one of "chosen_course", and store the list
 		# note that it uses where() method, where find() method can only be used for finding by "id" field
-		@streamunit_list = StreamUnit.where(stream_id: chosen_course)
+		@streamunit_list = StreamUnit.where(:stream_id => chosen_stream)
 
 		#find in Unit where is instance of @streamunit_list, and store matchings in @unitlist
-		@unitlist = Unit.where(id: @streamunit_list)
+		@unitlist = Unit.where(:id => @streamunit_list)
 		return @unitlist
 	end
 	# END unit_chooser

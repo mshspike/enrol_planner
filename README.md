@@ -17,7 +17,9 @@ If this is your first time to run the application, follow the steps below to set
 
 3. Run "bundle exec rake db:create" to create the required Database in DB server.
 
-4. Run "bundle exec rake db:schema:load" to load in the DB structure (tables) as defined in db/schema.rb
+4. Run "bundle exec rake db:migrate" to load in the DB structure (tables) as defined in db/schema.rb
+
+If the database schema has been changed in a commit, it is recommended to drop the tables that you currently have first, then do the create as well as migrate commands again to make sure that your database isat the "initial state".
 
 ###To run the application:
 
