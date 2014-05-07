@@ -2,6 +2,8 @@
 
 one:
   streamName: MyString
+  streamCode: 1
 
 two:
   streamName: MyString
+  streamCode: 1
