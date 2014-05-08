@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140506133924) do
+ActiveRecord::Schema.define(version: 20140507014612) do
 
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20140506133924) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "staffID"
+    t.integer  "staffID"
     t.string   "password"
     t.datetime "created_at"
     t.datetime "updated_at"
