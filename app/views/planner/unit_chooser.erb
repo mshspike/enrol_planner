@@ -1,0 +1,22 @@
+<h3>Here is the list of units of <%= @selected_stream.streamName %>:</h3>
+
+<%= form_tag :action => "enrolment_planner" do %>
+
+	<% @stream_units.each do |su| %>
+		<% #check_box_tag(name, id, checked, option) %>
+		<p><%= check_box_tag ('unit[id]['+su.id.to_s+']'), su.id, false %><%= su.unitName %></p>
+	<% end %>
+
+	<%= submit_tag "Proceed to planning" %>
+<% end %>
+
+<h4>Below are for testing...</h4>
+<p>@streamunit_list:</p>
+<% @streamunit_list.each do |sul| %>
+	<p>stream_id: <%= sul.stream_id %>, unit_id: <%= sul.unit_id %></p>
+<% end %>
+
+<p>@unitlist:</p>
+<% @unitlist.each do |ulist| %>
+	<p><%= ulist.id %>: <%= ulist.unitName %> </p>
+<% end %>
