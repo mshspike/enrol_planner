@@ -2,7 +2,7 @@
 <html>
 <head>
   <title><%= yield(:title) %></title>
-  <%= stylesheet_link_tag    "style", "data-turbolinks-track" => <link href="/view/planner/bootstrap/css/styles.css" media="all" rel="stylesheet" /> %>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>

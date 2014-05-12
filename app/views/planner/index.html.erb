@@ -72,11 +72,11 @@
   			</div>
   			<div class="panel-body">
   				<div class="list-group">
-  					<a href="#" class="list-group-item">Cras justo odio</a>
-  					<a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-  					<a href="#" class="list-group-item">Morbi leo risus</a>
-  					<a href="#" class="list-group-item">Porta ac consectetur ac</a>
-  					<a href="#" class="list-group-item">Vestibulum at eros</a>
+  					<a href="#" class="list-group-item">DSA</a>
+  					<a href="#" class="list-group-item">RE</a>
+  					<a href="#" class="list-group-item">SE</a>
+  					<a href="#" class="list-group-item">OS</a>
+  					<a href="#" class="list-group-item">FCC</a>
 				</div>
   			</div>
 		</div>
@@ -86,11 +86,16 @@
   			<div class="panel-heading">
     			<h3 class="panel-title"><center>Download & Email</center></h3>
   			</div>
-  			<div class="panel-body">	
-				<div class="form-group">
-   					<label for="exampleInputEmail1">Email address</label>
-    				<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-  				</div>
+  			<div class="panel-body">
+  			<input name="download" type="checkbox" class="dl" id="dlPDF" value="checkbox"> PDF</label>
+			<input name="download" type="checkbox" class="dl" id="dlCSV" value="checkbox"> CSV   <a href="#" class="btn btn-default" role="button">Download</a></label>	
+			<p><p>			 
+ 			<div class="input-group">
+      			<input type="text" value="enter email address" class="form-control">
+      			<span class="input-group-btn">
+        			<button class="btn btn-default" type="button">Send</button>
+      			</span>
+    		</div><!-- /input-group -->
 			</div>
 		</div>
 		</div>	
@@ -101,15 +106,9 @@
   			</div>		
   			<div class="panel-body">
   				<div class="form-group">
-    				<label for="exampleInputFile">File input</label>
-    				<input type="file" id="exampleInputFile">
-    				<p class="help-block">Example block-level help text here.</p>
+    				<input type="file" id="localFile"> <br>
+    				<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
   				</div>
-  				<div class="checkbox">
-    				<label>
-      				<input type="checkbox"> Check me out
-   					</label>
-   			  	</div>
   			</div>
 		</div>
 		</div> 
@@ -120,9 +119,9 @@
   			</div>
   			
   			<div class="panel-body">
-  				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
-				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
-  				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+  				<p>Completed: </p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
+				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
+  				<p>Remaining:</p> <input class="form-control" id="disabledInput" type="text" placeholder="400" disabled>
   			</div>
 		</div>
 		</div> 
