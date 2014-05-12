@@ -1,352 +1,148 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<% content_for :title, "Enrolment Planner" %>
-    <style type="text/css">
-    a {
-	font-size: 12px;
-}
-    </style>
-    
-	<style type="text/css">
-		#container 
-		{
-			width: 960px;
-			margin: 0 auto;
-			border: 1px solid #000000;
-			text-align: left;
-			height: 720px;
-			max-width: 960px;
-			max-height: 720px;
-		} 
-		
-		#planner
-		{
-		float: left;
-		height: 500px;
-		overflow: auto;
-		}
-		
-		#streamSem
-		{
-			float: left;
-			position: relative;
-			left: 45px;
-		}
-		
-		#options
-		{
-			float: left;
-			position: relative;
-			left:45px;
-		}
-		
-		#remUnits
-		{
-	position: relative;
-	height: 450px;
-	bottom: 10px;
-	top: 40px;
-		}
-		
-		#sems
-		{
-			width: 275px;
-			height: 215px;
-			position: relative;
-			background: #EBEBEB;
-		}
-		
-		#sem1
-		{
-	float: left;
-	left: 15px;
-	top: 15px;
-		}
-		
-		#sem2
-		{
-	float: right;
-	right: 15px;
-	top: 15px;
-		}
-		
-		#yr2
-		{
-			top: 50px;
-		}
-		
-		#downloadEmail
-		{
-			
-		}
-		
-		
 
-    </style>
-	<link href="styles.css" rel="stylesheet" type="text/css">
-</head>
+	<head>
 
-<body>
-<div class="container">
+		<title>Enrolment Planner</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link href = "bootstrap/css/bootstrap.min.css" rel = stylesheet>
+
+		<link href = "bootstrap/css/styles.css" rel = stylesheet>
+
+	</head>
+	<body>
+
+	<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
+
+		<div class = "container">
+
+			<div class = ".navbar-header">
+
+				<a href = "#" class = "navbar-brand">Enrolment Planner</a>
+
+				<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+					<span class = "icon-bar"></span>
+					<span class = "icon-bar"></span>
+					<span class = "icon-bar"></span>
+				</button>
+			</div>
+
+			<div class = "collapse navbar-collapse navHeaderCollapse">
+
+				<ul class = "nav navbar-nav navbar-right">
+
+					<li class = "active"><a href="#">Planner</a></li>
+					<li><a href="#">Admin</a></li>
+
+				</ul>
+
+			</div>
+
+		</div>
+
+	</div>			<!--nav bar ends-->
+
+	<div class = "container">			<!--planner begins-->
+		<div class="col-md-9"> <!-- enrolment planner -->
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+    			<h3 class="panel-title"><center>Enrolment Planner</center></h3>
+  			</div> 			
+  			<div class="panel-body"> 			
+  				<div class="row">
+  				<div class="col-sm-6 col-md-5">
+    			<div class="thumbnail">
+    			<h3><center>Year 1 Semester 1</center></h3>
+     		    	<div class="caption">
+        				<p>Data Structures 120</p>
+        				<p>Requirements Engineering 220</p>
+        				<p>Software Engineering Project 400</p>
+        				<p>Design and Analaysis of Algorithms 300</p>
+        				<p><center><a href="#" class="btn btn-primary" role="button">Add</a>    <a href="#" class="btn btn-default" role="button">Remove</a>    <a href="#" class="btn btn-default" role="button">Done</a></center></p>
+      				</div>
+    			</div>
+  			</div>
+  			</div>
+  			</div>
+		</div>
+		</div> 	
+		<div class="col-md-3"> <!-- Remaining Units -->
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+    			<h3 class="panel-title"><center>Remaining Units</center></h3>
+  			</div>
+  			<div class="panel-body">
+  				<div class="list-group">
+  					<a href="#" class="list-group-item">Cras justo odio</a>
+  					<a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+  					<a href="#" class="list-group-item">Morbi leo risus</a>
+  					<a href="#" class="list-group-item">Porta ac consectetur ac</a>
+  					<a href="#" class="list-group-item">Vestibulum at eros</a>
+				</div>
+  			</div>
+		</div>
+		</div> 
+		<div class="col-md-4">  <!-- download and email -->
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+    			<h3 class="panel-title"><center>Download & Email</center></h3>
+  			</div>
+  			<div class="panel-body">	
+				<div class="form-group">
+   					<label for="exampleInputEmail1">Email address</label>
+    				<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+  				</div>
+			</div>
+		</div>
+		</div>	
+		<div class="col-md-5"> <!-- upload your CSV -->
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+    			<h3 class="panel-title"><center>Upload your CSV</center></h3>
+  			</div>		
+  			<div class="panel-body">
+  				<div class="form-group">
+    				<label for="exampleInputFile">File input</label>
+    				<input type="file" id="exampleInputFile">
+    				<p class="help-block">Example block-level help text here.</p>
+  				</div>
+  				<div class="checkbox">
+    				<label>
+      				<input type="checkbox"> Check me out
+   					</label>
+   			  	</div>
+  			</div>
+		</div>
+		</div> 
+		<div class="col-md-3"> <!-- credit points -->
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+    			<h3 class="panel-title"><center>Credit Points</center></h3>
+  			</div>
+  			
+  			<div class="panel-body">
+  				<p>Completed:</p> <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+  				<p>Remaining:</p> <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input here..." disabled>
+  			</div>
+		</div>
+		</div> 
+	</div>					<!--planner ends-->
+
+	<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
+
+		<div class = "container">
+
+			<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
+
+		</div>
+
+	</div>					<!--footer nav bar ends-->
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
 	
-  <div class="header">
-			<p><a href="#"><img src="images/" alt="Insert Logo Here" name="Insert_logo" width="180" height="90" id="Insert_logo" style="background-color: #C6D580; display:block;" title="Enrolment Planner"  /></a></p>
-  </div>
-  
-  
-  
-  <table width="850" height="598" border="1"> <!-- 1st table 1x2 starts here -->
-  <tr>
-    <th width="659" height="592" align="left" scope="col">     
-   
-      	
-
-      <div id="streamSem"> <!-- stream semester and completed units section starts here -->
-        <p><%= form_tag :action => "unit_chooser" do %>
-        <label for="streamSelect">Choose your stream:</label>
-        <!-- This ruby method retrieves the list of courses from database and displays as SELECT OPTION. -->
-        <%= select_tag "streamSelect", options_from_collection_for_select(@streamlist, "id", "streamName") %>
-        <label for="semSelect">Select starting semester:</label>
-        <select name="semSelect" id="semSelect">
-          <option value="1">Semester 1</option>
-          <option value="2">Semester 2</option>
-        </select>
-        <br>
-        <!-- Note that this method currently redirects to blank page.
-             Function of updating the units in current page will be implemented. //-->
-		<p> Please click here to select completed units: <%= submit_tag "Select Completed Units" %>
-    <% end %>
-      </p>
-      </div>	<!-- stream semester and completed units section ends here -->
-     
-
-      <div class id="planner">  <!-- planner section starts here -->
-      
-      <div class="sems sem1">
-        <p><center> Year 1 Semester 1</p>
-		<div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-        <div id="unitButtons">
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-      </div>
-      </div>
-      
-      <div class="sems sem2">      
-      <p><center>Year 1 Semester 2</p>
-      <div id="semUnits">
-<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-       </div>
-      <div id="unitButtons">
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-      </div>
-	  </div>
-      
-      
-      <div class="sems sem1 yr2">
-      <p><center>Year 2 Semester 1</p>
-      <div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-	  </div>
-      
-      <div class="sems sem2 yr2">      
-      <p><center>Year 2 Semester 2</p>
-      		<div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-	  </div>
-      
-      <!-- if semesters > 4.. add a semester -->
-      <div class="sems sem1 yr3">
-      <p><center>Year 3 Semester 1</p>
-            		<div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-	  </div>
-     
-      <div class="sems sem2 yr3">
-      <p><center>Year 3 Semester 2</p>
-            		<div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-	  </div>
-     
-      <div class="sems sem1 yr4">     
-      <p><center>Year 4 Semester 1</p>
-	        		<div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-	  </div>
-      
-      <div class="sems sem2 yr4">     
-      <p><center>Year 4 Semester 2</p>
-	  	        		<div id="semUnits">
-      	<table width="245" height="124" border="1">
-        <tr>
-          <th width="188" height="23" scope="col">Unit Name</th>
-          <th width="41" scope="col">Points</th>
-        </tr>
-        <tr>
-          <th height="93" scope="row">&nbsp;</th>
-          <td>&nbsp;</td>
-        </tr>
-      	</table>
-      	</div>
-      <input type="button" name="addButton" id="addButton" value="Add">
-      <input type="button" name="removeButton" id="removeButton" value="Remove">
-      <input type="button" name="doneButton" id="doneButton" value="Done">
-	  </div>
-   
-   </div>  <!-- planner section ends here -->
-    </th>
-    
-    <th width="175" scope="col">   
-    <div id="remaining"> <!-- remaining section starts here -->
-   	<h3> Remaining Units </h3>
- <div class="remUnits">
-    
-    <table width="175" border="1">
-  <tr>
-    <th height="446" scope="col">    
-   
-    </th>
-  </tr>
-</table>
-</div>
- <input type="button" name="unitDetails" id="unitDetails" value="View Unit Details">
-   	</div> <!-- remaining section ends here -->
-    </th>
-  </tr>	
-  </table> <!-- 1st table 1x2 ends here -->
- 
-  <table width="850" border="1"> <!-- 2nd table 1x3 starts here -->
-  <tr>
-    <td width="326" height="137">
-    <div id="downloadEmail">
-    <h4> Download & Email </h4>
-    <p> 
-      <label>
-        <input type="checkbox" name="download" value="checkbox" id="dlPDF">
-        PDF</label>
-      <label>
-        <input name="download" type="checkbox" class="dl" id="dlCSV" value="checkbox">
-        CSV</label>
-    </p>
-<input type="email"><input type="button" name="eButton" id="eButton" value="Email">
-<br>
- <input name="dlButton" type="button" class="dl" id="dlButton" value="Download">
-    </div>
-    </td>
-
-    <td width="327">
-    <div class id="upload"> <!-- upload section starts here -->
-    <h4> <center>Upload your CSV</h4>
-    <input type="text"><input type="button" name="browseButton" id="browseButton" value="Browse">
-<br>
- <input name="uploadButton" type="submit" class="subm" id="submitCSV" value="Submit">
-    </div>   <!-- upload section ends here -->
-    </td>
-    
-    <td width="175">
-    <div class id="credit"> <!-- credit section starts here -->
-    <h4> <center>Credit Points </h4>
-    <div class="cPoints"
-    <p> Completed   </p>
-    <p>   Planned </p>
-    <p> Remaining </p>
-    </div>
-    </div> <!-- credit section ends here -->
-    </td>
-  </tr>
-  </table> <!-- 2st table 1x3 ends here -->
-
-  
-        
-</div>
-</body>
+	</body>
 </html>
