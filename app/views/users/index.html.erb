@@ -3,6 +3,8 @@
 <table>
   <thead>
     <tr>
+      <th>Staffid</th>
+      <th>Password</th>
       <th></th>
       <th></th>
       <th></th>
@@ -12,6 +14,8 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
+        <td><%= user.staffID %></td>
+        <td><%= user.password %></td>
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -1,5 +1,7 @@
 EnrolPlanner::Application.routes.draw do
 
+  resources :users
+
   post "planner/unit_chooser" => "planner#unit_chooser"
   post "planner/enrolment_planner" => "planner#enrolment_planner"
 
