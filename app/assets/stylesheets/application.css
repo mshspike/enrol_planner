@@ -12,5 +12,5 @@
  *= require_tree .
  */
 
-@import "/lib/assets/bootstrap/css/styles.css";
-@import "/lib/assets/bootstrap/css/bootstrap.min.css";
+//= require styles
+//= require bootstrap
