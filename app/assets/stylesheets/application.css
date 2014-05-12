@@ -11,3 +11,6 @@
  *= require_self
  *= require_tree .
  */
+
+@import "/views/planner/bootstrap/css/styles.css"
+@import "/views/planner/bootstrap/css/bootstrap.min.css"
