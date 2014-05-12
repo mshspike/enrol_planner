@@ -1,18 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 
-<<<<<<< HEAD
-<%= form_tag :action => "enrolment_planner" do %>
-		<% @streamunit_list.each do |su| %>
-		<% #check_box_tag(name, id, checked, option) %>
-		<p><%= check_box_tag ('unit[id]['+su.id.to_s+']'), su.id, false %><%= su.unit_id %></p>
-		
-	<% end %>
-=======
 	<head>
 
 		<title>Enrolment Planner</title>
->>>>>>> 602ed635ad83e7fe638d2d298a93ecb262fb0327
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -72,19 +63,34 @@
 
 	<br>
 
-	<div class = "container">			<!--select completed units begins-->
+	<div class = "container">			<!--select stream begins-->
 
 		<center>
-			
 			<div class = "jumbotron" style="width:75%">
 
-				
+				<div class="container">
+					<h2>Hello, Welcome to Enrolment Planer</h2>
+				</div>
+
+				<br>
+
+				<div class="container">
+					<h4 align="left">Please select your stream</h4>
+					<select multiple class="form-control input-lg" >
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+					<br>
+
+					<button type="button" class="btn btn-success pull-right" style="width:150px">Proceed</button>
+				</div>
 
 			</div>
 
 		</center>
 
-	</div>					<!--select completed units ends-->
+	</div>					<!--select steam ends-->
 
 
 
