@@ -2,10 +2,8 @@
 <html>
 <head>
   <title><%= yield(:title) %></title>
-  <%= stylesheet_link_tag "styles.css", "/css/stylish" %>
- 	<link href="/views/planner/bootstrap/css/bootstrap.min.css" media="screen" rel="stylesheet" />
-    <link href="/views/plannerbootstrap/css/styles.css" media="screen" rel="stylesheet" />
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    "style", "data-turbolinks-track" => <link href="/view/planner/bootstrap/css/styles.css" media="all" rel="stylesheet" /> %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
