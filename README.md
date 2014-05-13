@@ -15,11 +15,13 @@ If this is your first time to run the application, follow the steps below to set
 
 2. Run "gem bundle install" to install missing required gem for the appication.
 
-3. Run "bundle exec rake db:create" to create the required Database in DB server.
+3. Run "bundle exec rake db:create db:migrate" to create and migrate required Database and tables onto DB server.
 
-4. Run "bundle exec rake db:migrate" to load in the DB structure (tables) as defined in db/schema.rb
+4. Run "bundle exec rake routes" to create route resources required in web application.
 
-If the database schema has been changed in a commit, it is recommended to drop the tables that you currently have first, then do the create as well as migrate commands again to make sure that your database isat the "initial state".
+Ps1. If the database schema has been changed in a commit, run "bundle exec rake db:drop" to drop current DB, then run command in step 3 again. It is to make sure that the database structure is in initial state.
+
+Ps2. If you wish the test the application with test data, run "bundle exec rake db:seed" to add data defined in db/seed.rb. However, if you are going to test "Admin import/export" functions, please go through step Ps1 to test in initial state environment.
 
 ###To run the application:
 

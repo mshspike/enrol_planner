@@ -1,54 +1,51 @@
 class PlannerController < ApplicationController
-	# START stream_chooser
+	@selected_stream
+	@stream_units
+
+	helper_method :get_streamunit_name
+
+# START stream_chooser
 	def index
-		# Retrieves list of courses from Model
-		@streamlist = Stream.all  # instance variable, so that View has access
+		@streams = Stream.all
 	end
-	# END stream_chooser
+# END stream_chooser
 
 
-	# START unit_chooser
+# START unit_chooser
 	def unit_chooser
-		# params["streamSelect"] = user selection from View form
-		# this variable refers to the id of stream in Stream Model
-
-		# find in Stream where id=streamSelect, and store the matching entry to @selectStream
 		@selected_stream = Stream.find_by_id(params["streamSelect"])
-
-		# call getStreamUnits() method to get list of units of chosen stream
 		@stream_units = getStreamUnits(@selected_stream)
 	end
 
-	def getStreamUnits(chosen_stream)
-		# find in StreamUnit where stream_id equals to the one of "chosen_course", and store the list
-		# note that it uses where() method, where find() method can only be used for finding by "id" field
-		@streamunit_list = StreamUnit.where(:stream_id => chosen_stream)
-
-		#find in Unit where is instance of @streamunit_list, and store matchings in @unitlist
-		@unitlist = Unit.where(:id => @streamunit_list)
-		return @unitlist
+	def get_streamunit_name uid
+		u = Unit.find_by_id(uid)
+		return u.unitName
 	end
-	# END unit_chooser
+
+	def getStreamUnits chosen_stream
+		streamunits_list = StreamUnit.where(:stream_id => chosen_stream)
+		# units_list = Unit.where(:id => streamunits_list)
+		return streamunits_list
+	end
+# END unit_chooser
 
 
-	# START enrolment_planner
+# START enrolment_planner
 	def enrolment_planner
+		done_units = []
+		done_units_id = params[:unit][:id]
 
-		@testarray = ["a0","a1","a2","a3a"]
-
-		# retrieves the list from unit_chooser View
-		@paramid = params[:unit][:id]
+		done_units_id.keys.each do |key|
+			done_units += Unit.where(:id => done_units_id[key].to_i)
+		end
 		
-		# stores list of done units, retrieved by getRemainingUnits() method
-		@doneUnits
-		#@doneUnits = Unit.where(id: params[:unit][:id])
-
-
-		#@remainunitlist = getRemainingUnits(@doneUnits)
+		@remain_units = getRemainingUnits(done_units)
 	end
 
-	def getRemainingUnits(selected_stream, done)
-		
+	def getRemainingUnits(done)
+		remain_streamunits = StreamUnit.where('id not in (?)', done)
+		remain_units = Unit.where(:id => remain_streamunits)
+		return remain_units
 	end
-	# END enrolment_planner
+# END enrolment_planner
 end

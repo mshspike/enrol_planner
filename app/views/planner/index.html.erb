@@ -1,98 +1,92 @@
-<!DOCTYPE HTML>
-<html>
+<% content_for :title, "Enrolment Planner" %>
 
-	<body>
+<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
 
-	<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
+	<div class = "container">
 
-		<div class = "container">
+		<div class = ".navbar-header">
 
-			<div class = ".navbar-header">
+			<a href = "#" class = "navbar-brand">Enrolment Planner</a>
 
-				<a href = "#" class = "navbar-brand">Enrolment Planner</a>
+			<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+			</button>
+		</div>
 
-				<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
-					<span class = "icon-bar"></span>
-					<span class = "icon-bar"></span>
-					<span class = "icon-bar"></span>
-				</button>
-			</div>
+		<div class = "collapse navbar-collapse navHeaderCollapse">
 
-			<div class = "collapse navbar-collapse navHeaderCollapse">
+			<ul class = "nav navbar-nav navbar-right">
 
-				<ul class = "nav navbar-nav navbar-right">
+				<li class = "active"><a href="#">Planner</a></li>
+				<li><a href="#">Admin</a></li>
 
-					<li class = "active"><a href="#">Planner</a></li>
-					<li><a href="#">Admin</a></li>
-
-				</ul>
-
-			</div>
+			</ul>
 
 		</div>
 
-	</div>			<!--nav bar ends-->
+	</div>
 
-	<div class="container">				<!--admin login begings-->
+</div>			<!--nav bar ends-->
 
-		<form class="form-inline" role="form" align="right">
-			<label>Admin Login</label>
-		  <div class="form-group">
-		    <label class="sr-only" for="email">Email address</label>
-		    <input type="email" class="form-control" id="email" placeholder="Staff ID">
-		  </div>
-		  <div class="form-group">
-		    <label class="sr-only" for="password">Password</label>
-		    <input type="password" class="form-control" id="password" placeholder="Password">
-		  </div>
-		  <button type="submit" class="btn btn-primary">Sign in</button>
-		</form>
+<div class="container">				<!--admin login begings-->
 
-	</div>					<!--admin login ends-->
+	<form class="form-inline" role="form" align="right">
+		<label>Admin Login</label>
+	  <div class="form-group">
+	    <label class="sr-only" for="email">Email address</label>
+	    <input type="email" class="form-control" id="email" placeholder="Staff ID">
+	  </div>
+	  <div class="form-group">
+	    <label class="sr-only" for="password">Password</label>
+	    <input type="password" class="form-control" id="password" placeholder="Password">
+	  </div>
+	  <button type="submit" class="btn btn-primary">Sign in</button>
+	</form>
 
-	<br>
+</div>					<!--admin login ends-->
 
-	<div class = "container">			<!--select stream begins-->
+<br>
 
-		<center>
-			<div class = "jumbotron" style="width:75%">
+<div class = "container">			<!--select stream begins-->
 
-				<div class="container">
-					<h2>Hello, Welcome to Enrolment Planer</h2>
-				</div>
+	<center>
+		<div class = "jumbotron" style="width:75%">
 
+			<div class="container">
+				<h2>Hello, Welcome to Enrolment Planer</h2>
+			</div>
+
+			<br>
+			<%= form_tag :action => "unit_chooser" do %>
+			<div class="container">
+				<h4 align="left">Please select your stream</h4>
+
+				<%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: true, class: 'form-control input-lg' %>
 				<br>
-				<%= form_tag :action => "unit_chooser" do %>
-				<div class="container">
-					<h4 align="left">Please select your stream</h4>
 
-					<%= select_tag "streamSelect", options_from_collection_for_select(@streamlist, "id", "streamName"), multiple: true, class: 'form-control input-lg' %>
-					<br>
-
-					<%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
-				<% end %>
-				</div>
-
+				<%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
+			<% end %>
 			</div>
-
-		</center>
-
-	</div>					<!--select steam ends-->
-
-
-
-	<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
-
-		<div class = "container">
-
-			<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
 
 		</div>
 
-	</div>					<!--footer nav bar ends-->
+	</center>
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	
-	</body>
-</html>
+</div>					<!--select steam ends-->
+
+
+
+<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
+
+	<div class = "container">
+
+		<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
+
+	</div>
+
+</div>					<!--footer nav bar ends-->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>

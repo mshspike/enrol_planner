@@ -1,136 +1,126 @@
-<!DOCTYPE HTML>
-<html>
+<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
 
-	<body>
+	<div class = "container">
 
-	<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
+		<div class = ".navbar-header">
 
-		<div class = "container">
+			<a href = "#" class = "navbar-brand">Enrolment Planner</a>
 
-			<div class = ".navbar-header">
+			<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+			</button>
+		</div>
 
-				<a href = "#" class = "navbar-brand">Enrolment Planner</a>
+		<div class = "collapse navbar-collapse navHeaderCollapse">
 
-				<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
-					<span class = "icon-bar"></span>
-					<span class = "icon-bar"></span>
-					<span class = "icon-bar"></span>
-				</button>
-			</div>
+			<ul class = "nav navbar-nav navbar-right">
 
-			<div class = "collapse navbar-collapse navHeaderCollapse">
+				<li class = "active"><a href="#">Planner</a></li>
+				<li><a href="#">Admin</a></li>
 
-				<ul class = "nav navbar-nav navbar-right">
-
-					<li class = "active"><a href="#">Planner</a></li>
-					<li><a href="#">Admin</a></li>
-
-				</ul>
-
-			</div>
+			</ul>
 
 		</div>
 
-	</div>			<!--nav bar ends-->
+	</div>
 
-	<div class = "container">			<!--planner begins-->
-		<div class="col-md-9"> <!-- enrolment planner -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Enrolment Planner</center></h3>
-  			</div> 			
-  			<div class="panel-body"> 			
-  				<div class="row">
-  				<div class="col-sm-6 col-md-5">
-    			<div class="thumbnail">
-    			<h3><center>Year 1 Semester 1</center></h3>
-     		    	<div class="caption">
-        				<p>Data Structures 120</p>
-        				<p>Requirements Engineering 220</p>
-        				<p>Software Engineering Project 400</p>
-        				<p>Design and Analaysis of Algorithms 300</p>
-        				<p><center><a href="#" class="btn btn-primary" role="button">Add</a>    <a href="#" class="btn btn-default" role="button">Remove</a>    <a href="#" class="btn btn-default" role="button">Done</a></center></p>
-      				</div>
-    			</div>
-  			</div>
-  			</div>
-  			</div>
-		</div>
-		</div> 	
-		<div class="col-md-3"> <!-- Remaining Units -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Remaining Units</center></h3>
-  			</div>
-  			<div class="panel-body">
-  				<div class="list-group">
-  					<a href="#" class="list-group-item">DSA</a>
-  					<a href="#" class="list-group-item">RE</a>
-  					<a href="#" class="list-group-item">SE</a>
-  					<a href="#" class="list-group-item">OS</a>
-  					<a href="#" class="list-group-item">FCC</a>
-				</div>
-  			</div>
-		</div>
-		</div> 
-		<div class="col-md-4">  <!-- download and email -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Download & Email</center></h3>
-  			</div>
-  			<div class="panel-body">
-  			<input name="download" type="checkbox" class="dl" id="dlPDF" value="checkbox"> PDF</label>
-			<input name="download" type="checkbox" class="dl" id="dlCSV" value="checkbox"> CSV   <a href="#" class="btn btn-default" role="button">Download</a></label>	
-			<p><p>			 
- 			<div class="input-group">
-      			<input type="text" value="enter email address" class="form-control">
-      			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button">Send</button>
-      			</span>
-    		</div><!-- /input-group -->
-			</div>
-		</div>
-		</div>	
-		<div class="col-md-5"> <!-- upload your CSV -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Upload your CSV</center></h3>
-  			</div>		
-  			<div class="panel-body">
-  				<div class="form-group">
-    				<input type="file" id="localFile"> <br>
-    				<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
+</div>			<!--nav bar ends-->
+
+<div class = "container">			<!--planner begins-->
+	<div class="col-md-9"> <!-- enrolment planner -->
+	<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title"><center>Enrolment Planner</center></h3>
+			</div> 			
+			<div class="panel-body"> 			
+				<div class="row">
+				<div class="col-sm-6 col-md-5">
+			<div class="thumbnail">
+			<h3><center>Year 1 Semester 1</center></h3>
+ 		    	<div class="caption">
+    				<p>Data Structures 120</p>
+    				<p>Requirements Engineering 220</p>
+    				<p>Software Engineering Project 400</p>
+    				<p>Design and Analaysis of Algorithms 300</p>
+    				<p><center><a href="#" class="btn btn-primary" role="button">Add</a>    <a href="#" class="btn btn-default" role="button">Remove</a>    <a href="#" class="btn btn-default" role="button">Done</a></center></p>
   				</div>
-  			</div>
+			</div>
+			</div>
+			</div>
+			</div>
+	</div>
+	</div> 	
+	<div class="col-md-3"> <!-- Remaining Units -->
+	<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title"><center>Remaining Units</center></h3>
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<% @remain_units.each do |ru| %>
+						<%= link_to ru.unitName, "#", class: "list-group-item" %>
+					<% end %>
+			</div>
+			</div>
+	</div>
+	</div> 
+	<div class="col-md-4">  <!-- download and email -->
+	<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title"><center>Download & Email</center></h3>
+			</div>
+			<div class="panel-body">
+			<input name="download" type="checkbox" class="dl" id="dlPDF" value="checkbox"> PDF</label>
+		<input name="download" type="checkbox" class="dl" id="dlCSV" value="checkbox"> CSV   <a href="#" class="btn btn-default" role="button">Download</a></label>	
+		<p><p>			 
+			<div class="input-group">
+  			<input type="text" value="enter email address" class="form-control">
+  			<span class="input-group-btn">
+    			<button class="btn btn-default" type="button">Send</button>
+  			</span>
+		</div><!-- /input-group -->
 		</div>
-		</div> 
-		<div class="col-md-3"> <!-- credit points -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Credit Points</center></h3>
-  			</div>
-  			
-  			<div class="panel-body">
-  				<p>Completed: </p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
-				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
-  				<p>Remaining:</p> <input class="form-control" id="disabledInput" type="text" placeholder="400" disabled>
-  			</div>
-		</div>
-		</div> 
-	</div>					<!--planner ends-->
+	</div>
+	</div>	
+	<div class="col-md-5"> <!-- upload your CSV -->
+	<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title"><center>Upload your CSV</center></h3>
+			</div>		
+			<div class="panel-body">
+				<div class="form-group">
+				<input type="file" id="localFile"> <br>
+				<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
+				</div>
+			</div>
+	</div>
+	</div> 
+	<div class="col-md-3"> <!-- credit points -->
+	<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title"><center>Credit Points</center></h3>
+			</div>
+			
+			<div class="panel-body">
+				<p>Completed: </p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
+			<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
+				<p>Remaining:</p> <input class="form-control" id="disabledInput" type="text" placeholder="400" disabled>
+			</div>
+	</div>
+	</div> 
+</div>					<!--planner ends-->
 
-	<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
+<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
 
-		<div class = "container">
+	<div class = "container">
 
-			<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
+		<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
 
-		</div>
+	</div>
 
-	</div>					<!--footer nav bar ends-->
+</div>					<!--footer nav bar ends-->
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	
-	</body>
-</html>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>

@@ -1,93 +1,85 @@
-<!DOCTYPE HTML>
-<html>
+<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
 
-	<body>
+	<div class = "container">
 
-	<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
+		<div class = ".navbar-header">
 
-		<div class = "container">
+			<a href = "#" class = "navbar-brand">Enrolment Planner</a>
 
-			<div class = ".navbar-header">
+			<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+			</button>
+		</div>
 
-				<a href = "#" class = "navbar-brand">Enrolment Planner</a>
+		<div class = "collapse navbar-collapse navHeaderCollapse">
 
-				<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
-					<span class = "icon-bar"></span>
-					<span class = "icon-bar"></span>
-					<span class = "icon-bar"></span>
-				</button>
-			</div>
+			<ul class = "nav navbar-nav navbar-right">
 
-			<div class = "collapse navbar-collapse navHeaderCollapse">
+				<li class = "active"><a href="#">Planner</a></li>
+				<li><a href="#">Admin</a></li>
 
-				<ul class = "nav navbar-nav navbar-right">
-
-					<li class = "active"><a href="#">Planner</a></li>
-					<li><a href="#">Admin</a></li>
-
-				</ul>
-
-			</div>
+			</ul>
 
 		</div>
 
-	</div>			<!--nav bar ends-->
+	</div>
 
-	<div class="container">				<!--admin login begings-->
+</div>			<!--nav bar ends-->
 
-		<form class="form-inline" role="form" align="right">
-			<label>Admin Login</label>
-		  <div class="form-group">
-		    <label class="sr-only" for="email">Email address</label>
-		    <input type="email" class="form-control" id="email" placeholder="Staff ID">
-		  </div>
-		  <div class="form-group">
-		    <label class="sr-only" for="password">Password</label>
-		    <input type="password" class="form-control" id="password" placeholder="Password">
-		  </div>
-		  <button type="submit" class="btn btn-primary">Sign in</button>
-		</form>
+<div class="container">				<!--admin login begings-->
 
-	</div>					<!--admin login ends-->
+	<form class="form-inline" role="form" align="right">
+		<label>Admin Login</label>
+	  <div class="form-group">
+	    <label class="sr-only" for="email">Email address</label>
+	    <input type="email" class="form-control" id="email" placeholder="Staff ID">
+	  </div>
+	  <div class="form-group">
+	    <label class="sr-only" for="password">Password</label>
+	    <input type="password" class="form-control" id="password" placeholder="Password">
+	  </div>
+	  <button type="submit" class="btn btn-primary">Sign in</button>
+	</form>
 
-	<br>
+</div>					<!--admin login ends-->
 
-	<div class = "container">			<!--select completed units begins-->
+<br>
 
-		<center>
-			
-			<div class = "jumbotron" style="width:75%">
+<div class = "container">			<!--select completed units begins-->
 
-				<%= form_tag :action => "enrolment_planner" do %>
+	<center>
+		
+		<div class = "jumbotron" style="width:75%">
 
-					<% @streamunit_list.each do |su| %>
-						<% #check_box_tag(name, id, checked, option) %>
-						<p><%= check_box_tag ('unit[id]['+su.id.to_s+']'), su.id, false %><%= su.unit_id %></p>
-					<% end %>
+			<%= form_tag :action => "enrolment_planner" do %>
 
-					<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
-				<% end %>
+			<% @stream_units.each do |su| %>
+				<% #check_box_tag(name, id, checked, option) %>
+				<p><%= check_box_tag ('unit[id]['+su.unit_id.to_s+']'), su.id, false %><%= get_streamunit_name(su.unit_id) %></p>
+			<% end %>
 
-			</div>
-
-		</center>
-
-	</div>					<!--select completed units ends-->
-
-
-
-	<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
-
-		<div class = "container">
-
-			<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
+			<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
+		<% end %>
 
 		</div>
 
-	</div>					<!--footer nav bar ends-->
+	</center>
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
-	
-	</body>
-</html>
+</div>					<!--select completed units ends-->
+
+
+
+<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
+
+	<div class = "container">
+
+		<p class = "navbar-text pull-left">Designed by Deshan Dissanayake</p>
+
+	</div>
+
+</div>					<!--footer nav bar ends-->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
