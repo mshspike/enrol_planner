@@ -2,7 +2,7 @@
 <html>
 	<head>
 
-		<title>Enrolment Planner</title>
+		<% content_for :title, "Enrolment Planner" %>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -68,7 +68,15 @@
 			
 			<div class = "jumbotron" style="width:75%">
 
-				
+				<%= form_tag :action => "enrolment_planner" do %>
+
+					<% @stream_units.each do |su| %>
+						<% #check_box_tag(name, id, checked, option) %>
+						<p><%= check_box_tag ('unit[id]['+su.id.to_s+']'), su.id, false %><%= su.unitName %></p>
+					<% end %>
+
+					<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
+				<% end %>
 
 			</div>
 
