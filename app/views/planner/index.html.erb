@@ -6,8 +6,11 @@
 		<title>Enrolment Planner</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link href = "bootstrap/css/bootstrap.min.css" rel = stylesheet>
-			<link href = "bootstrap/css/styles.css" rel = stylesheet>
+
+		<link href = "bootstrap/css/bootstrap.min.css" rel = stylesheet>
+
+		<link href = "bootstrap/css/styles.css" rel = stylesheet>
+
 	</head>
 	<body>
 
@@ -41,91 +44,53 @@
 
 	</div>			<!--nav bar ends-->
 
-	<div class = "container">			<!--planner begins-->
-		<div class="col-md-9"> <!-- enrolment planner -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Enrolment Planner</center></h3>
-  			</div> 			
-  			<div class="panel-body"> 			
-  				<div class="row">
-  				<div class="col-sm-6 col-md-5">
-    			<div class="thumbnail">
-    			<h3><center>Year 1 Semester 1</center></h3>
-     		    	<div class="caption">
-        				<p>Data Structures 120</p>
-        				<p>Requirements Engineering 220</p>
-        				<p>Software Engineering Project 400</p>
-        				<p>Design and Analaysis of Algorithms 300</p>
-        				<p><center><a href="#" class="btn btn-primary" role="button">Add</a>    <a href="#" class="btn btn-default" role="button">Remove</a>    <a href="#" class="btn btn-default" role="button">Done</a></center></p>
-      				</div>
-    			</div>
-  			</div>
-  			</div>
-  			</div>
-		</div>
-		</div> 	
-		<div class="col-md-3"> <!-- Remaining Units -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Remaining Units</center></h3>
-  			</div>
-  			<div class="panel-body">
-  				<div class="list-group">
-  					<a href="#" class="list-group-item">DSA</a>
-  					<a href="#" class="list-group-item">RE</a>
-  					<a href="#" class="list-group-item">SE</a>
-  					<a href="#" class="list-group-item">OS</a>
-  					<a href="#" class="list-group-item">FCC</a>
+	<div class="container">				<!--admin login begings-->
+
+		<form class="form-inline" role="form" align="right">
+			<label>Admin Login</label>
+		  <div class="form-group">
+		    <label class="sr-only" for="email">Email address</label>
+		    <input type="email" class="form-control" id="email" placeholder="Staff ID">
+		  </div>
+		  <div class="form-group">
+		    <label class="sr-only" for="password">Password</label>
+		    <input type="password" class="form-control" id="password" placeholder="Password">
+		  </div>
+		  <button type="submit" class="btn btn-primary">Sign in</button>
+		</form>
+
+	</div>					<!--admin login ends-->
+
+	<br>
+
+	<div class = "container">			<!--select stream begins-->
+
+		<center>
+			<div class = "jumbotron" style="width:75%">
+
+				<div class="container">
+					<h2>Hello, Welcome to Enrolment Planer</h2>
 				</div>
-  			</div>
-		</div>
-		</div> 
-		<div class="col-md-4">  <!-- download and email -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Download & Email</center></h3>
-  			</div>
-  			<div class="panel-body">
-  			<input name="download" type="checkbox" class="dl" id="dlPDF" value="checkbox"> PDF</label>
-			<input name="download" type="checkbox" class="dl" id="dlCSV" value="checkbox"> CSV   <a href="#" class="btn btn-default" role="button">Download</a></label>	
-			<p><p>			 
- 			<div class="input-group">
-      			<input type="text" value="enter email address" class="form-control">
-      			<span class="input-group-btn">
-        			<button class="btn btn-default" type="button">Send</button>
-      			</span>
-    		</div><!-- /input-group -->
+
+				<br>
+				<%= form_tag :action => "unit_chooser" do %>
+				<div class="container">
+					<h4 align="left">Please select your stream</h4>
+
+					<%= select_tag "streamSelect", options_from_collection_for_select(@streamlist, "id", "streamName"), multiple: true, class: 'form-control input-lg' %>
+					<br>
+
+					<%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
+				<% end %>
+				</div>
+
 			</div>
-		</div>
-		</div>	
-		<div class="col-md-5"> <!-- upload your CSV -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Upload your CSV</center></h3>
-  			</div>		
-  			<div class="panel-body">
-  				<div class="form-group">
-    				<input type="file" id="localFile"> <br>
-    				<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
-  				</div>
-  			</div>
-		</div>
-		</div> 
-		<div class="col-md-3"> <!-- credit points -->
-		<div class="panel panel-default">
-  			<div class="panel-heading">
-    			<h3 class="panel-title"><center>Credit Points</center></h3>
-  			</div>
-  			
-  			<div class="panel-body">
-  				<p>Completed: </p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
-				<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
-  				<p>Remaining:</p> <input class="form-control" id="disabledInput" type="text" placeholder="400" disabled>
-  			</div>
-		</div>
-		</div> 
-	</div>					<!--planner ends-->
+
+		</center>
+
+	</div>					<!--select steam ends-->
+
+
 
 	<div class = "navbar navbar-default navbar-fixed-bottom">			<!--footer nav bar begins-->
 
