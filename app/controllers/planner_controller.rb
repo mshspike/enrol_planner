@@ -1,5 +1,4 @@
 class PlannerController < ApplicationController
-
 	# START stream_chooser
 	def index
 		# Retrieves list of courses from Model
