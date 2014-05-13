@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140507014612) do
+ActiveRecord::Schema.define(version: 20140508182828) do
 
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
