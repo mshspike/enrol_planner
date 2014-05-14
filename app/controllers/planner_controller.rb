@@ -1,6 +1,10 @@
 class PlannerController < ApplicationController
-	@selected_stream
+	#@selected_stream
 	@stream_units
+
+	before_filter :get_selected_stream
+
+	$testint = 1
 
 	helper_method :get_streamunit_name
 
@@ -32,20 +36,25 @@ class PlannerController < ApplicationController
 
 # START enrolment_planner
 	def enrolment_planner
-		done_units = []
-		done_units_id = params[:unit][:id]
+		done_units = Unit.find(params[:unit_ids])
 
-		done_units_id.keys.each do |key|
-			done_units += Unit.where(:id => done_units_id[key].to_i)
-		end
+		@testingint = @testint
 		
 		@remain_units = getRemainingUnits(done_units)
 	end
 
 	def getRemainingUnits(done)
-		remain_streamunits = StreamUnit.where('id not in (?)', done)
-		remain_units = Unit.where(:id => remain_streamunits)
-		return remain_units
+		su = StreamUnit.where(:stream_id => 1) # issue here. can't get selected stream...
+		remain_streamunits = Unit.where(:id => su).where('id not in (?)', done)
+
+		#remain_streamunits = StreamUnit.where(:stream_id => @selected_stream)
+		#remain_streamunits = @stream_units
+		#.where(:stream_id => @selected_stream).where('unit_id not in (?)', done)
+		#remain_units = Unit.where(:id => remain_streamunits)
+		return remain_streamunits
 	end
 # END enrolment_planner
+	def get_selected_stream
+		return @selected
+	end
 end

@@ -57,7 +57,7 @@
 
 			<% @stream_units.each do |su| %>
 				<% #check_box_tag(name, id, checked, option) %>
-				<p><%= check_box_tag ('unit[id]['+su.unit_id.to_s+']'), su.id, false %><%= get_streamunit_name(su.unit_id) %></p>
+				<p><%= check_box_tag 'unit_ids[]', su.unit_id, false %><%= get_streamunit_name(su.unit_id) %></p>
 			<% end %>
 
 			<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
