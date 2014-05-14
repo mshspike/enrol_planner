@@ -55,3 +55,8 @@ class PlannerController < ApplicationController
 		return @selected
 	end
 end
+
+# START AJAX Testing
+def ajaxTesting
+		render :text => "Success"
+end
