@@ -59,9 +59,9 @@
 			</div>
 			<div class="panel-body">
 				<div class="list-group">
-					<p>Num = <%= @remain_units.length %>, </p><%= $testingint %>
+					<%= session[:select_stream] %><p>Num = <%= @remain_units.length %></p>, <%= @done_units %>
 					<% @remain_units.each do |ru| %>
-						<%= link_to get_streamunit_name(ru), "#", id: ru.id, class: "list-group-item" %>
+						<%= link_to get_streamunit_name(ru.unit_id), "#", id: ru.id, class: "list-group-item" %>
 					<% end %>
 			</div>
 			</div>

@@ -4,8 +4,6 @@ class PlannerController < ApplicationController
 
 	before_filter :get_selected_stream
 
-	$testint = 1
-
 	helper_method :get_streamunit_name
 
 # START stream_chooser
@@ -18,6 +16,9 @@ class PlannerController < ApplicationController
 # START unit_chooser
 	def unit_chooser
 		@selected_stream = Stream.find_by_id(params["streamSelect"])
+
+		#declare session variable and store selected stream id to it
+		(session[:select_stream] ||= []) && (session[:select_stream] = @selected_stream.id )
 		@stream_units = getStreamUnits(@selected_stream)
 	end
 
@@ -36,21 +37,17 @@ class PlannerController < ApplicationController
 
 # START enrolment_planner
 	def enrolment_planner
-		done_units = Unit.find(params[:unit_ids])
+		@done_units = []
 
-		@testingint = @testint
+		params[:unit_ids].each do |puid|
+			@done_units += StreamUnit.where(:stream_id => session[:select_stream]).where(:unit_id => (puid.to_i))
+		end
 		
-		@remain_units = getRemainingUnits(done_units)
+		@remain_units = getRemainingUnits(@done_units)
 	end
 
-	def getRemainingUnits(done)
-		su = StreamUnit.where(:stream_id => 1) # issue here. can't get selected stream...
-		remain_streamunits = Unit.where(:id => su).where('id not in (?)', done)
-
-		#remain_streamunits = StreamUnit.where(:stream_id => @selected_stream)
-		#remain_streamunits = @stream_units
-		#.where(:stream_id => @selected_stream).where('unit_id not in (?)', done)
-		#remain_units = Unit.where(:id => remain_streamunits)
+	def getRemainingUnits(done)			
+		remain_streamunits = StreamUnit.where(:stream_id => session[:select_stream]).where('id not in (?)', done)
 		return remain_streamunits
 	end
 # END enrolment_planner
