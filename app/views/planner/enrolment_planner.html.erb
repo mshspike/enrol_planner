@@ -3,16 +3,11 @@
 <%= submit_tag "Test", class: "btn btn-success pull-right" %>
 <% end %>
 
-<p> <%= echo "OKAY", :id => "pass", :style "display: none" %> </p>
+
 <div id="results">
 </div>
 
-<%= observe_field (	:Test,
-					:url == {:action => "ajaxTesting"},
-					:frequency => 1,
-					:before => "Element.show('pass')",
-					:complete => "Element.hide('pass')",
-					:update => :results ) %>
+<%= observe_field(:Test, :url => {:action => "ajaxTesting"}, :update => :results ) %>
 
 
 <div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
