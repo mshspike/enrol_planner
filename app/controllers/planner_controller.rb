@@ -7,7 +7,8 @@ class PlannerController < ApplicationController
 	def index
 		@streams = Stream.all
 
-		session.delete(:select_stream)
+		# Clear all seesion variables to avoid messing with previous data
+		session.delete(:selected_stream)
 		session.delete(:semesters)
 		session.delete(:done_units)
 		session.delete(:remain_units)
@@ -26,7 +27,7 @@ class PlannerController < ApplicationController
 		@str = Stream.find_by_id(params["streamSelect"])
 
 		#declare session variable and store selected stream id to it
-		session[:select_stream] = @str.id
+		session[:selected_stream] = @str.id
 
 		
 		@stream_units = getStreamUnits(@str)
@@ -52,32 +53,39 @@ class PlannerController < ApplicationController
 		session[:remain_units] = []
 
 		# START initialising session[:semesters]
-			session[:semesters]=[]
-			session[:semesters][0] = []
-			session[:semesters][0][0] = 0
+		session[:semesters]=[]
+		session[:semesters][0] = []
+		session[:semesters][0][0] = 0
 		# END initialising
+
 		session[:semesters][0] = params[:unit_ids] # For testing purpose only
 		session[:semesters][1] = params[:unit_ids] # For testing purpose only
 
+		# Get list of done units with ID integer
 		params[:unit_ids].each do |puid|
-			@done_units += StreamUnit.where(:stream_id => session[:select_stream]).where(:unit_id => (puid.to_i))
+			@done_units += StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => (puid.to_i))
 		end
 		
+		# Get list of remaining units with done units object
 		@remain_units = getRemainingUnits(@done_units)
+
+		# Assign remaining units' IDs to session variable
 		@remain_units.each do |ru|
 			session[:remain_units] << ru.id
 		end
 	end
 
-	def getRemainingUnits(done)			
-		remain_streamunits = StreamUnit.where(:stream_id => session[:select_stream]).where('id not in (?)', done)
+	def getRemainingUnits(done)
+		# Get StreamUnit where SUs are in "selected stream", and ID is not in "done"
+		remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]).where('id not in (?)', done)
 		return remain_streamunits
 	end
 
-	def get_semester_done_units sem
-		
+	def get_done_unit_semester uid
+		# which semester did the unit being done?
 	end
 # END enrolment_planner
+
 end
 
 # START AJAX Testing
