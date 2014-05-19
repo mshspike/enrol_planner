@@ -1,0 +1,22 @@
+<%
+year = (semester+1)/2
+sem = (semester+1)%2+1
+%>
+<div class="thumbnail">
+			<h3><center>Year <%=year%> Semester <%=sem%></center></h3>
+ 		    	<div class="caption">
+ 		    		<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
+ 		    			<% if session[:semesters][count][i].to_i > 0 %>
+ 		    				<p><%= get_streamunit_name(uid) %></p>
+ 		    			<% end %>
+ 		    		<% end %>
+
+ 		    		<!-- below is for display purpose only. -->
+    				<p>Data Structures 120</p>
+    				<p>Requirements Engineering 220</p>
+    				<p>Software Engineering Project 400</p>
+    				<p>Design and Analaysis of Algorithms 300</p>
+
+    				<p><center><a href="#" class="btn btn-primary" role="button">Add</a>    <a href="#" class="btn btn-default" role="button">Remove</a>    <a href="#" class="btn btn-default" role="button">Done</a></center></p>
+  				</div>
+			</div>
