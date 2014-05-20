@@ -24,11 +24,11 @@ numUnits = session[:semesters][semester-1].length
 		<!-- buttons -->
 		<p><center>
 			<% if (semester == session[:semesters].length) %>
-				<%= link_to "Add", "#", class: "btn btn-primary" %>
-				<%= link_to "Remove", "#", class: "btn btn-default" %>
-				<%= link_to "Done", "#", data: { confirm: "You have not enrol in full credit! Are you sure?" }, class: "btn btn-default" %>
+				<%= submit_tag "Add", class: "btn btn-default btn-sm" %>
+				<%= link_to "Remove", "#", class: "btn btn-default btn-sm" %>
+				<%= link_to "Done", "#", data: { confirm: "You have not enrol in full credit! Are you sure?" }, class: "btn btn-primary btn-sm" %>
 			<% else %>
-				<%= link_to "Remove", "#", class: "btn btn-default" %>
+				<%= link_to "Modify", "#", class: "btn btn-default btn-sm" %>
 			<% end %>
 		</center></p>
 	</div>

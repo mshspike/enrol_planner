@@ -33,7 +33,7 @@
 			<div class="container">
 				<h4 align="left">Please select your stream</h4>
 
-				<%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: true, class: 'form-control input-lg' %>
+				<%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
 				<br>
 
 				<%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
