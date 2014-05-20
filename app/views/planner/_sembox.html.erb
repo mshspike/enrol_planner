@@ -1,6 +1,12 @@
+<script type="text/javascript">
+	function warning(msg) {
+		window.alert(msg);
+	}
+</script>
 <%
 year = (semester+1)/2
 sem = (semester+1)%2+1
+numUnits = session[:semesters][semester-1].length
 %>
 <div class="thumbnail">
 	<h3><center>Year <%=year%> Semester <%=sem%></center></h3>
@@ -8,22 +14,24 @@ sem = (semester+1)%2+1
 	<div class="caption">
 		<!-- display units of current semester. This need to be modify to "semester compatible". -->
 		<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
-			<% if session[:semesters][count][i].to_i > 0 %>
+			<% if session[:semesters][semester-1][i].to_i > 0 %>
 				<p><%= get_streamunit_name(uid) %></p>
 			<% end %>
 		<% end %>
 
 		<!-- below is for display purpose only. -->
-		<p>Data Structures 120</p>
-		<p>Requirements Engineering 220</p>
-		<p>Software Engineering Project 400</p>
-		<p>Design and Analaysis of Algorithms 300</p>
 
 		<!-- buttons -->
 		<p><center>
-			<a href="#" class="btn btn-primary" role="button">Add</a>
-			<a href="#" class="btn btn-default" role="button">Remove</a>
-			<a href="#" class="btn btn-default" role="button">Done</a>
+			<% if numUnits < 4 %>
+				<a href="#" class="btn btn-primary" role="button">Add</a>
+			<% end %>
+			<% if numUnits > 0 %>
+				<a href="#" class="btn btn-default" role="button">Remove</a>
+			<% end %>
+			<% if numUnits < 4 %>
+				<%= link_to "Done", "#", data: { confirm: "You have not enrol in full credit! Are you sure?" }, class: "btn btn-default" %>
+			<% end %>
 		</center></p>
 	</div>
 </div>

@@ -22,7 +22,7 @@
 			<div class="panel-heading">
 			<h3 class="panel-title"><center>Remaining Units</center></h3>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" style="height:500px">
 				<div class="list-group">
 					<% @remain_units.each do |ru| %>
 						<%= link_to get_streamunit_name(ru.unit_id), "#", id: ru.id, class: "list-group-item" %>
@@ -50,6 +50,7 @@
 		</div>
 	</div>
 	</div>	
+
 	<div class="col-md-5"> <!-- upload your CSV -->
 	<div class="panel panel-default">
 			<div class="panel-heading">
@@ -70,15 +71,12 @@
 			</div>
 			
 			<div class="panel-body">
-				<p>Completed: </p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
-			<p>Planned:</p> <input class="form-control" id="disabledInput" type="text" placeholder="100" disabled>
-				<p>Remaining:</p> <input class="form-control" id="disabledInput" type="text" placeholder="400" disabled>
+				<p>Completed:</p><%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("completed") %>
+				<p>Planned:</p><%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("planned") %>
+				<p>Remaining:</p><%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("remaining") %>
 			</div>
 	</div>
 	</div> 
 </div>					<!--planner ends-->
 
 <%= render partial: "footer" %>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="bootstrap/js/bootstrap.js"></script>

@@ -1,7 +1,7 @@
 class PlannerController < ApplicationController
 	@stream_units
 
-	helper_method :get_streamunit_name, :get_stream_name
+	helper_method :get_streamunit_name, :get_stream_name, :calc_credits
 
 # START stream_chooser
 	def index
@@ -50,7 +50,8 @@ class PlannerController < ApplicationController
 	def enrolment_planner
 		@done_units = []
 		session[:done_units] = params[:unit_ids]
-		session[:remain_units] = []
+		session.delete(:remain_units)
+		session[:remain_units] ||= []
 
 		# START initialising session[:semesters]
 		session[:semesters]=[]
@@ -60,6 +61,7 @@ class PlannerController < ApplicationController
 
 		session[:semesters][0] = params[:unit_ids] # For testing purpose only
 		session[:semesters][1] = params[:unit_ids] # For testing purpose only
+		#session[:semesters][2] = params[:unit_ids] # For testing purpose only
 
 		# Get list of done units with ID integer
 		params[:unit_ids].each do |puid|
@@ -71,18 +73,54 @@ class PlannerController < ApplicationController
 
 		# Assign remaining units' IDs to session variable
 		@remain_units.each do |ru|
-			session[:remain_units] << ru.id
+			session[:remain_units].push(ru.unit_id)
 		end
 	end
 
 	def getRemainingUnits(done)
 		# Get StreamUnit where SUs are in "selected stream", and ID is not in "done"
+		# Note that where() method returns ActiveRecord relations
 		remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]).where('id not in (?)', done)
 		return remain_streamunits
 	end
 
 	def get_done_unit_semester uid
 		# which semester did the unit being done?
+	end
+
+	def calc_credits which
+		sum = 0
+		case which
+			when "completed"
+				list = session[:done_units]
+			when "planned"
+				session[:semesters].each_with_index do |row, i|
+					if session[:semesters][i][0] != 0
+						session[:semesters][i].each do |cell|
+							sum += get_unit_credit_points(cell)
+						end
+					end
+				end
+				return sum
+			when "remaining"
+				list = session[:remain_units]
+		end
+
+		if list.length == 0
+			sum = 0
+		else
+			list.each do |u|
+				sum += get_unit_credit_points(u)
+			end
+		end
+
+		return sum
+	end
+
+	def get_unit_credit_points u
+		@unit = Unit.find(u.to_i)
+		#@unit = Unit.where(id: u.to_i)
+		return @unit.creditPoints
 	end
 # END enrolment_planner
 
