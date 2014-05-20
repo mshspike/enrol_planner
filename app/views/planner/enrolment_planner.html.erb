@@ -41,22 +41,25 @@
 <% end %>
 	<div class="row">
 		<div class="col-md-4">  <!-- download and email -->
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title"><center>Download & Email</center></h3>
-				</div>
-				<div class="panel-body">
-					<input name="download" type="checkbox" class="dl" id="dlPDF" value="checkbox"><label>PDF</label>
-					<input name="download" type="checkbox" class="dl" id="dlCSV" value="checkbox"><label>CSV</label>
-					<label><a href="#" class="btn btn-default" role="button">Download</a></label>	
-				</div>
-				<div class="input-group">
-		  			<input type="text" value="enter email address" class="form-control">
-		  			<span class="input-group-btn">
-		    			<button class="btn btn-default" type="button">Send</button>
-		  			</span>
-				</div><!-- /input-group -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><center>Download & Email</center></h3>
 			</div>
+			<div class="panel-body">
+
+				<div align="center">
+					<%= link_to 'Download PDF', download_pdf_path, class: "btn btn-success" %>
+					<%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
+				</div>
+				
+			</div>
+			<div class="input-group">
+				<input type="email" class="form-control" id="email" placeholder="Enter Email Address">
+	  			<span class="input-group-btn">
+	    			<button class="btn btn-default" type="button">Send</button>
+	  			</span>
+			</div><!-- /input-group -->
+		</div>
 		</div>
 
 		<div class="col-md-4"> <!-- upload your CSV -->
