@@ -9,7 +9,7 @@ sem = (semester+1)%2+1
 numUnits = session[:semesters][semester-1].length
 %>
 <div class="thumbnail">
-	<h3><center>Year <%=year%> Semester <%=sem%></center></h3>
+	<h4><center>Year <%=year%> Semester <%=sem%></center></h4>
 
 	<div class="caption">
 		<!-- display units of current semester. This need to be modify to "semester compatible". -->
@@ -23,14 +23,12 @@ numUnits = session[:semesters][semester-1].length
 
 		<!-- buttons -->
 		<p><center>
-			<% if numUnits < 4 %>
-				<a href="#" class="btn btn-primary" role="button">Add</a>
-			<% end %>
-			<% if numUnits > 0 %>
-				<a href="#" class="btn btn-default" role="button">Remove</a>
-			<% end %>
-			<% if numUnits < 4 %>
+			<% if (semester == session[:semesters].length) %>
+				<%= link_to "Add", "#", class: "btn btn-primary" %>
+				<%= link_to "Remove", "#", class: "btn btn-default" %>
 				<%= link_to "Done", "#", data: { confirm: "You have not enrol in full credit! Are you sure?" }, class: "btn btn-default" %>
+			<% else %>
+				<%= link_to "Remove", "#", class: "btn btn-default" %>
 			<% end %>
 		</center></p>
 	</div>

@@ -50,6 +50,8 @@ class PlannerController < ApplicationController
 	def enrolment_planner
 		@done_units = []
 		session[:done_units] = params[:unit_ids]
+
+		# INITIALISE remain_units session variable
 		session.delete(:remain_units)
 		session[:remain_units] ||= []
 
@@ -59,13 +61,17 @@ class PlannerController < ApplicationController
 		session[:semesters][0][0] = 0
 		# END initialising
 
-		session[:semesters][0] = params[:unit_ids] # For testing purpose only
+		session[:semesters][0] = [1, 2, 3] # For testing purpose only
 		session[:semesters][1] = params[:unit_ids] # For testing purpose only
-		#session[:semesters][2] = params[:unit_ids] # For testing purpose only
+		session[:semesters][2] = params[:unit_ids] # For testing purpose only
 
 		# Get list of done units with ID integer
-		params[:unit_ids].each do |puid|
-			@done_units += StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => (puid.to_i))
+		unless params[:unit_ids].nil?
+			params[:unit_ids].each do |puid|
+				@done_units += StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => (puid.to_i))
+			end
+		else
+			@done_units = nil
 		end
 		
 		# Get list of remaining units with done units object
@@ -80,7 +86,11 @@ class PlannerController < ApplicationController
 	def getRemainingUnits(done)
 		# Get StreamUnit where SUs are in "selected stream", and ID is not in "done"
 		# Note that where() method returns ActiveRecord relations
-		remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]).where('id not in (?)', done)
+		unless done.nil?
+			remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]).where('id not in (?)', done)
+		else
+			remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
+		end
 		return remain_streamunits
 	end
 
@@ -106,12 +116,12 @@ class PlannerController < ApplicationController
 				list = session[:remain_units]
 		end
 
-		if list.length == 0
-			sum = 0
-		else
+		unless list.nil?
 			list.each do |u|
 				sum += get_unit_credit_points(u)
 			end
+		else
+			sum = 0
 		end
 
 		return sum
