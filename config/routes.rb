@@ -5,6 +5,7 @@ EnrolPlanner::Application.routes.draw do
   get "download/csv"
   get "access/index"
   get "access/login"
+
   resources :users
 
   post "planner/unit_chooser" => "planner#unit_chooser"

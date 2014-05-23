@@ -1,6 +1,12 @@
+<script type="text/javascript">
+	function changeFlag(flag) {
+		document.getElementById("modflag").value = flag;
+	}
+</script>
 <%= render partial: "navbar" %>
 
 <%= form_tag :action => "enrolment_planner" do %>
+<%= hidden_field_tag "modflag", 0 %>
 <div class = "container">			<!--planner begins-->
 	<div class="row">
 		<div class="col-md-8"> <!-- enrolment planner -->
@@ -8,7 +14,8 @@
 					<div class="panel-heading">
 						<h3 class="panel-title"><center>Enrolment Planner</center></h3>
 					</div>
-					<div class="panel-body">		
+					<div class="panel-body">
+						<%= session[:semesters] %>
 						<div class="row">
 							<div class="col-sm-6 col-md-5">
 								<% session[:semesters].length.times do |i| %>
@@ -26,6 +33,7 @@
 					<h3 class="panel-title"><center>Remaining Units</center></h3>
 				</div>
 				<div class="panel-body" style="height:500px">
+					<%= session[:remain_units] %>
 					<p class="text-success" style="padding:1px 1px 1px 5px; margin-bottom:5px"><small><span class="glyphicon glyphicon-info-sign"></span> Hold Ctrl (Control) button to select multiple units.</small></p>
 					<div class="list-group">
 						<% unless session[:remain_units].nil? %>
@@ -92,4 +100,3 @@
 </div>					<!--planner ends-->
 
 <%= render partial: "footer" %>
-<% session[:enrol_planner_flag] = 1 %>
