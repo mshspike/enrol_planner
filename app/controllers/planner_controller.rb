@@ -26,10 +26,12 @@ class PlannerController < ApplicationController
 
 # START unit_chooser
 	def unit_chooser
-		@str = Stream.find(params["streamSelect"])
+		unless params["streamSelect"].nil?
+			session[:selected_stream] = params["streamSelect"]
+		end
 
+		@str = Stream.find(session[:selected_stream])
 		#declare session variable and store selected stream id to it
-		session[:selected_stream] = @str.id
 
 		
 		@stream_units = getStreamUnits(@str)
@@ -52,13 +54,11 @@ class PlannerController < ApplicationController
 	def enrolment_planner
 		session[:done_units] ||= []
 		session[:plan_units] ||= []
+		@proceed = true
 
 		if params[:modflag].to_i != 0
 			session[:enrol_planner_flag] = params[:modflag].to_i
 		end
-		#if params[:action_flag] != 1
-			#session[:enrol_planner_flag] = params[:action_flag].to_i
-		#end
 
 		case session[:enrol_planner_flag]
 			# Default action from "unit_chooser"
@@ -83,7 +83,8 @@ class PlannerController < ApplicationController
 				# Get list of done units with ID integer
 				unless params[:unit_ids].nil?
 					params[:unit_ids].each do |puid|
-						@done_units += StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => (puid.to_i))
+						@done_units += StreamUnit.where(:stream_id => session[:selected_stream]) \
+												 .where(:unit_id => (puid.to_i))
 					end
 				else
 					@done_units = nil
@@ -99,30 +100,39 @@ class PlannerController < ApplicationController
 
 			# Add chosen units to "plan_units" from "remaining units"
 			when 2
-				proceed = false
+				@proceed = false
+				
+				# Validation before adding:
 				unless params[:remain_unit].nil?
 					params[:remain_unit].each do |pru|
 						if (session[:semesters].last.last == 0)
-							proceed = true
+							@proceed = true
 						else
 							# check if semester still has capacity for enrol in more credit points
 							if (session[:semesters].last.length <= 4)	
-								if (calc_sem_credits((session[:semesters].length)-1) <= (100-get_unit_credit_points(pru)))
-									proceed = true
+								if (calc_sem_credits((session[:semesters].length)-1) <= (100-get_unit_credit_points(pru)))	
+									params[:remain_unit].each do |remain|
+										unless session[:semesters].last.include? remain.to_i
+											@proceed = true
+										else
+											@msg = "Duplicated Unit."
+										end
+									end
+								else
+									@msg = "Credit points full!"
 								end
 							end
 						end
-						if proceed
-							#session[:done_units].push(pru)
-							session[:plan_units].push(pru)
+						if @proceed
+							session[:plan_units].push(pru.to_i)
 
 							# Add unit to "semesters" session variable
 							last_sem = session[:semesters].length-1
 							if session[:semesters][last_sem][0] == 0
-								session[:semesters][last_sem][0] = pru
+								session[:semesters][last_sem][0] = pru.to_i
 							else
 								sem = session[:semesters].last
-								sem.push(pru)
+								sem.push(pru.to_i)
 							end
 
 							# Remove unit from "remaining" list
@@ -133,17 +143,58 @@ class PlannerController < ApplicationController
 							end
 						end
 					end
+				else
+					@msg = "No unit has been chosen."
 				end
 
 			# Delete one unit from semester.
 			when 3
-
+				@proceed = false
+				
+				# Validation
+				unless params[:current_sem].nil?
+					params[:current_sem].each do |cur|
+						unless session[:remain_units].include? cur.to_i
+							@proceed = true
+						else
+							@msg = "Duplicated units in remaining unit list."
+						end
+					end
+				else
+					@msg = "No remove unit selected."
+				end
+				
+				if @proceed
+					params[:current_sem].each do |del_id|
+						session[:semesters].last.delete(del_id.to_i)
+						session[:plan_units].delete(del_id.to_i)
+						session[:remain_units].push(del_id.to_i)
+					end
+				end
 
 			# Done semester. One new semester will be added.
 			when 4
 				newsem_index = session[:semesters].length # get current number of semesters
 				session[:semesters][newsem_index] ||= []
 				session[:semesters][newsem_index][0] = 0
+
+			# Modify previous semester
+			when 5
+				semid = (params[:semid].to_i)+1
+				lastrow = session[:semesters].length-1
+
+				lastrow.downto(semid) do |i|
+					row = session[:semesters][i]
+					unless row.nil?
+						row.each do |cell|
+							if cell != 0
+								session[:plan_units].delete(cell.to_i)
+								session[:remain_units].push(cell.to_i)
+							end
+						end
+					end
+					session[:semesters].delete_at(i)
+				end
 		end
 	end
 
@@ -151,7 +202,8 @@ class PlannerController < ApplicationController
 		# Get StreamUnit where SUs are in "selected stream", and ID is not in "done"
 		# Note that where() method returns ActiveRecord relations
 		unless done.nil?
-			remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]).where('id not in (?)', done)
+			remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
+										   .where('id not in (?)', done)
 		else
 			remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
 		end
@@ -198,14 +250,6 @@ class PlannerController < ApplicationController
 		return @unit.creditPoints
 	end
 # END enrolment_planner
-
-def flag_done
-	session[:semesters][1][0] = 0
-end
-
-def duplicate
-	
-end
 
 end
 
