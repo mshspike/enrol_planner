@@ -31,9 +31,6 @@ class PlannerController < ApplicationController
 		end
 
 		@str = Stream.find(session[:selected_stream])
-		#declare session variable and store selected stream id to it
-
-		
 		@stream_units = getStreamUnits(@str)
 	end
 
@@ -102,7 +99,9 @@ class PlannerController < ApplicationController
 			when 2
 				@proceed = false
 				
-				# Validation before adding:
+				# Validation - proceed if:
+				#  1. semester is in full credit
+				#  2. Duplicated units in semester (prevent page refresh)
 				unless params[:remain_unit].nil?
 					params[:remain_unit].each do |pru|
 						if (session[:semesters].last.last == 0)
@@ -151,7 +150,9 @@ class PlannerController < ApplicationController
 			when 3
 				@proceed = false
 				
-				# Validation
+				# Validation - proceed if:
+				#  1. at least one unit in current semester is selected
+				#  2. not identical unit in remaining units list (prevent page refresh)
 				unless params[:current_sem].nil?
 					params[:current_sem].each do |cur|
 						unless session[:remain_units].include? cur.to_i
@@ -175,6 +176,9 @@ class PlannerController < ApplicationController
 			# Done semester. One new semester will be added.
 			when 4
 				@proceed = false
+				
+				# Validation - proceed if:
+				#  1. remaining units list is not empty
 				if session[:remain_units].nil?
 					@proceed = true
 				else
