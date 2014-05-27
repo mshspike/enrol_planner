@@ -1,0 +1,35 @@
+<script type="text/javascript">
+	function warning(msg) {
+		window.alert(msg);
+	}
+</script>
+<%
+year = (semester+1)/2
+sem = (semester+1)%2+1
+numUnits = session[:semesters][semester-1].length
+%>
+<div class="thumbnail">
+	<h4><center>Year <%=year%> Semester <%=sem%></center></h4>
+
+	<div class="caption">
+		<!-- display units of current semester. This need to be modify to "semester compatible". -->
+		<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
+			<% if session[:semesters][semester-1][i].to_i > 0 %>
+				<p><%= get_streamunit_name(uid) %></p>
+			<% end %>
+		<% end %>
+
+		<!-- below is for display purpose only. -->
+
+		<!-- buttons -->
+		<p><center>
+			<% if (semester == session[:semesters].length) %>
+				<%= submit_tag "Add", class: "btn btn-default btn-sm" %>
+				<%= link_to "Remove", "#", class: "btn btn-default btn-sm" %>
+				<%= link_to "Done", "#", data: { confirm: "You have not enrol in full credit! Are you sure?" }, class: "btn btn-primary btn-sm" %>
+			<% else %>
+				<%= link_to "Modify", "#", class: "btn btn-default btn-sm" %>
+			<% end %>
+		</center></p>
+	</div>
+</div>

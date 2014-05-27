@@ -1,3 +1,5 @@
+<%= render partial: "master_layouts/navbar" %>
+
 <script type="text/javascript">
 	function changeFlag(flag) {
 		document.getElementById("modflag").value = flag;
@@ -7,7 +9,7 @@
 		document.getElementById("modflag").value = flag;
 	}
 </script>
-<%= render partial: "navbar" %>
+
 <%= form_tag :action => "enrolment_planner" do %>
 <%= hidden_field_tag "modflag", 0 %>
 <%= hidden_field_tag "semid", 0 %>
@@ -22,7 +24,7 @@
 						<div class="row">
 							<div class="col-sm-6 col-md-5">
 								<% session[:semesters].length.times do |i| %>
-									<%= render partial: "sembox", locals: { semester: (i+1), count: i } %>
+									<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
 					 		    <% end %>
 							</div>
 						</div>
@@ -104,4 +106,4 @@
 <% if @proceed == false %>
 	<script type="text/javascript">window.alert("<%= @msg %>");</script>
 <% end %>
-<%= render partial: "footer" %>
+<%= render partial: "master_layouts/footer" %>
