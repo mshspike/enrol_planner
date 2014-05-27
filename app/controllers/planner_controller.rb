@@ -174,9 +174,18 @@ class PlannerController < ApplicationController
 
 			# Done semester. One new semester will be added.
 			when 4
-				newsem_index = session[:semesters].length # get current number of semesters
-				session[:semesters][newsem_index] ||= []
-				session[:semesters][newsem_index][0] = 0
+				@proceed = false
+				if session[:remain_units].nil?
+					@proceed = true
+				else
+					@msg = "You do not have any more units left!"
+				end
+				
+				if @proceed
+					newsem_index = session[:semesters].length # get current number of semesters
+					session[:semesters][newsem_index] ||= []
+					session[:semesters][newsem_index][0] = 0
+				end
 
 			# Modify previous semester
 			when 5
