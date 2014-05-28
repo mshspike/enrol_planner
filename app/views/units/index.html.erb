@@ -1,0 +1,45 @@
+<h1>Listing units</h1>
+
+<div class="media">
+  <div class="media-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Unitcode</th>
+          <th>Unitname</th>
+          <th>Preunit</th>
+          <th>Creditpoints</th>
+          <th>Semavailable</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @units.each do |unit| %>
+          <tr>
+            <td><%= unit.unitCode %></td>
+            <td><%= unit.unitName %></td>
+            <td><%= unit.preUnit %></td>
+            <td><%= unit.creditPoints %></td>
+            <td><%= unit.semAvailable %></td>
+            <td><%= link_to 'Show', unit %></td>
+            <td><%= link_to 'Edit', edit_unit_path(unit) %></td>
+            <td><%= link_to 'Destroy', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br>
+
+<h3>Import Units</h3>
+<%= form_tag import_units_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Upload Units" %>
+<% end %>
+
+<%= link_to 'New Unit', new_unit_path %>

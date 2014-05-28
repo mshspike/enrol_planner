@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140508182828) do
+ActiveRecord::Schema.define(version: 20140528034826) do
 
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(version: 20140508182828) do
     t.string   "unitName"
     t.integer  "preUnit"
     t.integer  "creditPoints"
+    t.integer  "semAvailable"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "semAvailable"
   end
 
   create_table "users", force: true do |t|

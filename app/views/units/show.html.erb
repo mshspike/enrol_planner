@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Unitcode:</strong>
+  <%= @unit.unitCode %>
+</p>
+
+<p>
+  <strong>Unitname:</strong>
+  <%= @unit.unitName %>
+</p>
+
+<p>
+  <strong>Preunit:</strong>
+  <%= @unit.preUnit %>
+</p>
+
+<p>
+  <strong>Creditpoints:</strong>
+  <%= @unit.creditPoints %>
+</p>
+
+<p>
+  <strong>Semavailable:</strong>
+  <%= @unit.semAvailable %>
+</p>
+
+<%= link_to 'Edit', edit_unit_path(@unit) %> |
+<%= link_to 'Back', units_path %>

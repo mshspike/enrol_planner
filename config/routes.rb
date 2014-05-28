@@ -1,5 +1,9 @@
 EnrolPlanner::Application.routes.draw do
 
+  resources :units do 
+    collection { post :import }
+  end
+
   get "download/index"
   get "download/pdf"
   get "download/csv"
@@ -16,6 +20,7 @@ EnrolPlanner::Application.routes.draw do
   resources :download
   resources :users
   resources :admin
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
