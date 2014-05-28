@@ -61,10 +61,12 @@ class UnitsController < ApplicationController
     end
   end
 
-    def import
+  # START importing units from CSV
+  def import
     Unit.import(params[:file])
-    redirect_to units_path, notice: "Companies Added Successfully"
+    redirect_to units_path, notice: 'Unites Updated Successfully'
   end
+  # START importing units from CSV
 
   private
     # Use callbacks to share common setup or constraints between actions.
