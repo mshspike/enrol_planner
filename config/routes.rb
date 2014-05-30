@@ -1,5 +1,7 @@
 EnrolPlanner::Application.routes.draw do
 
+  resources :streams
+
   resources :units do 
     collection { post :import }
   end

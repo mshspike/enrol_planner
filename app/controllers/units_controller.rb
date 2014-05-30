@@ -5,6 +5,12 @@ class UnitsController < ApplicationController
   # GET /units.json
   def index
     @units = Unit.all
+
+    respond_to do |format|
+      format.html
+      format.csv { render text: @units.to_csv }
+      format.pdf { render text: @units.to_pdf }
+    end
   end
 
   # GET /units/1
@@ -64,9 +70,9 @@ class UnitsController < ApplicationController
   # START importing units from CSV
   def import
     Unit.import(params[:file])
-    redirect_to units_path, notice: 'Unites Updated Successfully'
+    redirect_to units_path, notice: 'Units Updated Successfully'
   end
-  # START importing units from CSV
+  # END importing units from CSV
 
   private
     # Use callbacks to share common setup or constraints between actions.

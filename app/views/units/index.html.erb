@@ -36,10 +36,20 @@
 
 <br>
 
+<!-- START Unit importer -->
 <h3>Import Units</h3>
 <%= form_tag import_units_path, multipart: true do %>
   <%= file_field_tag :file %>
-  <%= submit_tag "Upload Units" %>
+  <%= submit_tag "Upload Units", class: 'btn btn-default' %>
 <% end %>
+<!-- END Unit importer -->
 
+<!-- START Unit expoter -->
+<h3>Download File</h3>
+<%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-default' %>
+<%= link_to "Download PDF", units_path(format: "pdf"), class: 'btn btn-default' %>
+
+<!-- END Unit expoter -->
+
+<br>
 <%= link_to 'New Unit', new_unit_path %>

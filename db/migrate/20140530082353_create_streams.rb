@@ -1,8 +1,8 @@
 class CreateStreams < ActiveRecord::Migration
   def change
     create_table :streams do |t|
-      t.string :streamName
-      t.integer :streamCode
+      t.string :streanName
+      t.string :streamCode
 
       t.timestamps
     end

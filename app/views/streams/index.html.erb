@@ -1,0 +1,33 @@
+<h1>Listing streams</h1>
+
+<div class="media">
+  <div class="media-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Streanname</th>
+          <th>Streamcode</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @streams.each do |stream| %>
+          <tr>
+            <td><%= stream.streanName %></td>
+            <td><%= stream.streamCode %></td>
+            <td><%= link_to 'Show', stream %></td>
+            <td><%= link_to 'Edit', edit_stream_path(stream) %></td>
+            <td><%= link_to 'Destroy', stream, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br>
+
+<%= link_to 'New Stream', new_stream_path %>

@@ -1,38 +1,80 @@
 <%= render partial: "master_layouts/navbar" %>
 
-	<!-- START select stream to update -->
-	<div class = "container">
-		<center>
-			<div class = "jumbotron" style="width:75%">
+<div class = "container" style = "padding-bottom: 70px;">
 
-				<h4 align="left">Please select a stream to update</h4>
-				<%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
+	<!--<div class="alert alert-success">Success</div> -->
 
-			</div>
-		</center>
-	</div>	
-	<!-- END select stream to update -->
-	
-	<!-- START upload your CSV -->
-	
-	<div class = "container" aligh="center" >
-		<center>
-				<div class="panel panel-default" style="width:60%">
-					<div class="panel-heading">
-						<h3 class="panel-title"><center>Upload your CSV</center></h3>
-					</div>		
-				
-					<div class="panel-body">
-						<div class="form-group">
-							<input type="file" id="localFile"> <br>
-							<label><a href="#" class="btn btn-info" role="button">Upload</a></label>
-						</div>
+	<div class = "row">
+
+		<!-- START course management -->
+		<div class = "col-xs-12 col-md-8">
+			<div class = "panel panel-default">
+				<div class = "panel-heading">Update</div>
+				<div class = "panel-body">
+					<div class = "col-md-6">
+						<%= form_tag import_units_path, multipart: true do %>
+							<%= file_field_tag :file %>
+							<br><%= submit_tag "Update Units", class: 'btn btn-success' %>
+						<% end %>
+					</div>
+					<div class = "col-md-6">
+						<%= form_tag import_units_path, multipart: true do %>
+							<%= file_field_tag :file %>
+							<br><%= submit_tag "Update Streams", class: 'btn btn-success' %>
+						<% end %>
 					</div>
 				</div>
-			
-			</center>
-	</div>
+			</div>
+		</div>
+		<!-- END course management -->
 
-	<!-- END upload your CSV -->
+		<!-- START user management -->
+		<div class = "col-xs-6 col-md-4">
+			<div class = "panel panel-default">
+				<div class = "panel-heading">Change your password</div>
+				<div class = "panel-body">
+					<div style = "padding: 8px">
+						<div style="margin-bottom: 25px" class="input-group">
+				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				            <input id="current-password" type="password" class="form-control" name="current-password" placeholder="Current Password" required />
+				        </div>
+				        <div style="margin-bottom: 25px" class="input-group">
+				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				            <input id="new-password" type="password" class="form-control" name="new-password" placeholder="New Password" required />
+				        </div>
+				        <div style="margin-bottom: 25px" class="input-group">
+				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				            <input id="new-password-retype" type="password" class="form-control" name="new-password-retype" placeholder="Retype New Password" required />
+				        </div>
+				        <button type="submit" class="btn btn-info pull-right">Create User</button><br><br>
+			    	</div>
+				</div>
+			</div>
+			<div class = "panel panel-default">
+				<div class = "panel-heading">Access Control</div>
+				<div class = "panel-body">
+					<div style = "padding: 8px">
+						<div style="margin-bottom: 25px" class="input-group">
+				            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				            <input id="new-username" type="text" class="form-control" name="new-username" placeholder="Staff ID" required />
+				        </div>
+				        <div style="margin-bottom: 25px" class="input-group">
+				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				            <input id="new-password" type="password" class="form-control" name="new-password" placeholder="Password" required />
+				        </div>
+				        <div style="margin-bottom: 25px" class="input-group">
+				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				            <input id="new-password-retype" type="password" class="form-control" name="new-password-retype" placeholder="Retype Password" required/>
+				        </div>
+				        <button type="submit" class="btn btn-info pull-right">Create User</button><br><br>
+			    	</div>
+				</div>
+			</div>
+		</div>
+		<!-- END user management -->
+
+	</div>
+</div>
+
 
 <%= render partial: "master_layouts/footer" %>
