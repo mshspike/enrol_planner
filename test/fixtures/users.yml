@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  staffID: 1
-  password: MyString
+  email: MyString
+  crypted_password: MyString
+  salt: MyString
 
 two:
-  staffID: 1
-  password: MyString
+  email: MyString
+  crypted_password: MyString
+  salt: MyString
