@@ -1,13 +1,14 @@
-<h1>Listing streams</h1>
+<%= render partial: "master_layouts/navbar" %>
 
-<div class="media">
-  <div class="media-body">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Streanname</th>
-          <th>Streamcode</th>
-          <th></th>
+<div class = "container" style = "padding-bottom: 70px">
+
+  <div class="media">
+    <div class="media-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+          <th>Stream Code</th>
+          <th>Stream Name</th>
           <th></th>
           <th></th>
         </tr>
@@ -16,11 +17,10 @@
       <tbody>
         <% @streams.each do |stream| %>
           <tr>
-            <td><%= stream.streanName %></td>
             <td><%= stream.streamCode %></td>
-            <td><%= link_to 'Show', stream %></td>
+            <td><%= stream.streamName %></td>
             <td><%= link_to 'Edit', edit_stream_path(stream) %></td>
-            <td><%= link_to 'Destroy', stream, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Delete', stream, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </tbody>
@@ -28,6 +28,27 @@
   </div>
 </div>
 
-<br>
+<div class = 'row'>
+    <div class = 'col-md-6'>
+      <hr>
+      <h5 style = 'font-weight:bold'>Resubmit your CSV</h5>
+      <br>
+      <%= form_tag import_units_path, multipart: true do %>
+        <%= file_field_tag :file %>
+        <br>
+        <%= submit_tag "Upload Units", class: 'btn btn-primary btn-sm' %>
+      <% end %>
+    </div>
 
-<%= link_to 'New Stream', new_stream_path %>
+    <div class = 'col-md-6'>
+      <hr>
+      <h5 style = 'font-weight:bold'>Download & Print</h5>
+      <br>
+      <%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm' %>
+      <%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
+      <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-info btn-sm' %>
+    </div>
+  </div>
+</div>
+
+<%= render partial: "master_layouts/footer" %>

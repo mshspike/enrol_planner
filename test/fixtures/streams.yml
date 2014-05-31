@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  streanName: MyString
+  streamName: MyString
   streamCode: MyString
 
 two:
-  streanName: MyString
+  streamName: MyString
   streamCode: MyString

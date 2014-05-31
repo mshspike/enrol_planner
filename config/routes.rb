@@ -1,8 +1,10 @@
 EnrolPlanner::Application.routes.draw do
 
-  resources :streams
-
   resources :units do 
+    collection { post :import }
+  end
+
+  resources :streams do 
     collection { post :import }
   end
 
@@ -21,7 +23,6 @@ EnrolPlanner::Application.routes.draw do
   post "admin/login" => "admin#login"
 
   resources :planner
-  resources :download
   resources :users
   resources :admin
 

@@ -5,11 +5,15 @@ class UnitsController < ApplicationController
   # GET /units.json
   def index
     @units = Unit.all
-
+    time = Time.now.strftime('%Y%m%d%H%M%S')
+    filename = "Units_" + time
     respond_to do |format|
       format.html
-      format.csv { render text: @units.to_csv }
-      format.pdf { render text: @units.to_pdf }
+      format.csv { send_data @units.to_csv, :disposition => "attachment;filename=#{filename}.csv" }
+      format.pdf do
+        pdf = UnitPdf.new(@units)
+        send_data pdf.render, :disposition => "attachment;filename=#{filename}.pdf", type: 'application/pdf'
+      end
     end
   end
 

@@ -18,7 +18,7 @@ class StreamsControllerTest < ActionController::TestCase
 
   test "should create stream" do
     assert_difference('Stream.count') do
-      post :create, stream: { streamCode: @stream.streamCode, streanName: @stream.streanName }
+      post :create, stream: { streamCode: @stream.streamCode, streamName: @stream.streamName }
     end
 
     assert_redirected_to stream_path(assigns(:stream))
@@ -35,7 +35,7 @@ class StreamsControllerTest < ActionController::TestCase
   end
 
   test "should update stream" do
-    patch :update, id: @stream, stream: { streamCode: @stream.streamCode, streanName: @stream.streanName }
+    patch :update, id: @stream, stream: { streamCode: @stream.streamCode, streamName: @stream.streamName }
     assert_redirected_to stream_path(assigns(:stream))
   end
 

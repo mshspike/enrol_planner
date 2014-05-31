@@ -1,6 +1,6 @@
 <%= render partial: "master_layouts/navbar" %>
 
-<div class = "container" style = "padding-bottom: 70px;">
+<div class = "container" style = "padding-bottom: 70px">
 
 	<!--<div class="alert alert-success">Success</div> -->
 
@@ -8,30 +8,48 @@
 
 		<!-- START course management -->
 		<div class = "col-xs-12 col-md-8">
+			<!-- START update units -->
 			<div class = "panel panel-default">
-				<div class = "panel-heading">Update</div>
+				<div class = "panel-heading" style = 'font-weight:bold'>Update Units</div>
 				<div class = "panel-body">
-					<div class = "col-md-6">
+					<div class = "col-md-4">
 						<%= form_tag import_units_path, multipart: true do %>
 							<%= file_field_tag :file %>
-							<br><%= submit_tag "Update Units", class: 'btn btn-success' %>
+							<br><%= submit_tag "Update Units", class: 'btn btn-success btn-sm' %>
+							<%= link_to "Backup", units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
 						<% end %>
 					</div>
-					<div class = "col-md-6">
-						<%= form_tag import_units_path, multipart: true do %>
-							<%= file_field_tag :file %>
-							<br><%= submit_tag "Update Streams", class: 'btn btn-success' %>
-						<% end %>
+					<div class = "col-md-8">
+						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action canno't be undone.</small></p>
 					</div>
 				</div>
 			</div>
+			<!-- END update units -->
+
+			<!-- START update streams -->
+			<div class = "panel panel-default">
+				<div class = "panel-heading" style = 'font-weight:bold'>Update Streams</div>
+				<div class = "panel-body">
+					<div class = "col-md-4">
+						<%= form_tag import_streams_path, multipart: true do %>
+							<%= file_field_tag :file %>
+							<br><%= submit_tag "Update Streams", class: 'btn btn-success btn-sm' %>
+							<%= link_to "Backup", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+						<% end %>
+					</div>
+					<div class = "col-md-8">
+						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action canno't be undone.</small></p>
+					</div>
+				</div>
+			</div>
+			<!-- END update streams -->
 		</div>
 		<!-- END course management -->
 
 		<!-- START user management -->
 		<div class = "col-xs-6 col-md-4">
 			<div class = "panel panel-default">
-				<div class = "panel-heading">Change your password</div>
+				<div class = "panel-heading" style = 'font-weight:bold'>Change your password</div>
 				<div class = "panel-body">
 					<div style = "padding: 8px">
 						<div style="margin-bottom: 25px" class="input-group">
@@ -51,7 +69,7 @@
 				</div>
 			</div>
 			<div class = "panel panel-default">
-				<div class = "panel-heading">Access Control</div>
+				<div class = "panel-heading" style = 'font-weight:bold'>Access Control</div>
 				<div class = "panel-body">
 					<div style = "padding: 8px">
 						<div style="margin-bottom: 25px" class="input-group">

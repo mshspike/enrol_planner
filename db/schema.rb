@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20140530082353) do
   add_index "stream_units", ["unit_id"], name: "index_stream_units_on_unit_id", using: :btree
 
   create_table "streams", force: true do |t|
-    t.string   "streanName"
+    t.string   "streamName"
     t.string   "streamCode"
     t.datetime "created_at"
     t.datetime "updated_at"

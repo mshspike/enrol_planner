@@ -5,6 +5,16 @@ class StreamsController < ApplicationController
   # GET /streams.json
   def index
     @streams = Stream.all
+    time = Time.now.strftime('%Y%m%d%H%M%S')
+    filename = "Streams_" + time
+    respond_to do |format|
+      format.html
+      format.csv { send_data @streams.to_csv, :disposition => "attachment;filename=#{filename}.csv" }
+      format.pdf do
+        pdf = StreamPdf.new(@streams)
+        send_data pdf.render, :disposition => "attachment;filename=#{filename}.pdf", type: 'application/pdf'
+      end
+    end
   end
 
   # GET /streams/1
@@ -61,6 +71,13 @@ class StreamsController < ApplicationController
     end
   end
 
+  # START importing streams from CSV
+  def import
+    Stream.import(params[:file])
+    redirect_to streams_path, notice: "Streams Updated Successfully"
+  end
+  # END importing streams from CSV
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stream
@@ -69,6 +86,6 @@ class StreamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stream_params
-      params.require(:stream).permit(:streanName, :streamCode)
+      params.require(:stream).permit(:streamName, :streamCode)
     end
 end
