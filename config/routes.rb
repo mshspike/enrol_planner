@@ -1,5 +1,12 @@
 EnrolPlanner::Application.routes.draw do
 
+  resources :planner
+  resources :download
+  resources :admin
+
+  resources :user_sessions
+  resources :users
+
   resources :units do 
     collection { post :import }
   end
@@ -15,18 +22,23 @@ EnrolPlanner::Application.routes.draw do
   get "access/login"
   get "admin/index"
   get "admin/login"
+  get 'login' => 'user_sessions#new', :as => :login
 
   post "planner/unit_chooser" => "planner#unit_chooser"
   post "planner/enrolment_planner" => "planner#enrolment_planner"
   post "download/pdf" => "download#pdf"
   post "download/csv" => "download#csv"
   post "admin/login" => "admin#login"
+  post 'logout' => 'user_sessions#destroy', :as => :logout
 
-  resources :planner
-  resources :users
-  resources :admin
+  get "user_sessions/new"
+  get "user_sessions/create"
+  get "user_sessions/destroy"
 
+  root :to => 'users#index'
 
+  
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
