@@ -1,7 +1,4 @@
 class AdminController < ApplicationController
-protect_from_forgery with: :exception
-before_filter :require_login
-
   def index
   	@streams = Stream.all
 
@@ -19,8 +16,4 @@ before_filter :require_login
 		
 		@stream_units = getStreamUnits(@str)
 	end
-	
-	def not_authenticated
-      redirect_to login_path, alert: "Please login first"
-  end
 end

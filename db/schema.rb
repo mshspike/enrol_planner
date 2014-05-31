@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(version: 20140531033316) do
     t.string   "unitName"
     t.integer  "preUnit"
     t.integer  "creditPoints"
+    t.integer  "semAvailable"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "semAvailable"
   end
 
   create_table "users", force: true do |t|
