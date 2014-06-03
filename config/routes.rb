@@ -24,12 +24,14 @@ EnrolPlanner::Application.routes.draw do
   get "access/login"
   get "admin/index"
   get "admin/login"
+  get "stream_units/index"
 
   post "planner/unit_chooser" => "planner#unit_chooser"
   post "planner/enrolment_planner" => "planner#enrolment_planner"
   post "download/pdf" => "download#pdf"
   post "download/csv" => "download#csv"
   post "admin/login" => "admin#login"
+  post "stream_units/index" => "stream_units#index"
 
   root :to => 'users#index'
 

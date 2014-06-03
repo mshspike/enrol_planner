@@ -1,6 +1,6 @@
 class StreamUnitsController < ApplicationController
-  before_action :set_stream_unit, only: [:show, :edit, :update, :destroy]
-  helper_method :get_unit_name, :get_stream_name
+  before_action :set_stream_unit, only: [:show, :edit, :update, :destroy], :get_stream_name
+  helper_method :get_stream_name
 
   # GET /stream_units
   # GET /stream_units.json
@@ -30,6 +30,7 @@ class StreamUnitsController < ApplicationController
       end
     end
   end
+
 
   # GET /stream_units/1
   # GET /stream_units/1.json

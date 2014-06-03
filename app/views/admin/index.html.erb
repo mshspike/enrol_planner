@@ -7,19 +7,20 @@
 	<div class = "row">
 
 		<!-- START course management -->
-		<div class = "col-xs-12 col-md-8">
+		<!-- <div class = "col-xs-12 col-md-8"> -->
 			<!-- START update units -->
 			<div class = "panel panel-default">
 				<div class = "panel-heading" style = 'font-weight:bold'>Update Units</div>
 				<div class = "panel-body">
-					<div class = "col-md-4">
+					<div class = "col-md-6">
 						<%= form_tag import_units_path, multipart: true do %>
 							<%= file_field_tag :file %>
 							<br><%= submit_tag "Update Units", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Backup", units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+      						<%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
-					<div class = "col-md-8">
+					<div class = "col-md-6">
 						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
 					</div>
 				</div>
@@ -30,14 +31,15 @@
 			<div class = "panel panel-default">
 				<div class = "panel-heading" style = 'font-weight:bold'>Update Streams</div>
 				<div class = "panel-body">
-					<div class = "col-md-4">
+					<div class = "col-md-6">
 						<%= form_tag import_streams_path, multipart: true do %>
 							<%= file_field_tag :file %>
-							<br><%= submit_tag "Update Streams", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Backup", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+							<br><%= submit_tag "Update Selected Stream", class: 'btn btn-success btn-sm' %>
+							<%= link_to "Download CSV", stream_units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+      						<%= link_to "Download PDF", stream_units_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
-					<div class = "col-md-8">
+					<div class = "col-md-6">
 						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
 					</div>
 				</div>
@@ -48,24 +50,30 @@
 			<div class = "panel panel-default">
 				<div class = "panel-heading" style = 'font-weight:bold'>Update Course Plan</div>
 				<div class = "panel-body">
-					<div class = "col-md-4">
+					<div class = "col-md-6">
 						<%= form_tag import_stream_units_path, multipart: true do %>
-							<%= file_field_tag :file %>
-							<br><%= submit_tag "Update Plan", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Backup", stream_units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+							<% @streams.each do |s| %>
+								<p>
+									<%=s.streamName%>
+									<%= file_field_tag :file %>
+								</p>
+							<% end %>
+							<%= submit_tag "Update selected stream", class: 'btn btn-success btn-sm'%>
+							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+      						<%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
-					<div class = "col-md-8">
+					<div class = "col-md-6">
 						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
 					</div>
 				</div>
 			</div>
 			<!-- END update stream_units -->
-		</div>
+		<!-- </div> -->
 		<!-- END course management -->
 
 		<!-- START user management -->
-		<div class = "col-xs-6 col-md-4">
+		<!-- <div class = "col-xs-6 col-md-4">
 			<div class = "panel panel-default">
 				<div class = "panel-heading" style = 'font-weight:bold'>Change your password</div>
 				<div class = "panel-body">
@@ -106,7 +114,7 @@
 			    	</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- END user management -->
 
 	</div>
