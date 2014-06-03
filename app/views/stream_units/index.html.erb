@@ -1,0 +1,56 @@
+<%= render partial: "master_layouts/navbar" %>
+
+<div class = "container" style = "padding-bottom: 70px">
+
+  <div class="media">
+    <div class="media-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Stream Name</th>
+            <th>Unit Name</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @stream_units.each do |stream_unit| %>
+            <tr>
+              <td><%= stream_unit.stream_id %></td>
+              <td><%= stream_unit.unit_id %></td>
+              <td><%= link_to 'Edit', edit_stream_unit_path(stream_unit) %></td>
+              <td><%= link_to 'Destroy', stream_unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class = 'row'>
+    <div class = 'col-md-6'>
+      <hr>
+      <h5 style = 'font-weight:bold'>Resubmit your CSV</h5>
+      <br>
+      <%= form_tag import_stream_units_path, multipart: true do %>
+        <%= file_field_tag :file %>
+        <br>
+        <%= submit_tag "Upload Course Plan", class: 'btn btn-primary btn-sm' %>
+      <% end %>
+    </div>
+
+    <div class = 'col-md-6'>
+      <hr>
+      <h5 style = 'font-weight:bold'>Download & Print</h5>
+      <br>
+      <%= link_to "Download CSV", stream_units_path(format: "csv"), class: 'btn btn-success btn-sm' %>
+      <%= link_to "Download PDF", stream_units_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
+      <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-info btn-sm' %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">window.alert("<%=  @stream_id_su.class  %>");</script>
+<%= render partial: "master_layouts/footer" %>

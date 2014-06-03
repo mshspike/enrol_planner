@@ -12,7 +12,7 @@ class UnitsController < ApplicationController
       format.csv { send_data @units.to_csv, :disposition => "attachment;filename=#{filename}.csv" }
       format.pdf do
         pdf = UnitPdf.new(@units)
-        send_data pdf.render, :disposition => "attachment;filename=#{filename}.pdf", type: 'application/pdf'
+        send_data pdf.render, :disposition => "attachment;filename=#{filename}.pdf", type: 'application/pdf', :page_size => "A4"
       end
     end
   end

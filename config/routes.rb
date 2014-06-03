@@ -13,6 +13,10 @@ EnrolPlanner::Application.routes.draw do
     collection { post :import }
   end
 
+  resources :stream_units do
+    collection { post :import }
+  end
+
   get "download/index"
   get "download/pdf"
   get "download/csv"

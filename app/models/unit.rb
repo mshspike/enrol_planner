@@ -1,6 +1,7 @@
 class Unit < ActiveRecord::Base 
 	def self.import(file)
 		Unit.delete_all
+      	ActiveRecord::Base.connection.execute("TRUNCATE units") 
 	    CSV.foreach(file.path, headers: true) do |row|
 	    	Unit.create! row.to_hash
 	    end

@@ -1,10 +1,12 @@
 class Stream < ActiveRecord::Base
 
-		def self.import(file)
+	def self.import(file)
 		Stream.delete_all
+		ActiveRecord::Base.connection.execute("TRUNCATE streams") 
 	    CSV.foreach(file.path, headers: true) do |row|
 	    	Stream.create! row.to_hash
-	    end
+    end
+
 	end
 
 	def self.to_csv

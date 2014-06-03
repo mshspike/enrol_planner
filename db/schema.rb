@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140531033316) do
+ActiveRecord::Schema.define(version: 20140601025406) do
 
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
@@ -29,9 +29,6 @@ ActiveRecord::Schema.define(version: 20140531033316) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "stream_units", ["stream_id"], name: "index_stream_units_on_stream_id", using: :btree
-  add_index "stream_units", ["unit_id"], name: "index_stream_units_on_unit_id", using: :btree
 
   create_table "streams", force: true do |t|
     t.string   "streamName"

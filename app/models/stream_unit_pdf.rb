@@ -1,7 +1,7 @@
-class StreamPdf < Prawn::Document  
-  def initialize(streams)
+class StreamUnitPdf < Prawn::Document  
+  def initialize(stream_units)
     super()
-    @streams = streams
+    @stream_units = stream_units
     header
     text_content
     table_content
@@ -13,7 +13,7 @@ class StreamPdf < Prawn::Document
   def header
     #This inserts an image in the pdf file and sets the size of the image
     #image "#{Rails.root}/app/assets/images/header.png", width: 530, height: 150
-    text "Streams", :size => 20
+    text "Course Plan", :size => 20
     move_down 15
   end
  
@@ -27,7 +27,7 @@ class StreamPdf < Prawn::Document
     # This makes a call to product_rows and gets back an array of data that will populate the columns and rows of a table
     # I then included some styling to include a header and make its text bold. I made the row background colors alternate between grey and white
     # Then I set the table column widths
-    table stream_rows do
+    table stream_unit_rows do
       row(0).font_style = :bold
       self.header = true
       self.row_colors = ['DDDDDD', 'FFFFFF']
@@ -35,10 +35,10 @@ class StreamPdf < Prawn::Document
     end
   end
  
-  def stream_rows
-    [['Stream Code', 'Stream Name']] +
-      @streams.map do |stream|
-      [stream.streamCode, stream.streamName]
+  def stream_unit_rows
+    [['Stream Name', 'Unit Name']] +
+      @stream_units.map do |stream_unit|
+      [stream_unit.stream_id, stream_unit.unit_id]
     end
   end
 
