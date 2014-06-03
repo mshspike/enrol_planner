@@ -1,0 +1,23 @@
+
+
+<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
+	<div class = "container">
+		<div class = ".navbar-header">			
+			<%= link_to "Enrolment Planner", planner_index_path, class: "navbar-brand" %>
+			<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+			</button>
+		</div>
+		<div class = "collapse navbar-collapse navHeaderCollapse">
+
+			<ul class = "nav navbar-nav navbar-right">
+			</ul>
+		</div>
+	</div>
+</div>
+
+<p id="notice"></p>
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', admin_index_path %>

@@ -1,0 +1,74 @@
+<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
+	<div class = "container">
+		<div class = ".navbar-header">			
+			<%= link_to "Enrolment Planner", planner_index_path, class: "navbar-brand" %>
+			<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+				<span class = "icon-bar"></span>
+			</button>
+		</div>
+		<div class = "collapse navbar-collapse navHeaderCollapse">
+
+			<ul class = "nav navbar-nav navbar-right">
+			</ul>
+		</div>
+	</div>
+</div>
+<h1>Editing user</h1>
+
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :email, ('Email / ID')%><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+	<%= f.label :password %><br />
+	<%= f.password_field :password %>
+  </div>
+  <div class="field">
+	<%= f.label :password_confirmation %><br />
+	<%= f.password_field :password_confirmation %>
+  </div>
+  <!--<div class="field">
+   <!--  f.label :crypted_password --><br>
+    <!-- f.text_field :crypted_password %>
+  </div>
+  <div class="field">
+    <!-- f.label :salt %><br>
+    <!-- f.text_field :salt %>
+  </div> -->
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  
+<table>
+  <thead>
+    <tr>
+      <th>StaffId</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+      <tr>
+        <td><%= @user.email %></td>
+        <td><%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  </tbody>
+</table>
+<% end %>
+<%= link_to 'Back', admin_index_path %>
