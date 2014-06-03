@@ -20,14 +20,14 @@
 					<div class="panel-heading">
 						<h3 class="panel-title"><center>Enrolment Planner</center></h3>
 					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-sm-6 col-md-5">
-								<% session[:semesters].length.times do |i| %>
-									<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
-					 		    <% end %>
+					<div class="panel-body" style="height:440px; overflow:auto" >
+						<% session[:semesters] %>
+						<% session[:semesters].length.times do |i| %>
+							<div class="col-md-6">
+								<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
 							</div>
-						</div>
+						
+						<% end %>
 					</div>
 			</div>
 		</div> 	
@@ -37,14 +37,11 @@
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Remaining Units</center></h3>
 				</div>
-				<div class="panel-body" style="height:500px">
+				<div class="panel-body" style="height:440px">
 					<p class="text-success" style="padding:1px 1px 1px 5px; margin-bottom:5px"><small><span class="glyphicon glyphicon-info-sign"></span> Hold Ctrl (Control) button to select multiple units.</small></p>
-					<div class="list-group">
-						<% unless session[:remain_units].nil? %>
-							
-							<%= select_tag "remain_unit", options_from_collection_for_select(Unit.find(session[:remain_units]), "id", "unitName"), multiple: true, class: 'form-control' %>
-						<% end %>
-					</div>
+					<% unless session[:remain_units].nil? %>	
+					<%= select_tag "remain_unit", options_from_collection_for_select(Unit.find(session[:remain_units]), "id", "unitName"), multiple: true, class: 'form-control', style: "height: 380px" %>
+					<% end %>
 					<p align="right">Total remaining units: <%= session[:remain_units].length %></p>
 				</div>
 			</div>
@@ -57,20 +54,22 @@
 			<div class="panel-heading">
 				<h3 class="panel-title"><center>Download & Email</center></h3>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" style="height: 115px">
 
 				<div align="center">
 					<%= link_to 'Download PDF', download_pdf_path, class: "btn btn-success" %>
 					<%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
 				</div>
+				<br>
+				<div class="input-group">
+					<input type="email" class="form-control" id="email" placeholder="Enter Email Address">
+	  				<span class="input-group-btn">
+	    				<button class="btn btn-default" type="button">Send</button>
+	  				</span>
+				</div><!-- /input-group -->
 				
 			</div>
-			<div class="input-group">
-				<input type="email" class="form-control" id="email" placeholder="Enter Email Address">
-	  			<span class="input-group-btn">
-	    			<button class="btn btn-default" type="button">Send</button>
-	  			</span>
-			</div><!-- /input-group -->
+			
 		</div>
 		</div>
 
@@ -79,9 +78,9 @@
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Upload your CSV</center></h3>
 				</div>		
-				<div class="panel-body">
+				<div class="panel-body" style="height: 110px; margin-top: 5px">
 					<div class="form-group">
-						<input type="file" id="localFile"> <br>
+						<input type="file" id="localFile"><br>
 						<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
 					</div>
 				</div>
@@ -93,14 +92,29 @@
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Credit Points</center></h3>
 				</div>
-				<div class="panel-body">
-					<p>Completed:</p><%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("completed") %>
-					<p>Planned:</p><%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("planned") %>
-					<p>Remaining:</p><%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("remaining") %>
+				<div class="panel-body" style="height: 105px; margin-top: 10px">
+					<center>
+					<div class="col-md-4">
+						<label><center>Completed</center></label>
+						<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("completed"), style: "width: 80px; text-align: center" %>	
+					</div>
+					
+					<div class="col-md-4">
+						<label><center>Planned</center></label>
+						<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("planned"), style: "width: 80px; text-align: center" %>
+					</div>
+
+					<div class="col-md-4">
+						<label><center>Remaining</center></label>
+						<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("remaining"), style: "width: 80px; text-align: center" %>
+					</div>
+					</center>
+					<br>
 				</div>
 			</div>
 		</div>
 	</div>
+	<br><br>
 </div>					<!--planner ends-->
 
 <% if @proceed == false %>
