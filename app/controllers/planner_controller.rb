@@ -1,7 +1,7 @@
 class PlannerController < ApplicationController
 	@stream_units
 
-	helper_method :get_streamunit_name, :get_stream_name, :calc_credits
+	helper_method :get_streamunit_name, :get_unit_credit_points, :get_unit_sem_available, :get_stream_name, :calc_credits, :get_unit_code
 
 # START stream_chooser
 	def index
@@ -43,6 +43,18 @@ class PlannerController < ApplicationController
 		streamunits_list = StreamUnit.where(:stream_id => chosen_stream)
 		# units_list = Unit.where(:id => streamunits_list)
 		return streamunits_list
+	end
+	
+	def get_unit_sem_available u
+		@unit = Unit.find(u.to_i)
+		#@unit = Unit.where(id: u.to_i)
+		return @unit.semAvailable
+	end
+	
+	def get_unit_code u
+		@unit = Unit.find(u.to_i)
+		#@unit = Unit.where(id: u.to_i)
+		return @unit.unitCode
 	end
 # END unit_chooser
 
