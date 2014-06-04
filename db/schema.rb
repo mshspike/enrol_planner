@@ -31,9 +31,6 @@ ActiveRecord::Schema.define(version: 20140601025406) do
     t.datetime "updated_at"
   end
 
-add_index "stream_units", ["stream_id"], name: "index_stream_units_on_stream_id", using: :btree
-  add_index "stream_units", ["unit_id"], name: "index_stream_units_on_unit_id", using: :btree
-  
   create_table "streams", force: true do |t|
     t.string   "streamName"
     t.string   "streamCode"
@@ -46,9 +43,9 @@ add_index "stream_units", ["stream_id"], name: "index_stream_units_on_stream_id"
     t.string   "unitName"
     t.integer  "preUnit"
     t.integer  "creditPoints"
-    t.integer  "semAvailable"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "semAvailable"
   end
 
   create_table "users", force: true do |t|

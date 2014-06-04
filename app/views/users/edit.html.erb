@@ -42,14 +42,6 @@
 	<%= f.label :password_confirmation %><br />
 	<%= f.password_field :password_confirmation %>
   </div>
-  <!--<div class="field">
-   <!--  f.label :crypted_password --><br>
-    <!-- f.text_field :crypted_password %>
-  </div>
-  <div class="field">
-    <!-- f.label :salt %><br>
-    <!-- f.text_field :salt %>
-  </div> -->
   <div class="actions">
     <%= f.submit %>
   </div>
@@ -65,7 +57,7 @@
   <tbody>
 
       <tr>
-        <td><%= @user.email %></td>
+        <td><%= @user.email %>    |</td>
         <td><%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
   </tbody>
