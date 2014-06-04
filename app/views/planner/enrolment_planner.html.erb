@@ -8,35 +8,49 @@
 		document.getElementById("semid").value = semID;
 		document.getElementById("modflag").value = flag;
 	}
+	
+	$(document).ready(function() {
+    	$('#remain_unit').hover(function() {
+        	$('#popup').show();
+    	}, function() {
+        	$('#popup').hide();
+    	});
+	});
 </script>
 
-<%= form_tag :action => "enrolment_planner" do %>
-<%= hidden_field_tag "modflag", 0 %>
-<%= hidden_field_tag "semid", 0 %>
+
 <div class = "container">			<!--planner begins-->
+	<%= form_tag :action => "enrolment_planner" do %>
+	<%= hidden_field_tag "modflag", 0 %>
+	<%= hidden_field_tag "semid", 0 %>
 	<div class="row">
+		
 		<div class="col-md-8"> <!-- enrolment planner -->
 			<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title"><center>Enrolment Planner</center></h3>
+				
+				<div class="panel-heading">
+					<h3 class="panel-title"><center>Enrolment Planner</center></h3>
+				</div>
+				
+				<div class="panel-body" style="height:440px; overflow:auto" >
+					<% session[:semesters] %>
+					<% session[:semesters].length.times do |i| %>
+					<div class="col-md-6">
+						<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
 					</div>
-					<div class="panel-body" style="height:440px; overflow:auto" >
-						<% session[:semesters] %>
-						<% session[:semesters].length.times do |i| %>
-							<div class="col-md-6">
-								<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
-							</div>
-						
-						<% end %>
-					</div>
+				<% end %>
+				</div>
+			
 			</div>
-		</div> 	
+		</div> 	<!-- end of enrolment planner -->
 		
 		<div class="col-md-4"> <!-- Remaining Units -->
 			<div class="panel panel-default">
+				
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Remaining Units</center></h3>
 				</div>
+				
 				<div class="panel-body" style="height:440px">
 					<p class="text-success" style="padding:1px 1px 1px 5px; margin-bottom:5px"><small><span class="glyphicon glyphicon-info-sign"></span> Hold Ctrl (Control) button to select multiple units.</small></p>
 					<% unless session[:remain_units].nil? %>	
@@ -44,76 +58,70 @@
 					<% end %>
 					<p align="right">Total remaining units: <%= session[:remain_units].length %></p>
 				</div>
-			</div>
-		</div>
-	</div>
-<% end %>
-	<div class="row">
-		<div class="col-md-4">  <!-- download and email -->
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title"><center>Download & Email</center></h3>
-			</div>
-			<div class="panel-body" style="height: 115px">
-
-				<div align="center">
-					<%= link_to 'Download PDF', download_pdf_path, class: "btn btn-success" %>
-					<%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
-				</div>
-				<br>
-				<div class="input-group">
-					<input type="email" class="form-control" id="email" placeholder="Enter Email Address">
-	  				<span class="input-group-btn">
-	    				<button class="btn btn-default" type="button">Send</button>
-	  				</span>
-				</div><!-- /input-group -->
+				<%= render partial: "master_layouts/unitinfo" %>
 				
 			</div>
+		</div>		<!-- end of Remaining Units -->
+		
+	</div>
+	<% end %>	
+	
+	<div class="row">
+		
+		<div class="col-md-4">  <!-- download and email -->
+			<div class="panel panel-default">
+				
+				<div class="panel-heading">
+					<h3 class="panel-title"><center>Download & Email</center></h3>
+				</div>
+				
+				<div class="panel-body" style="height: 115px">
+					<div align="center">
+						<%= link_to 'Download PDF', download_pdf_path, class: "btn btn-success" %>
+						<%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
+					</div>
+					
+					<br>
+				
+					<div class="input-group">
+						<input type="email" class="form-control" id="email" placeholder="Enter Email Address">
+	  					<span class="input-group-btn">
+	    					<button class="btn btn-default" type="button">Send</button>
+	  					</span>
+					</div>	
+				</div>
 			
-		</div>
-		</div>
+			</div>
+		</div>		<!-- end of download and email -->
 
 		<div class="col-md-4"> <!-- upload your CSV -->
 			<div class="panel panel-default">
+				
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Upload your CSV</center></h3>
 				</div>		
+				
 				<div class="panel-body" style="height: 110px; margin-top: 5px">
 					<div class="form-group">
 						<input type="file" id="localFile"><br>
 						<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
 					</div>
 				</div>
+				
 			</div>
-		</div>
+		</div>		<!-- end of upload your CSV -->
 
 		<div class="col-md-4"> <!-- credit points -->
-			<div class="panel panel-default">
+			<div class="panel panel-default">				
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Credit Points</center></h3>
 				</div>
-				<div class="panel-body" style="height: 105px; margin-top: 10px">
-					<center>
-					<div class="col-md-4">
-						<label><center>Completed</center></label>
-						<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("completed"), style: "width: 80px; text-align: center" %>	
-					</div>
-					
-					<div class="col-md-4">
-						<label><center>Planned</center></label>
-						<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("planned"), style: "width: 80px; text-align: center" %>
-					</div>
-
-					<div class="col-md-4">
-						<label><center>Remaining</center></label>
-						<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("remaining"), style: "width: 80px; text-align: center" %>
-					</div>
-					</center>
-					<br>
-				</div>
+				<%= render partial: "master_layouts/creditpoints" %>			
 			</div>
-		</div>
+		</div>		<!-- end of credit points -->
+	
 	</div>
+	
 	<br><br>
 </div>					<!--planner ends-->
 
