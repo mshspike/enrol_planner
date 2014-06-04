@@ -5,8 +5,8 @@ class CreateUnits < ActiveRecord::Migration
       t.string :unitName
       t.boolean :semOne
       t.boolean :semTwo
-      t.integer :preUnit
-      t.integer :creditPoints
+      t.boolean :preUnit
+      t.float :creditPoints
 
       t.timestamps
     end

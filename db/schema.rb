@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(version: 20140601025406) do
   create_table "units", force: true do |t|
     t.integer  "unitCode"
     t.string   "unitName"
-    t.integer  "preUnit"
-    t.integer  "creditPoints"
+    t.boolean  "preUnit"
+    t.float    "creditPoints"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "semAvailable"
