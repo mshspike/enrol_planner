@@ -1,24 +1,10 @@
 class StreamUnitsController < ApplicationController
-  before_action :set_stream_unit, only: [:show, :edit, :update, :destroy], :get_stream_name
-  helper_method :get_stream_name
+  before_action :set_stream_unit, only: [:show, :edit, :update, :destroy]
 
   # GET /stream_units
   # GET /stream_units.json
   def index
-    @stream_unit_names = Hash.new
     @stream_units = StreamUnit.all
-    @no_of_streams = Stream.count
-    @streams = Stream.all
-    @units = Unit.all
-    @streams.each do |stream|
-      @stream_id_su = StreamUnit.select("*").where("stream_id = ?", stream.id)
-      @stream_unit_names = @stream_id_su
-      # @stream_id_su.each do |sisu|
-      #   @unit_id_su = sisu.unit_id
-      #   @stream_unit_names = [@stream_id_su, @unit_id_su]       how to fill hassh or array inside a loop
-      # end
-    end
-    #@stream_unit_names = [@stream.streamName, @unit.unitName]
     time = Time.now.strftime('%Y%m%d%H%M%S')
     filename = "CoursePlan_" + time
     respond_to do |format|
@@ -89,7 +75,7 @@ class StreamUnitsController < ApplicationController
   # START importing stream_units from CSV
   def import
     StreamUnit.import(params[:file])
-    redirect_to stream_units_path, notice: 'Course Plan Updated Successfully'
+    redirect_to stream_units_path, notice: 'Course Plan Updated Successfully'     
   end
   # END importing stream_units from CSV
 

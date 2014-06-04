@@ -4,6 +4,7 @@ EnrolPlanner::Application.routes.draw do
   resources :download
   resources :admin
   resources :users
+  resources :user_sessions
 
   resources :units do 
     collection { post :import }
@@ -24,14 +25,17 @@ EnrolPlanner::Application.routes.draw do
   get "access/login"
   get "admin/index"
   get "admin/login"
-  get "stream_units/index"
+  get "user_sessions/new"
+  get "user_sessions/create"
+  get "user_sessions/destroy"
+  get 'login' => 'user_sessions#new', :as => :login
 
   post "planner/unit_chooser" => "planner#unit_chooser"
   post "planner/enrolment_planner" => "planner#enrolment_planner"
   post "download/pdf" => "download#pdf"
   post "download/csv" => "download#csv"
   post "admin/login" => "admin#login"
-  post "stream_units/index" => "stream_units#index"
+  post 'logout' => 'user_sessions#destroy', :as => :logout
 
   root :to => 'users#index'
 
