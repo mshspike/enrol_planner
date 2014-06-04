@@ -7,14 +7,45 @@
 		<div class = "jumbotron" style="width:75%">
 
 			<%= form_tag :action => "enrolment_planner" do %>
-
-			<% @stream_units.each do |su| %>
-				<% #check_box_tag(name, id, checked, option) %>
-				<p><%= check_box_tag 'unit_ids[]', su.unit_id, false %><%= get_streamunit_name(su.unit_id) %></p>
+		
+			<% unless @stream_units.nil? %>
+				<h4 align="left">Please select completed units</h4>
+				<div class="panel panel-default">
+  					<table class="table">					    
+  					<tr>
+  						<td></td>
+  						<td><b><center>Unit ID</center></b></td> 
+  						<td><b>Unit Name</b></td>
+  						<td><b><center>Credit Points</center></b></td>
+					</tr>	
+				
+					<% @stream_units.each do |su| %>
+					<tr>
+						<% #check_box_tag(name, id, checked, option) %>
+						<td><center><%= check_box_tag 'unit_ids[]', su.unit_id, false %></center></td>
+						<td><center><%= su.unit_id %></center></td>
+						<td><%= get_streamunit_name(su.unit_id) %></td>
+						<td><center><%= get_unit_credit_points(su.unit_id) %></center></td>
+					</tr>
+					<% end %>
+					</table>
+				</div>
+			<% else %>
+				<p>Cannot find any unit for stream!</p>
 			<% end %>
-
+			
+			<h4 align="left">Select starting semester</h4>
+			<div class="col-md-5"> 
+				<%= radio_button_tag(:sem, "1", true) %> 
+				<%= label_tag(:sem, "Semester 1") %>
+			</div>
+			<div class="col-md-3"> 
+				<%= radio_button_tag(:sem, "2") %>
+				<%= label_tag(:sem, "Semester 2") %>
+			</div>
+			
 			<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
-		<% end %>
+			<% end %>
 
 		</div>
 
