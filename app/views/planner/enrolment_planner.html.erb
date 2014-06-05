@@ -31,13 +31,10 @@
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Enrolment Planner</center></h3>
 				</div>
-				
 				<div class="panel-body" style="height:440px; overflow:auto" >
 					<% session[:semesters].length.times do |i| %>
-					<div class="col-md-6">
-						<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
-					</div>
-				<% end %>
+							<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
+					<% end %>
 				</div>
 			
 			</div>

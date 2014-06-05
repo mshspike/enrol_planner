@@ -62,6 +62,8 @@ class PlannerController < ApplicationController
 
 # START enrolment_planner
 	def enrolment_planner
+		# don't use "Array.new" to initialize here.
+		# this will erase everything when the page is refreshed.
 		session[:done_units] ||= []
 		session[:plan_units] ||= []
 		@proceed = true
@@ -74,7 +76,11 @@ class PlannerController < ApplicationController
 			# Default action from "unit_chooser"
 			when 1
 				@done_units = []
-				session[:done_units] = params[:unit_ids]
+				params[:unit_ids].each do |doneid|
+					unless session[:done_units].include? doneid.to_i
+						session[:done_units].push(doneid.to_i)
+					end
+				end
 
 				# INITIALISE remain_units session variable
 				session.delete(:remain_units)
@@ -84,6 +90,10 @@ class PlannerController < ApplicationController
 				session[:semesters]=[]
 				session[:semesters][0] = []
 				session[:semesters][0][0] = 0
+				if (params[:sem].to_i == 2)
+					session[:semesters].push([0])
+					session[:semesters][0][0] = -1
+				end
 				# END initialising
 
 				# Get list of done units with ID integer
@@ -193,6 +203,9 @@ class PlannerController < ApplicationController
 								end
 							else
 								@msg = "Unit " + get_streamunit_name(pru) + " has pre-requisite unit that you have not done!"
+								get_prereq_list(pru).each do |preq|
+									@msg = @msg + "\\n  - " + get_streamunit_name(preq.preUnit_id)
+								end
 							end
 						end
 						
