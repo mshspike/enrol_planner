@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :require_login, only: [:index, :new, :create]
+  before_filter :require_login, except: [:new]
+
 
   # GET /users
   # GET /users.json
@@ -20,6 +21,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+	@users = User.all
   end
 
   # POST /users
@@ -62,6 +64,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to planner_index_path }
       format.json { head :no_content }
+	
     end
   end
 
@@ -75,4 +78,8 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email, :password, :password_confirmation)
     end
+	
+  def not_authenticated
+      redirect_to login_path, alert: "Please login first"
+  end
 end

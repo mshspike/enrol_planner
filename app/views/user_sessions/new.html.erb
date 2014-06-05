@@ -17,7 +17,19 @@
 </div>
 <h1>Login</h1>
 
-<%= render 'form' %>
+<%= form_tag user_sessions_path, :method => :post do %>
+  <div class="field">
+    <%= label_tag :email, ('Email / ID')%><br />
+    <%= text_field_tag :email %>
+  </div>
+  <div class="field">
+    <%= label_tag :password %><br />
+    <%= password_field_tag :password %>
+  </div>
+  <div class="actions">
+    <%= submit_tag "Login" , class: "btn btn-success pull-left", style: "width:75px"%>
+  </div>
+<% end %>
 <br>
 <br>
 <br>

@@ -1,0 +1,23 @@
+
+<table>
+  <thead>
+    <tr>
+	<br>
+      <th>List of Stuff IDs that have been registered.</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
