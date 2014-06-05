@@ -21,7 +21,9 @@ units = Unit.create([{unitCode: "1920", unitName: "Object Oriented Program Desig
 					 {unitCode: "4522", unitName: "Advanced Computer Communications 300", creditPoints: "25", semAvailable: "2", preUnit: "true"},
 					 {unitCode: "314248", unitName: "Cyber Security Concepts 310", creditPoints: "25", semAvailable: "1", preUnit: "true"},
 					 {unitCode: "8934", unitName: "Software Engineering 200", creditPoints: "25", semAvailable: "2", preUnit: "true"},
-					 {unitCode: "303008", unitName: "Software Metrics 400", creditPoints: "25", semAvailable: "1", preUnit: "true"}])
+					 {unitCode: "303008", unitName: "Software Metrics 400", creditPoints: "25", semAvailable: "1", preUnit: "true"},
+					 {unitCode: "8933", unitName: "Software Engineering 110", creditPoints: "25", semAvailable: "1", preUnit: "false"},
+					 {unitCode: "307554", unitName: "Science Communications 101", creditPoints: "12.5", semAvailable: "1", preUnit: "false"}])
 
 streamunits = StreamUnit.create([{stream_id: "1", unit_id: "1"},
 								 {stream_id: "2", unit_id: "1"},
@@ -56,7 +58,15 @@ streamunits = StreamUnit.create([{stream_id: "1", unit_id: "1"},
 								 {stream_id: "2", unit_id: "11"},
 								 {stream_id: "3", unit_id: "11"},
 								 {stream_id: "4", unit_id: "11"},
-								 {stream_id: "4", unit_id: "12"}])
+								 {stream_id: "4", unit_id: "12"},
+								 {stream_id: "1", unit_id: "13"},
+								 {stream_id: "2", unit_id: "13"},
+								 {stream_id: "3", unit_id: "13"},
+								 {stream_id: "4", unit_id: "13"},
+								 {stream_id: "1", unit_id: "14"},
+								 {stream_id: "2", unit_id: "14"},
+								 {stream_id: "3", unit_id: "14"},
+								 {stream_id: "4", unit_id: "14"},])
 
 prereq = PreReq.create([{unit_id: "3", preUnit_id: "1", group: "0"},
 						{unit_id: "4", preUnit_id: "1", group: "0"},

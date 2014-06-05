@@ -86,10 +86,6 @@ class PlannerController < ApplicationController
 				session[:semesters][0][0] = 0
 				# END initialising
 
-				#session[:semesters][0] = [1, 2, 3] # For testing purpose only
-				#session[:semesters][1] = params[:unit_ids] # For testing purpose only
-				#session[:semesters][2] = params[:unit_ids] # For testing purpose only
-
 				# Get list of done units with ID integer
 				unless params[:unit_ids].nil?
 					params[:unit_ids].each do |puid|
@@ -146,6 +142,7 @@ class PlannerController < ApplicationController
 						else	#check pre-requisite
 							prereq_list = get_prereq_list(pru)
 							isAllDone = false
+
 							prereq_list.each_with_index do |preq, index|
 								if index == 0
 									if (has_done(preq.preUnit_id))
@@ -261,10 +258,14 @@ class PlannerController < ApplicationController
 				
 				# Validation - proceed if:
 				#  1. remaining units list is not empty
-				if (session[:remain_units].empty?)
-					@msg = "You do not have any more units left!"
+				unless (session[:remain_units].empty?)
+					if (is_full_credit(session[:semesters].length-1))
+						@proceed = true
+					else
+						@msg = "You have not enrol in full credit points!"
+					end
 				else
-					@proceed = true
+					@msg = "You do not have any more units left!"
 				end
 				
 				if (@proceed)
@@ -383,6 +384,23 @@ class PlannerController < ApplicationController
 			pre_req = "N"
 		end
 		return pre_req
+	end
+
+	def is_full_credit semid
+		total = 0
+		if session[:semesters][semid][0] != 0
+			session[:semesters][semid].each do |semunit|
+				total += get_unit_credit_points(semunit.to_i)
+			end
+		else
+			is_full = false
+		end
+		if total == 100
+			is_full = true
+		else
+			is_full = false
+		end
+		return is_full
 	end
 # END enrolment_planner
 

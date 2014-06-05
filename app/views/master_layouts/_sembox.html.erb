@@ -19,7 +19,6 @@ numUnits = session[:semesters][count].length
 				<%= select_tag "current_sem", options_from_collection_for_select(Unit.find(session[:semesters][count]), "id", "unitName"), multiple: true, class: "form-control", style: "font-size:12px" %>
 			<% end %>
 		<% end %>
-		<!-- below is for display purpose only. -->
 
 		<!-- buttons -->
 		<p><center>

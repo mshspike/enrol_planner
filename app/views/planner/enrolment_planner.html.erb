@@ -33,7 +33,6 @@
 				</div>
 				
 				<div class="panel-body" style="height:440px; overflow:auto" >
-					<% session[:semesters] %>
 					<% session[:semesters].length.times do |i| %>
 					<div class="col-md-6">
 						<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
