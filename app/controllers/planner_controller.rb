@@ -103,6 +103,7 @@ class PlannerController < ApplicationController
 				@remain_units.each do |ru|
 					session[:remain_units].push(ru.unit_id)
 				end
+				session[:remain_units].sort!
 
 			# Add chosen units to "plan_units" from "remaining units"
 			when 2
@@ -216,6 +217,7 @@ class PlannerController < ApplicationController
 							end
 						end
 					end
+					session[:remain_units].sort!
 				else
 					@msg = "No unit has been chosen."
 				end
@@ -244,6 +246,7 @@ class PlannerController < ApplicationController
 						session[:semesters].last.delete(del_id.to_i)
 						session[:plan_units].delete(del_id.to_i)
 						session[:remain_units].push(del_id.to_i)
+						session[:remain_units].sort!
 
 						if (session[:semesters].last.empty?)
 							lastsem = session[:semesters].last
@@ -291,6 +294,7 @@ class PlannerController < ApplicationController
 					end
 					session[:semesters].delete_at(i)
 				end
+				session[:remain_units].sort!
 		end
 	end
 
