@@ -76,9 +76,12 @@ class PlannerController < ApplicationController
 			# Default action from "unit_chooser"
 			when 1
 				@done_units = []
-				params[:unit_ids].each do |doneid|
-					unless session[:done_units].include? doneid.to_i
-						session[:done_units].push(doneid.to_i)
+				
+				unless params[:unit_id].nil?
+					params[:unit_ids].each do |doneid|
+						unless session[:done_units].include? doneid.to_i
+							session[:done_units].push(doneid.to_i)
+						end
 					end
 				end
 
