@@ -62,8 +62,10 @@
       </tr>
   </tbody>
 </table>
-<% end %>
 <%if @user.email =="globaladmin" %>
 <%= render 'index' %>
 <%end%>
+<% end %>
+
+
 <%= link_to 'Back', admin_index_path %>
