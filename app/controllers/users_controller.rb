@@ -49,6 +49,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         format.html { render action: 'edit' }
+		flash[:notice] = "You have successfully Updated."
         format.json { head :no_content }
 		
       else

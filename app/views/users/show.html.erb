@@ -13,11 +13,13 @@
 		<div class = "collapse navbar-collapse navHeaderCollapse">
 
 			<ul class = "nav navbar-nav navbar-right">
+			<li><%= link_to 'Admin', admin_index_path %></li>
 			</ul>
 		</div>
 	</div>
 </div>
-
+<br>
 <p id="notice"></p>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', admin_index_path %>
