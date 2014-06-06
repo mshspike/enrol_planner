@@ -32,9 +32,9 @@
 					<div class = "col-md-6">
 						<%= form_tag import_streams_path, multipart: true do %>
 							<%= file_field_tag :file %>
-							<br><%= submit_tag "Update Selected Stream", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Download CSV", stream_units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-      						<%= link_to "Download PDF", stream_units_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
+							<br><%= submit_tag "Update Stream", class: 'btn btn-success btn-sm' %>
+							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+      						<%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
 					<div class = "col-md-6">

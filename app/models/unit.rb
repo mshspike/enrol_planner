@@ -1,4 +1,5 @@
 class Unit < ActiveRecord::Base 
+	
 	def self.import(file)
 		Unit.delete_all
       	ActiveRecord::Base.connection.execute("TRUNCATE units") 
