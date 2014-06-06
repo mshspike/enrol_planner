@@ -70,7 +70,7 @@ class PlannerController < ApplicationController
 			when 1
 				@done_units = []
 				
-				unless params[:unit_id].nil?
+				if params.has_key?(:unit_ids)
 					params[:unit_ids].each do |doneid|
 						unless session[:done_units].include? doneid.to_i
 							session[:done_units].push(doneid.to_i)
@@ -352,7 +352,7 @@ class PlannerController < ApplicationController
 
 		unless list.nil?
 			list.each do |u|
-				sum += get_unit_credit_points(u)
+				sum += get_unit_credit_points(u.to_i)
 			end
 		else
 			sum = 0
