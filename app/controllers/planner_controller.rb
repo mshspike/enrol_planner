@@ -31,18 +31,11 @@ class PlannerController < ApplicationController
 
 		str = Stream.find(session[:selected_stream])
 		@stream_units = StreamUnit.where(:stream_id => str)
-		#@stream_units = getStreamUnits(str)
 	end
 
 	def get_streamunit_name uid
 		u = Unit.find_by_id(uid.to_i)
 		return u.unitName
-	end
-
-	def getStreamUnits chosen_stream
-		streamunits_list = StreamUnit.where(:stream_id => chosen_stream)
-		# units_list = Unit.where(:id => streamunits_list)
-		return streamunits_list
 	end
 	
 	def get_unit_sem_available u
@@ -313,8 +306,9 @@ class PlannerController < ApplicationController
 				session[:remain_units].sort!
 		end
 	end
+# END enrolment_planner
 
-	def getRemainingUnits(done)
+	def getRemainingUnits done
 		# Get StreamUnit where SUs are in "selected stream", and ID is not in "done"
 		# Note that where() method returns ActiveRecord relations
 		unless done.nil?
@@ -326,8 +320,23 @@ class PlannerController < ApplicationController
 		return remain_streamunits
 	end
 
-	def get_done_unit_semester uid
-		# which semester did the unit being done?
+	def get_unit_credit_points uid
+		@unit = Unit.find(uid.to_i)
+		return @unit.creditPoints
+	end
+
+	def get_prereq_list uid
+		prereqs = PreReq.where(:unit_id => uid.to_i).order(group: :asc)
+		return prereqs
+	end
+	
+	def get_has_prereq uid
+		if has_prereq(uid.to_i)
+			pre_req = "Y"
+		else
+			pre_req = "N"
+		end
+		return pre_req
 	end
 
 	def calc_credits which
@@ -360,14 +369,8 @@ class PlannerController < ApplicationController
 		return sum
 	end
 
-	def get_unit_credit_points u
-		@unit = Unit.find(u.to_i)
-		#@unit = Unit.where(id: u.to_i)
-		return @unit.creditPoints
-	end
-
 	def is_avail_for_sem sem_id, uid
-		u = Unit.find_by_id(uid)
+		u = Unit.find_by_id(uid.to_i)
 		if (u.semAvailable%2 == sem_id%2) || (u.semAvailable == 0)
 			avail = true
 		else
@@ -377,15 +380,10 @@ class PlannerController < ApplicationController
 
 	def has_prereq uid
 		has = false
-		if (Unit.find_by_id(uid).preUnit == true)
+		if (Unit.find_by_id(uid.to_i).preUnit == true)
 			has = true
 		end
 		return has
-	end
-
-	def get_prereq_list uid
-		prereqs = PreReq.where(:unit_id => uid.to_i).order(group: :asc)
-		return prereqs
 	end
 
 	def has_done uid
@@ -396,20 +394,11 @@ class PlannerController < ApplicationController
 		end
 		return is_done
 	end
-	
-	def get_has_prereq uid
-		if has_prereq(uid)
-			pre_req = "Y"
-		else
-			pre_req = "N"
-		end
-		return pre_req
-	end
 
 	def is_full_credit semid
 		total = 0
-		if session[:semesters][semid][0] != 0
-			session[:semesters][semid].each do |semunit|
+		if session[:semesters][semid.to_i][0] != 0
+			session[:semesters][semid.to_i].each do |semunit|
 				total += get_unit_credit_points(semunit.to_i)
 			end
 		else
@@ -422,6 +411,5 @@ class PlannerController < ApplicationController
 		end
 		return is_full
 	end
-# END enrolment_planner
 
 end

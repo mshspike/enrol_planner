@@ -3,23 +3,12 @@
 <head>
   <title><%= yield(:title) %></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' %>
-  <%= javascript_include_tag 'rails' %>
 </head>
 <body>
-  <div id="nav">
-    <% if current_user %>
-	  <%= link_to "Register", new_user_path %> |
-      <%= link_to "Edit Profile", edit_user_path(current_user.id) %> |
-      <%= link_to "Logout", :logout, method: :post %>
-	  <!--This can be deleted after first user has been created-->
-
-    <% end %>
-  </div>
   <div>
-    <p id="notice"><%= flash[:notice] %></p>
-    <p id="alert"><%= flash[:alert] %></p>
+	<%= render partial: "master_layouts/navbar" %>
+    <span id="notice"><%= flash[:notice] %></span>
+    <span id="alert"><%= flash[:alert] %></span>
   </div>
 <%= yield %>
 
