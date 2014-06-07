@@ -86,7 +86,8 @@ class PlannerController < ApplicationController
 				session[:semesters]=[]
 				session[:semesters][0] = []
 				session[:semesters][0][0] = 0
-				if (params[:sem].to_i == 2)
+				# if start at sem 2
+        if (params[:sem].to_i == 2)
 					session[:semesters].push([0])
 					session[:semesters][0][0] = -1
 				end
@@ -270,6 +271,7 @@ class PlannerController < ApplicationController
 				
 				# Validation - proceed if:
 				#  1. remaining units list is not empty
+        #  2. semester is in full credit
 				unless (session[:remain_units].empty?)
 					if (is_full_credit(session[:semesters].length-1))
 						@proceed = true
@@ -326,7 +328,7 @@ class PlannerController < ApplicationController
 	end
 
 	def get_prereq_list uid
-		prereqs = PreReq.where(:unit_id => uid.to_i).order(group: :asc)
+		prereqs = PreReq.where(:unit_id => uid.to_i).order(id: :asc)
 		return prereqs
 	end
 	
