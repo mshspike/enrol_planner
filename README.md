@@ -27,3 +27,9 @@ Ps2. If you wish the test the application with test data, run `bundle exec rake 
 1. Run `rails server` to start up application server.
 
 2. In your web browser, natvigate to http://localhost:3000 and it redirects to the planner page.
+
+###To test admin functions:
+
+1. Nivigate to http://localhost:3000/users/new , in here, you can register an administrator account in order to login to admin system.
+
+2. Once the admin account has been created, click onto "Admin" link on the top-right corner to enter admin interface.
