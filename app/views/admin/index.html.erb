@@ -14,8 +14,8 @@
 						<%= form_tag import_units_path, multipart: true do %>
 							<%= file_field_tag :file %>
 							<br><%= submit_tag "Update Units", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-      						<%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
+							<%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
+      						<%= link_to "Download PDF", units_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
 					<div class = "col-md-6">

@@ -12,7 +12,7 @@ class StreamsController < ApplicationController
       format.csv { send_data @streams.to_csv, :disposition => "attachment;filename=#{filename}.csv" }
       format.pdf do
         pdf = StreamPdf.new(@streams)
-        send_data pdf.render, :disposition => "attachment;filename=#{filename}.pdf", type: 'application/pdf'
+        send_data pdf.render, :disposition => "attachment;filename=#{filename}.pdf", type: 'application/pdf', :page_size => "A4"
       end
     end
   end
