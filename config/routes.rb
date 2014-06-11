@@ -35,7 +35,7 @@ EnrolPlanner::Application.routes.draw do
   post "download/pdf" => "download#pdf"
   post "download/csv" => "download#csv"
   post "admin/login" => "admin#login"
-  post 'logout' => 'user_sessions#destroy', :as => :logout
+  get 'logout' => 'user_sessions#destroy', :as => :logout
 
   root :to => 'users#index'
 

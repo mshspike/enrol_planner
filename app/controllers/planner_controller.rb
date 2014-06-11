@@ -382,7 +382,7 @@ class PlannerController < ApplicationController
 
 	def has_prereq uid
 		has = false
-		if (Unit.find_by_id(uid.to_i).preUnit == true)
+		if (Unit.find_by_id(uid.to_i).preUnit == "true")
 			has = true
 		end
 		return has
