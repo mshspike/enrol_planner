@@ -87,7 +87,7 @@ class PlannerController < ApplicationController
 				session[:semesters][0] = []
 				session[:semesters][0][0] = 0
 				# if start at sem 2
-        if (params[:sem].to_i == 2)
+        		if (params[:sem].to_i == 2)
 					session[:semesters].push([0])
 					session[:semesters][0][0] = -1
 				end
@@ -271,12 +271,12 @@ class PlannerController < ApplicationController
 				
 				# Validation - proceed if:
 				#  1. remaining units list is not empty
-        #  2. semester is in full credit
+        		#  2. semester is not empty
 				unless (session[:remain_units].empty?)
-					if (is_full_credit(session[:semesters].length-1))
+					if (session[:semesters].last.last != 0)
 						@proceed = true
 					else
-						@msg = "You have not enrol in full credit points!"
+						@msg = "You have not enrol into any unit in this semester!"
 					end
 				else
 					@msg = "You do not have any more units left!"
