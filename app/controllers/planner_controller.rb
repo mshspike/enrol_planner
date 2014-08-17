@@ -2,6 +2,10 @@ class PlannerController < ApplicationController
 	@stream_units
 	helper_method :get_streamunit_name, :get_unit_credit_points, :get_unit_sem_available, :get_stream_name, :calc_credits, :get_unit_code, :get_has_prereq
 
+	def show
+		
+	end
+
 # START stream_chooser
 	def index
 		@streams = Stream.all
