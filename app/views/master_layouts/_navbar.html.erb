@@ -16,14 +16,17 @@
 		<div class = "collapse navbar-collapse navHeaderCollapse">
 
 			<ul class = "nav navbar-nav navbar-right">
-
-				<li><%= link_to 'Planner', '../planner' %></li>
-				<li><%= link_to 'Admin', '../admin' %></li>
+				
 				<% if current_user %>
+					<li><%= link_to 'Planner', planner_index_path %></li>
+					<li><%= link_to 'Admin', admin_index_path %></li>
 					<li class="small"><%= link_to "Register", new_user_path %></li>
 					<li class="small"><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
 					<li class="small"><%= link_to "Logout", logout_path %></li>
 					<!--This can be deleted after first user has been created-->
+				<%else%>
+				<li><%= link_to 'Planner', '../planner' %></li>
+				<li><%= link_to 'Admin', '../admin' %></li>
 				<% end %>
 
 			</ul>

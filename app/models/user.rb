@@ -7,5 +7,6 @@ authenticates_with_sorcery!
   validates :password_confirmation, presence: true
 
   validates :email, uniqueness: true
+  validates :email, presence: true
 
 end
