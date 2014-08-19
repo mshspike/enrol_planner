@@ -1,5 +1,7 @@
 class Stream < ActiveRecord::Base
-
+	Validates : streamCode, presence:true
+	Validates : streamName, presence:true
+	
 	def self.import(file)
 		Stream.delete_all
 		ActiveRecord::Base.connection.execute("TRUNCATE streams") 

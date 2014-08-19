@@ -10,25 +10,26 @@
       </ul>
     </div>
   <% end %>
-
+  
+	
   <div class="field">
-    <%= f.label :unitCode %><br>
+	<%=label_tag :unitCode, ('Unit Code')%><br>
     <%= f.number_field :unitCode %>
   </div>
   <div class="field">
-    <%= f.label :unitName %><br>
+	<%=label_tag :unitName, ('Unit Name')%><br>
     <%= f.text_field :unitName %>
   </div>
   <div class="field">
-    <%= f.label :preUnit %><br>
+	<%=label_tag :preUnit, ('Pre-request Unit')%><br>
     <%= f.number_field :preUnit %>
   </div>
   <div class="field">
-    <%= f.label :creditPoints %><br>
+	<%=label_tag :creditPoints, ('Credit Points')%><br>
     <%= f.number_field :creditPoints %>
   </div>
   <div class="field">
-    <%= f.label :semAvailable %><br>
+	<%=label_tag :semAvailable, ('Semester Available')%><br>
     <%= f.number_field :semAvailable %>
   </div>
   <div class="actions">

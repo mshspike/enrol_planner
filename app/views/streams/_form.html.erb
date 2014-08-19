@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :streamName %><br>
-    <%= f.text_field :streamName %>
+	<%=label_tag :streamCode, ('Stream Code')%><br>
+    <%= f.text_field :streamCode %>
   </div>
   <div class="field">
-    <%= f.label :streamCode %><br>
-    <%= f.text_field :streamCode %>
+	<%=label_tag :streamName, ('Stream Name')%><br>
+    <%= f.text_field :streamName %>
   </div>
   <div class="actions">
     <%= f.submit %>
