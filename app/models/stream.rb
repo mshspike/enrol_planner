@@ -1,6 +1,7 @@
 class Stream < ActiveRecord::Base
-	Validates : streamCode, presence:true
-	Validates : streamName, presence:true
+		
+	validates :streamCode, presence:true
+	validates :streamName, presence:true
 	
 	def self.import(file)
 		Stream.delete_all
