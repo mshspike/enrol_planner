@@ -118,8 +118,6 @@ class PlannerController < ApplicationController
 
 			# Add chosen units to "plan_units" from "remaining units"
 			when 2
-				#@proceed = false
-				
 				# Validation - proceed if:
 				#  1. semester is not in full credit
 				#  2. available for current semester

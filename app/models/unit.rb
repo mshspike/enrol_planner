@@ -2,7 +2,7 @@ class Unit < ActiveRecord::Base
 	validates :unitCode, presence:true
 	validates :unitName, presence:true
 	validates :creditPoints, presence:true
-	validates : semAvailable, presence:true
+	validates :semAvailable, presence:true
 	
 	def self.import(file)
 		Unit.delete_all
