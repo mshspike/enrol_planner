@@ -118,7 +118,7 @@ class PlannerController < ApplicationController
 
 			# Add chosen units to "plan_units" from "remaining units"
 			when 2
-				@proceed = false
+				#@proceed = false
 				
 				# Validation - proceed if:
 				#  1. semester is not in full credit
@@ -127,6 +127,7 @@ class PlannerController < ApplicationController
 				#  4. Done pre-requisites
 				unless params[:remain_unit].nil?
 					params[:remain_unit].each do |pru|
+						@proceed = false
 						if (!has_prereq(pru))
 							if (is_avail_for_sem(session[:semesters].length, pru))
 								if (session[:semesters].last.last == 0)
@@ -209,14 +210,12 @@ class PlannerController < ApplicationController
 								end
 							end
 						end
-						
-
 						if @proceed
 							session[:plan_units].push(pru.to_i)
 
 							# Add unit to "semesters" session variable
 							last_sem = session[:semesters].length-1
-							if session[:semesters][last_sem][0] == 0
+							if (session[:semesters][last_sem][0] == 0)
 								session[:semesters][last_sem][0] = pru.to_i
 							else
 								sem = session[:semesters].last
@@ -225,7 +224,7 @@ class PlannerController < ApplicationController
 
 							# Remove unit from "remaining" list
 							session[:remain_units].length.times do |i|
-								if session[:remain_units][i] == pru.to_i
+								if (session[:remain_units][i] == pru.to_i)
 									session[:remain_units].delete_at(i)
 								end
 							end
