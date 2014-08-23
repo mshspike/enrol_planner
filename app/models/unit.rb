@@ -14,9 +14,9 @@ class Unit < ActiveRecord::Base
 
 	def self.to_csv
 		CSV.generate do |csv|
-			csv << ["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable", "plannedYear"]
+			csv << ["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
 			all.each do |unit|
-				csv << unit.attributes.values_at(*["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable", "plannedYear"])
+				csv << unit.attributes.values_at(*["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
 			end
 		end
 	end
