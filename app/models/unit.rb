@@ -27,4 +27,6 @@ class Unit < ActiveRecord::Base
 	has_many :pre_reqs, :foreign_key=> :unit_id
 	has_many :preUnits, through: :pre_reqs
 
+	has_many :pre_req_groups, :foreign_key=> :unit_id
+
 end

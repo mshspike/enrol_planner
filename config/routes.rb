@@ -1,5 +1,7 @@
 EnrolPlanner::Application.routes.draw do
 
+  resources :pre_req_groups
+
   resources :planner
   resources :download
   resources :admin

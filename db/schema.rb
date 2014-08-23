@@ -11,12 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601025406) do
+ActiveRecord::Schema.define(version: 20140821133835) do
+
+  create_table "pre_req_groups", force: true do |t|
+    t.integer  "unit_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pre_req_groups", ["unit_id"], name: "index_pre_req_groups_on_unit_id", using: :btree
 
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
     t.integer  "unit_id"
-    t.integer  "group"
+    t.integer  "pre_req_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

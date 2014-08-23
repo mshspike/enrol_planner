@@ -163,13 +163,13 @@ class PlannerController < ApplicationController
 									end
 								else
 									if (has_done(preq.preUnit_id))
-										if (preq.group%2 == 1)
+										if (preq.pre_req_group_id%2 == 1)
 											isAllDone &&= true
 										else
 											isAllDone ||= true
 										end
 									else
-										if (preq.group%2 == 1)
+										if (preq.pre_req_group_id%2 == 1)
 											isAllDone &&= false
 										else
 											isAllDone ||= false

@@ -15,6 +15,20 @@
   <%= @unit.preUnit %>
 </p>
 
+    <% @unit.pre_req_groups.each_with_index do |pre_req_group, i| %>
+      <ul>
+		<% pre_req_group.preUnits.each_with_index do |preUnit, i| %>
+			<li><%= preUnit.unitCode %> - <%= preUnit.unitName %></li>
+			<% if i != pre_req_group.preUnits.size - 1 %>
+				AND
+			<% end %>
+		<% end %>
+      </ul>
+	  <% if i != @unit.pre_req_groups.size - 1 %>
+	    OR
+	  <% end %>
+    <% end %>
+
 <p>
   <strong>Creditpoints:</strong>
   <%= @unit.creditPoints %>
