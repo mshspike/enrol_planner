@@ -86,6 +86,6 @@
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def unit_params
-      params.require(:unit).permit(:unitCode, :unitName, :preUnit, :creditPoints, :semAvailable)
+      params.require(:unit).permit(:unitCode, :unitName, :preUnit, :creditPoints, :semAvailable, :plannedYear)
     end
 end

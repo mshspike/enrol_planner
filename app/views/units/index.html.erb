@@ -10,6 +10,7 @@
             <th>Pre Unit</th>
             <th>Credit Points</th>
             <th>Semster Available</th>
+			<th>Planned Year</th>
             <th></th>
             <th></th>
           </tr>
@@ -23,6 +24,7 @@
               <td><%= unit.preUnit %></td>
               <td><%= unit.creditPoints %></td>
               <td><%= unit.semAvailable %></td>
+			  <td><%= unit.plannedYear %></td>
               <td><%= link_to 'Edit', edit_unit_path(unit) %></td>
               <td><%= link_to 'Delete', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
             </tr>

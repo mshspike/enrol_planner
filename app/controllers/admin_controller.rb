@@ -5,7 +5,7 @@ before_filter :require_login
   def index
   	@streams = Stream.all
 
-  	# Clear all seesion variables to avoid messing with previous data
+  	# Clear all session variables to avoid messing with previous data
 		session.delete(:selected_stream)
 
   end
