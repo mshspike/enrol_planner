@@ -7,20 +7,25 @@ numUnits = session[:semesters][count].length
 <% if (session[:semesters][count][0].to_i >= 0) %>
 <div class="col-md-6">
 	<div class="thumbnail">
-		<h4><center>Year <%=year%> Semester <%=sem%></center></h4>
+		<h5><center>Year <%=year%> Semester <%=sem%></center></h5>
 
 		<div class="caption">
 			<!-- display units of current semester. This need to be modify to "semester compatible". -->
 
 				<% if (semester < session[:semesters].length) %>
-					<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
-						<% if (session[:semesters][count][i].to_i > 0) %>
-							<p><%= get_streamunit_name(uid) %></p>
+					<table class="table table-condensed table-hover">
+						<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
+							<% if (session[:semesters][count][i].to_i > 0) %>
+								<tr>
+									<td style="font-size:11px"><%= get_unit_code(uid) %></td>
+									<td style="font-size:11px"><%=get_streamunit_name(uid)%></td>
+								</tr>
+							<% end %>
 						<% end %>
-					<% end %>
+					</table>
 				<% else %>
 					<% if session[:semesters][count][0] != 0 %>
-						<%= select_tag "current_sem", options_from_collection_for_select(Unit.find(session[:semesters][count]), "id", "unitName"), multiple: true, class: "form-control", style: "font-size:12px" %>
+						<%= select_tag "current_sem", options_from_collection_for_select(Unit.find(session[:semesters][count]), :id, :unit_to_s), multiple: true, class: "form-control", style: "font-size:11px; height:auto;" %>
 					<% end %>
 				<% end %>
 

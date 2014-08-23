@@ -126,65 +126,15 @@ class PlannerController < ApplicationController
 				unless params[:remain_unit].nil?
 					params[:remain_unit].each do |pru|
 						@proceed = false
-						if (!has_prereq(pru))
-							if (is_avail_for_sem(session[:semesters].length, pru))
-								if (session[:semesters].last.last == 0)
-									@proceed = true
-								else
-									# check if semester still has capacity for enrol in more credit points
-									if (session[:semesters].last.length <= 4)	
-										if (calc_sem_credits((session[:semesters].length)-1) <= (100.0-get_unit_credit_points(pru)))	
-											params[:remain_unit].each do |remain|
-												unless session[:semesters].last.include? remain.to_i
-													@proceed = true
-												else
-													@msg = "Duplicated Unit."
-												end
-											end
-										else
-											@msg = "Credit points full!"
-										end
-									end
-								end
-							else
-								@proceed = false
-								@msg = get_streamunit_name(pru.to_i).to_s + " is not available for this semester!"
-							end
-						else	#check pre-requisite
-							prereq_list = get_prereq_list(pru)
-							isAllDone = false
-
-							prereq_list.each_with_index do |preq, index|
-								if index == 0
-									if (has_done(preq.preUnit_id))
-										isAllDone = true
-									else
-										isAllDone = false
-									end
-								else
-									if (has_done(preq.preUnit_id))
-										if (preq.pre_req_group_id%2 == 1)
-											isAllDone &&= true
-										else
-											isAllDone ||= true
-										end
-									else
-										if (preq.pre_req_group_id%2 == 1)
-											isAllDone &&= false
-										else
-											isAllDone ||= false
-										end
-									end
-								end
-							end
-							if (isAllDone)
+						if (!@msg)
+							if (!has_prereq(pru))
 								if (is_avail_for_sem(session[:semesters].length, pru))
 									if (session[:semesters].last.last == 0)
 										@proceed = true
 									else
 										# check if semester still has capacity for enrol in more credit points
 										if (session[:semesters].last.length <= 4)	
-											if (calc_sem_credits((session[:semesters].length)-1) <= (100-get_unit_credit_points(pru)))	
+											if (calc_sem_credits((session[:semesters].length)-1) <= (100.0-get_unit_credit_points(pru)))	
 												params[:remain_unit].each do |remain|
 													unless session[:semesters].last.include? remain.to_i
 														@proceed = true
@@ -201,10 +151,62 @@ class PlannerController < ApplicationController
 									@proceed = false
 									@msg = get_streamunit_name(pru.to_i).to_s + " is not available for this semester!"
 								end
-							else
-								@msg = "Unit " + get_streamunit_name(pru) + " has pre-requisite unit that you have not done!"
-								get_prereq_list(pru).each do |preq|
-									@msg = @msg + "\\n  - " + get_streamunit_name(preq.preUnit_id)
+							else	#check pre-requisite
+								prereq_list = get_prereq_list(pru)
+								isAllDone = false
+
+								prereq_list.each_with_index do |preq, index|
+									if index == 0
+										if (has_done(preq.preUnit_id))
+											isAllDone = true
+										else
+											isAllDone = false
+										end
+									else
+										if (has_done(preq.preUnit_id))
+											if (preq.pre_req_group_id%2 == 1)
+												isAllDone &&= true
+											else
+												isAllDone ||= true
+											end
+										else
+											if (preq.pre_req_group_id%2 == 1)
+												isAllDone &&= false
+											else
+												isAllDone ||= false
+											end
+										end
+									end
+								end
+								if (isAllDone)
+									if (is_avail_for_sem(session[:semesters].length, pru))
+										if (session[:semesters].last.last == 0)
+											@proceed = true
+										else
+											# check if semester still has capacity for enrol in more credit points
+											if (session[:semesters].last.length <= 4)	
+												if (calc_sem_credits((session[:semesters].length)-1) <= (100-get_unit_credit_points(pru)))	
+													params[:remain_unit].each do |remain|
+														unless session[:semesters].last.include? remain.to_i
+															@proceed = true
+														else
+															@msg = "Duplicated Unit."
+														end
+													end
+												else
+													@msg = "Credit points full!"
+												end
+											end
+										end
+									else
+										@proceed = false
+										@msg = get_streamunit_name(pru.to_i).to_s + " is not available for this semester!"
+									end
+								else
+									@msg = "Unit " + get_streamunit_name(pru) + " has pre-requisite unit that you have not done!"
+									get_prereq_list(pru).each do |preq|
+										@msg = @msg + "\\n  - " + get_streamunit_name(preq.preUnit_id)
+									end
 								end
 							end
 						end
@@ -233,7 +235,7 @@ class PlannerController < ApplicationController
 					@msg = "No unit has been chosen."
 				end
 
-			# Delete one unit from semester.
+			# Delete units from semester.
 			when 3
 				@proceed = false
 				

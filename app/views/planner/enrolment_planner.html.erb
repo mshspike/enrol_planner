@@ -2,33 +2,34 @@
 	function changeFlag(flag) {
 		document.getElementById("modflag").value = flag;
 	}
+
 	function setSemID(semID, flag) {
 		document.getElementById("semid").value = semID;
 		document.getElementById("modflag").value = flag;
 	}
 	
 	$(document).ready(function() {
-    	$('#remain_unit').hover(function() {
-        	$('#popup').show();
-    	}, function() {
-        	$('#popup').hide();
-    	});
+		$("a.showinfo").click(function() {
+			$(this).parent().parent().next().toggle();
+			return false;
+		});
 	});
 </script>
 
-<div class = "container">			<!--planner begins-->
+<div class="container">
+	<!-- START enrolment_planner form -->
 	<%= form_tag :action => "enrolment_planner" do %>
 	<%= hidden_field_tag "modflag", 0 %>
 	<%= hidden_field_tag "semid", 0 %>
 	<div class="row">
 		
-		<div class="col-md-8"> <!-- enrolment planner -->
+		<div class="col-md-7"> <!-- enrolment planner -->
 			<div class="panel panel-default">
 				
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Enrolment Planner</center></h3>
 				</div>
-				<div class="panel-body" style="height:440px; overflow:auto" >
+				<div class="panel-body" style="height:500px; overflow:auto" >
 					<% session[:semesters].length.times do |i| %>
 							<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
 					<% end %>
@@ -37,30 +38,60 @@
 			</div>
 		</div> 	<!-- end of enrolment planner -->
 		
-		<div class="col-md-4"> <!-- Remaining Units -->
+		<div class="col-md-5"> <!-- Remaining Units -->
 			<div class="panel panel-default">
 				
 				<div class="panel-heading">
 					<h3 class="panel-title"><center>Remaining Units</center></h3>
 				</div>
 				
-				<div class="panel-body" style="height:440px">
-					<p class="text-success" style="padding:1px 1px 1px 5px; margin-bottom:5px"><small><span class="glyphicon glyphicon-info-sign"></span> Hold Ctrl (Control) button to select multiple units.</small></p>
+				<div class="panel-body" style="height:500px; overflow:auto;">
 					<% unless session[:remain_units].nil? %>	
-					<%= select_tag "remain_unit", options_from_collection_for_select(Unit.find(session[:remain_units]), "id", "unitName"), multiple: true, class: 'form-control', style: "height: 380px" %>
+						<table class="table table-condensed table-striped table-hover">
+							<tr class="showinforow">
+								<th style="font-size:11px;"><!--check box button column--></th>
+								<th style="font-size:11px; text-align:center;">Code</th>
+								<th style="font-size:11px;">Unit Name</th>
+								<th style="font-size:11px; text-align:center;">Sem</th>
+								<th style="font-size:11px;"></th>
+							</tr>
+							<% session[:remain_units].each_with_index do |sru, i| %>
+								<tr>
+									<td style="font-size:11px"> <!-- checkbox button -->
+										<%= check_box_tag('remain_unit[]', sru, false) %>
+									</td>
+									<td style="font-size:11px; text-align:center"> <!-- unit code -->
+										<%= get_unit_code(sru.to_i) %>
+									</td>
+									<td style="font-size:11px"> <!-- unit name -->
+										<%= get_streamunit_name(sru.to_i) %>
+									</td>
+									<td style="font-size:11px; text-align:center;"> <!-- semester -->
+										<%= get_unit_sem_available(sru.to_i) %>
+									</td>
+									<td style="font-size:11px; text-align:right"> <!-- more info -->
+										<a href="#" class="showinfo" title="Click to show more info">More Info</a>
+									</td>
+								</tr>
+								<tr style="display: none;">
+									<td colspan="5" style="padding-left:3em; font-size:11px;">
+										<b>Semester Available:</b> <%=get_unit_sem_available(sru.to_i)%><br />
+										<b>Credit Points:</b> <%=get_unit_credit_points(sru.to_i)%><br />
+										<b>Pre-requisite:</b> <%=get_has_prereq(sru.to_i)%>
+									</td>
+								</tr>
+							<% end %>
+						</table>
 					<% end %>
 					<p align="right">Total remaining units: <%= session[:remain_units].length %></p>
-				</div>
-				<%= render partial: "master_layouts/unitinfo" %>
-				
+				</div>				
 			</div>
 		</div>		<!-- end of Remaining Units -->
-		
+	<% end %> <!--END enrolment_planner form-->
 	</div>
-	<% end %>	
 	
+
 	<div class="row">
-		
 		<div class="col-md-4">  <!-- download and email -->
 			<div class="panel panel-default">
 				
@@ -97,7 +128,7 @@
 				<div class="panel-body" style="height: 110px; margin-top: 5px">
 					<div class="form-group">
 						<input type="file" id="localFile"><br>
-						<label><a href="#" class="btn btn-default" role="button">Upload</a></label>
+						<label><a class="btn btn-default" role="button">Upload</a></label>
 					</div>
 				</div>
 				
@@ -116,7 +147,7 @@
 	</div>
 	
 	<br><br>
-</div>					<!--planner ends-->
+</div>
 
 <% if @proceed == false %>
 	<script type="text/javascript">window.alert("<%= @msg %>");</script>

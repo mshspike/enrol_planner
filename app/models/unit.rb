@@ -21,6 +21,10 @@ class Unit < ActiveRecord::Base
 		end
 	end
 
+	def unit_to_s
+		"#{unitCode} #{unitName}"
+	end
+
 	has_many :streamunits, :foreign_key=> :unit_id
 	has_many :streams, through: :streamunits
 
