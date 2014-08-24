@@ -10,11 +10,11 @@ streams = Stream.create([{streamCode: "314651", streamName: "Information Technol
 						 {streamCode: "314653", streamName: "Cyber Seurity"},
 						 {streamCode: "314654", streamName: "Software Engineering"}])
 
-units = Unit.create([{unitCode: "1920", unitName: "Object Oriented Program Design 110", creditPoints: "25", semAvailable: "1", preUnit: "false"},
-					 {unitCode: "10926", unitName: "Mathematics 103", creditPoints: "25", semAvailable: "1", preUnit: "false"},
-					 {unitCode: "1922", unitName: "Data Structure and Algorithms 120", creditPoints: "25", semAvailable: "2", preUnit: "true"},
+units = Unit.create([{unitCode: "1920", unitName: "Object Oriented Program Design 110", creditPoints: "25", semAvailable: "0", preUnit: "false"},
+					 {unitCode: "10926", unitName: "Mathematics 103", creditPoints: "25", semAvailable: "0", preUnit: "false"},
+					 {unitCode: "1922", unitName: "Data Structure and Algorithms 120", creditPoints: "25", semAvailable: "0", preUnit: "true"},
 					 {unitCode: "10163", unitName: "Unix and C Programming 120", creditPoints: "25", semAvailable: "2", preUnit: "true"},
-					 {unitCode: "307590", unitName: "Statistical Data Analysis 101", creditPoints: "12.5", semAvailable: "1", preUnit: "false"},
+					 {unitCode: "307590", unitName: "Statistical Data Analysis 101", creditPoints: "12.5", semAvailable: "0", preUnit: "false"},
 					 {unitCode: "7492", unitName: "Mathematics 104", creditPoints: "25", semAvailable: "1", preUnit: "false"},
 					 {unitCode: "4521", unitName: "Computer Communications 200", creditPoints: "25", semAvailable: "1", preUnit: "true"},
 					 {unitCode: "314244", unitName: "Fundamental Concepts of Cryptography 220", creditPoints: "25", semAvailable: "1", preUnit: "true"},
@@ -23,7 +23,7 @@ units = Unit.create([{unitCode: "1920", unitName: "Object Oriented Program Desig
 					 {unitCode: "8934", unitName: "Software Engineering 200", creditPoints: "25", semAvailable: "2", preUnit: "true"},
 					 {unitCode: "303008", unitName: "Software Metrics 400", creditPoints: "25", semAvailable: "1", preUnit: "true"},
 					 {unitCode: "8933", unitName: "Software Engineering 110", creditPoints: "25", semAvailable: "1", preUnit: "false"},
-					 {unitCode: "307554", unitName: "Science Communications 101", creditPoints: "12.5", semAvailable: "1", preUnit: "false"}])
+					 {unitCode: "307554", unitName: "Science Communications 101", creditPoints: "12.5", semAvailable: "0", preUnit: "false"}])
 
 streamunits = StreamUnit.create([{stream_id: "1", unit_id: "1"},
 								 {stream_id: "2", unit_id: "1"},

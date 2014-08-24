@@ -1,166 +1,167 @@
 <script type="text/javascript">
-	function changeFlag(flag) {
-		document.getElementById("modflag").value = flag;
-	}
+    function changeFlag(flag) {
+        document.getElementById("modflag").value = flag;
+    }
 
-	function setSemID(semID, flag) {
-		document.getElementById("semid").value = semID;
-		document.getElementById("modflag").value = flag;
-	}
-	
-	
-	$(document).ready(function() {
-		$("a.showinfo").click(function() {
-			var $inforow = $(this).closest("tr").next();
-			if ($inforow.children().length == 0) {
-				$.ajax({
-					type: 'GET',
-					url: '/units/'+$(this).closest("tr").attr("id")+'.json',
-					context: this,
-					success: function(data) {
-						var unitinfo = "<b>Semester Available:</b> " + data.semAvailable +
-									   "<br /><b>Credit Points:</b> " + data.creditPoints +
-									   "<br /><b>Pre-requisites:</b> " + data.preUnit;
-						//$(this).closest("tr").next().toggle();
-						$(this).closest("tr").next().append("<td colspan='5' style='padding-left:3em;font-size:11px;''>"+unitinfo+"</td>");
-					}
-				});
-			}
-			$inforow.toggle();
-			return false;
-		});
-	});
+    function setSemID(semID, flag) {
+        document.getElementById("semid").value = semID;
+        document.getElementById("modflag").value = flag;
+    }
+    
+    
+    $(document).ready(function() {
+        $("a.showinfo").click(function() {
+            var $inforow = $(this).closest("tr").next();
+            if ($inforow.children().length == 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/units/'+$(this).closest("tr").attr("id")+'.json',
+                    context: this,
+                    success: function(data) {
+                        var unitinfo = "<b>Semester Available:</b> " + data.semAvailable +
+                                       "<br /><b>Credit Points:</b> " + data.creditPoints +
+                                       "<br /><b>Pre-requisites:</b> " + data.preUnit;
+                        $(this).closest("tr").next().append("<td colspan='5' style='padding-left:3em;font-size:11px;''>"+unitinfo+"</td>");
+                    }
+                });
+            }
+            $inforow.toggle();
+            return false;
+        });
+    });
 </script>
 
 <div class="container">
-	<!-- START enrolment_planner form -->
-	<%= form_tag :action => "enrolment_planner" do %>
-	<%= hidden_field_tag "modflag", 0 %>
-	<%= hidden_field_tag "semid", 0 %>
-	<div class="row">
-		
-		<div class="col-md-7"> <!-- enrolment planner -->
-			<div class="panel panel-default">
-				
-				<div class="panel-heading">
-					<h3 class="panel-title"><center>Enrolment Planner</center></h3>
-				</div>
-				<div class="panel-body" style="height:500px; overflow:auto" >
-					<% session[:semesters].length.times do |i| %>
-							<%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
-					<% end %>
-				</div>
-			
-			</div>
-		</div> 	<!-- end of enrolment planner -->
-		
-		<div class="col-md-5"> <!-- Remaining Units -->
-			<div class="panel panel-default">
-				
-				<div class="panel-heading">
-					<h3 class="panel-title"><center>Remaining Units</center></h3>
-				</div>
-				
-				<div class="panel-body" style="height:500px; overflow:auto;">
-					<% unless session[:remain_units].nil? %>	
-						<table class="table table-condensed table-striped table-hover">
-							<tr class="showinforow">
-								<th style="font-size:11px;"><!--check box button column--></th>
-								<th style="font-size:11px; text-align:center;">Code</th>
-								<th style="font-size:11px;">Unit Name</th>
-								<th style="font-size:11px; text-align:center;">Sem</th>
-								<th style="font-size:11px;"></th>
-							</tr>
-							<% session[:remain_units].each do |sru| %>
-								<tr id="<%=sru%>">
-									<td style="font-size:11px"> <!-- checkbox button -->
-										<%= check_box_tag('remain_unit[]', sru, false) %>
-									</td>
-									<td style="font-size:11px; text-align:center"> <!-- unit code -->
-										<%= get_unit_code(sru.to_i) %>
-									</td>
-									<td style="font-size:11px"> <!-- unit name -->
-										<%= get_streamunit_name(sru.to_i) %>
-									</td>
-									<td style="font-size:11px; text-align:center;"> <!-- semester -->
-										<%= get_unit_sem_available(sru.to_i) %>
-									</td>
-									<td style="font-size:11px; text-align:right"> <!-- more info -->
-										<a href="#" class="showinfo" title="Click to show more info">More Info</a>
-									</td>
-								</tr>
-								<tr style="display: none;">
-								</tr>
-							<% end %>
-						</table>
-					<% end %>
-					<p align="right">Total remaining units: <%= session[:remain_units].length %></p>
-				</div>				
-			</div>
-		</div>		<!-- end of Remaining Units -->
-	<% end %> <!--END enrolment_planner form-->
-	</div>
-	
+    <!-- START enrolment_planner form -->
+    <%= form_tag :action => "enrolment_planner" do %>
+    <%= hidden_field_tag "modflag", 0 %>
+    <%= hidden_field_tag "semid", 0 %>
+    <div class="row">
+        
+        <div class="col-md-7"> <!-- enrolment planner -->
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center>Enrolment Planner</center></h3>
+                </div>
+                <div class="panel-body" style="height:500px; overflow:auto" >
+                    <% session[:semesters].length.times do |i| %>
+                        <% if (i%2 == 0) %><div class="row"><%end%>
+                            <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
+                        <% if ((i%2 == 1)||(i==session[:semesters].length-1)) %></div><%end%>
+                    <% end %>
+                </div>
+            
+            </div>
+        </div>  <!-- end of enrolment planner -->
+        
+        <div class="col-md-5"> <!-- Remaining Units -->
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center>Remaining Units</center></h3>
+                </div>
+                
+                <div class="panel-body" style="height:500px; overflow:auto;">
+                    <% unless session[:remain_units].nil? %>    
+                    <table class="table table-condensed table-striped table-hover">
+                        <tr class="showinforow">
+                            <th style="font-size:11px;"><!--check box button column--></th>
+                            <th style="font-size:11px; text-align:center;">Code</th>
+                            <th style="font-size:11px;">Unit Name</th>
+                            <th style="font-size:11px; text-align:center;">Sem</th>
+                            <th style="font-size:11px;"></th>
+                        </tr>
+                        <% session[:remain_units].each do |sru| %>
+                            <tr id="<%=sru%>">
+                                <td style="font-size:11px"> <!-- checkbox button -->
+                                    <%= check_box_tag('remain_unit[]', sru, false) %>
+                                </td>
+                                <td style="font-size:11px; text-align:center"> <!-- unit code -->
+                                    <%= get_unit_code(sru.to_i) %>
+                                </td>
+                                <td style="font-size:11px"> <!-- unit name -->
+                                    <%= get_streamunit_name(sru.to_i) %>
+                                </td>
+                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                    <%= get_unit_sem_available(sru.to_i) %>
+                                </td>
+                                <td style="font-size:11px; text-align:right"> <!-- more info -->
+                                    <a href="#" class="showinfo" title="Click to show more info">More Info</a>
+                                </td>
+                            </tr>
+                            <tr style="display: none;">
+                            </tr>
+                        <% end %>
+                    </table>
+                    <% end %>
+                    <p align="right">Total remaining units: <%= session[:remain_units].length %></p>
+                </div>              
+            </div>
+        </div>      <!-- end of Remaining Units -->
+    <% end %> <!--END enrolment_planner form-->
+    </div>
+    
 
-	<div class="row">
-		<div class="col-md-4">  <!-- download and email -->
-			<div class="panel panel-default">
-				
-				<div class="panel-heading">
-					<h3 class="panel-title"><center>Download & Email</center></h3>
-				</div>
-				
-				<div class="panel-body" style="height: 115px">
-					<div align="center">
-						<%= link_to 'Download PDF', download_pdf_path, class: "btn btn-success" %>
-						<%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
-					</div>
-					
-					<br>
-				
-					<div class="input-group">
-						<input type="email" class="form-control" id="email" placeholder="Enter Email Address">
-	  					<span class="input-group-btn">
-	    					<button class="btn btn-default" type="button">Send</button>
-	  					</span>
-					</div>	
-				</div>
-			
-			</div>
-		</div>		<!-- end of download and email -->
+    <div class="row">
+        <div class="col-md-4">  <!-- download and email -->
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center>Download & Email</center></h3>
+                </div>
+                
+                <div class="panel-body" style="height: 115px">
+                    <div align="center">
+                        <%= link_to 'Download PDF', download_pdf_path, class: "btn btn-success" %>
+                        <%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
+                    </div>
+                    
+                    <br>
+                
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="email" placeholder="Enter Email Address">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Send</button>
+                        </span>
+                    </div>  
+                </div>
+            
+            </div>
+        </div>      <!-- end of download and email -->
 
-		<div class="col-md-4"> <!-- upload your CSV -->
-			<div class="panel panel-default">
-				
-				<div class="panel-heading">
-					<h3 class="panel-title"><center>Upload your CSV</center></h3>
-				</div>		
-				
-				<div class="panel-body" style="height: 110px; margin-top: 5px">
-					<div class="form-group">
-						<input type="file" id="localFile"><br>
-						<label><a class="btn btn-default" role="button">Upload</a></label>
-					</div>
-				</div>
-				
-			</div>
-		</div>		<!-- end of upload your CSV -->
+        <div class="col-md-4"> <!-- upload your CSV -->
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center>Upload your CSV</center></h3>
+                </div>      
+                
+                <div class="panel-body" style="height: 110px; margin-top: 5px">
+                    <div class="form-group">
+                        <input type="file" id="localFile"><br>
+                        <label><a class="btn btn-default" role="button">Upload</a></label>
+                    </div>
+                </div>
+                
+            </div>
+        </div>      <!-- end of upload your CSV -->
 
-		<div class="col-md-4"> <!-- credit points -->
-			<div class="panel panel-default">				
-				<div class="panel-heading">
-					<h3 class="panel-title"><center>Credit Points</center></h3>
-				</div>
-				<%= render partial: "master_layouts/creditpoints" %>			
-			</div>
-		</div>		<!-- end of credit points -->
-	
-	</div>
-	
-	<br><br>
+        <div class="col-md-4"> <!-- credit points -->
+            <div class="panel panel-default">               
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center>Credit Points</center></h3>
+                </div>
+                <%= render partial: "master_layouts/creditpoints" %>            
+            </div>
+        </div>      <!-- end of credit points -->
+    
+    </div>
+    
+    <br><br>
 </div>
 
 <% if @proceed == false %>
-	<script type="text/javascript">window.alert("<%= @msg %>");</script>
+    <script type="text/javascript">window.alert("<%= @msg %>");</script>
 <% end %>
 <%= render partial: "master_layouts/footer" %>
