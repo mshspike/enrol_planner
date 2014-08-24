@@ -8,9 +8,25 @@
 		document.getElementById("modflag").value = flag;
 	}
 	
+	
 	$(document).ready(function() {
 		$("a.showinfo").click(function() {
-			$(this).parent().parent().next().toggle();
+			var $inforow = $(this).closest("tr").next();
+			if ($inforow.children().length == 0) {
+				$.ajax({
+					type: 'GET',
+					url: '/units/'+$(this).closest("tr").attr("id")+'.json',
+					context: this,
+					success: function(data) {
+						var unitinfo = "<b>Semester Available:</b> " + data.semAvailable +
+									   "<br /><b>Credit Points:</b> " + data.creditPoints +
+									   "<br /><b>Pre-requisites:</b> " + data.preUnit;
+						//$(this).closest("tr").next().toggle();
+						$(this).closest("tr").next().append("<td colspan='5' style='padding-left:3em;font-size:11px;''>"+unitinfo+"</td>");
+					}
+				});
+			}
+			$inforow.toggle();
 			return false;
 		});
 	});
@@ -55,8 +71,8 @@
 								<th style="font-size:11px; text-align:center;">Sem</th>
 								<th style="font-size:11px;"></th>
 							</tr>
-							<% session[:remain_units].each_with_index do |sru, i| %>
-								<tr>
+							<% session[:remain_units].each do |sru| %>
+								<tr id="<%=sru%>">
 									<td style="font-size:11px"> <!-- checkbox button -->
 										<%= check_box_tag('remain_unit[]', sru, false) %>
 									</td>
@@ -74,11 +90,6 @@
 									</td>
 								</tr>
 								<tr style="display: none;">
-									<td colspan="5" style="padding-left:3em; font-size:11px;">
-										<b>Semester Available:</b> <%=get_unit_sem_available(sru.to_i)%><br />
-										<b>Credit Points:</b> <%=get_unit_credit_points(sru.to_i)%><br />
-										<b>Pre-requisite:</b> <%=get_has_prereq(sru.to_i)%>
-									</td>
 								</tr>
 							<% end %>
 						</table>
