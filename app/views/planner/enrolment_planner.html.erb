@@ -45,7 +45,6 @@
                     <h3 class="panel-title"><center>Enrolment Planner</center></h3>
                 </div>
                 <div class="panel-body" style="height:500px; overflow:auto" >
-                    <%= session[:semesters] %>
                     <% session[:semesters].length.times do |i| %>
                         <% if (i%2 == 0) %><div class="row"><%end%>
                             <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
