@@ -1,0 +1,19 @@
+<p>
+	<strong>Database has been dropped.</strong><br/>
+	<% `bundle exec rake db:drop` %>
+</p>
+
+<p>
+	<strong>Creating the database(s)</strong><br/>
+	<% `bundle exec rake db:create` %>
+</p>
+
+<p>
+	<strong>Applying database schema migration!</strong><br/>
+	<% `bundle exec rake db:migrate` %>
+</p>
+
+<p>
+	<strong>Seeding the database!</strong><br/>
+	<% `bundle exec rake db:seed` %>
+</p>

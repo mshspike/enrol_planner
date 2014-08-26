@@ -1,5 +1,12 @@
 EnrolPlanner::Application.routes.draw do
 
+  get "system_manager/db_drop"
+  get "system_manager/db_create"
+  get "system_manager/db_migrate"
+  get "system_manager/db_seed"
+  get "system_manager/db_init"
+  get "system_manager/update"
+  get "system_manager/index"
   resources :pre_req_groups
 
   resources :planner
