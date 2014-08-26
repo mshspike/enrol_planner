@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20140823130616) do
   create_table "pre_reqs", force: true do |t|
     t.integer  "preUnit_id"
     t.integer  "unit_id"
-    t.integer  "group"
+    t.integer  "pre_req_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
