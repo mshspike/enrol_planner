@@ -44,25 +44,6 @@
 			</div>
 			<!-- END update streams -->
 
-			<!-- START update stream_units -->
-			<div class = "panel panel-default">
-				<div class = "panel-heading" style = 'font-weight:bold'>Update Course Plan</div>
-				<div class = "panel-body">
-					<div class = "col-md-6">
-						<%= form_tag import_stream_units_path do %>
-							<div style = "width: 75%"><%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), prompt: 'Select Stream', class: 'form-control'%></div>
-							<br><%= file_field_tag :file %>
-							<br><%= submit_tag "Update selected stream", class: 'btn btn-success btn-sm'%>
-							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-      						<%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
-						<% end %>
-					</div>
-					<div class = "col-md-6">
-						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
-					</div>
-				</div>
-			</div>
-			<!-- END update stream_units -->
 		<!-- </div> -->
 		<!-- END course management -->
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140826025554) do
+ActiveRecord::Schema.define(version: 20140826032323) do
 
   create_table "pre_req_groups", force: true do |t|
     t.integer  "unit_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20140826025554) do
     t.integer  "unit_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "plannedYear"
   end
 
   create_table "streams", force: true do |t|
