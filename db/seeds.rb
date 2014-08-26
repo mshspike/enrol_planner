@@ -80,3 +80,9 @@ prereq = PreReq.create([{unit_id: "3", preUnit_id: "1"},
 						{unit_id: "10", preUnit_id: "4"},
 						{unit_id: "11", preUnit_id: "3"},
 						{unit_id: "12", preUnit_id: "11"}])
+
+user = User.new
+user.email = "admin"
+user.password = "admin"
+user.password_confirmation = "admin"
+user.save!
