@@ -45,7 +45,11 @@ class PlannerController < ApplicationController
 	def get_unit_sem_available u
 		@unit = Unit.find(u.to_i)
 		#@unit = Unit.where(id: u.to_i)
-		return @unit.semAvailable
+		if (@unit.semAvailable.to_i == 0)
+			return "Both"
+		else
+			return @unit.semAvailable
+		end
 	end
 	
 	def get_unit_code u

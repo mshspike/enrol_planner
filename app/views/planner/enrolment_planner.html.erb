@@ -18,9 +18,33 @@
                     url: '/units/'+$(this).closest("tr").attr("id")+'.json',
                     context: this,
                     success: function(data) {
-                        var unitinfo = "<b>Semester Available:</b> " + data.semAvailable +
+                        if (data.semAvailable===0) {
+                            var sem = "Both";
+                        } else {
+                            var sem = data.semAvailable;
+                        }
+                        var unitinfo = "<b>Semester Available:</b> " + sem +
                                        "<br /><b>Credit Points:</b> " + data.creditPoints +
-                                       "<br /><b>Pre-requisites:</b> " + data.preUnit;
+                                       "<br /><b>Pre-requisites:</b> ";
+                        if (data.preUnit==="true") {
+                            var preReqString = "(";
+                            for (var i=0; i<data.pre_req_groups.length; i++) {
+                                var prGroup = data.pre_req_groups[i];
+                                for (var j=0; j<prGroup.preUnits.length; j++) {
+                                    preReqString += prGroup.preUnits[j].unitName;
+                                    if (j != prGroup.preUnits.length-1) {
+                                        preReqString += " AND ";
+                                    }
+                                }
+                                preReqString += ")"
+                                if (i != data.pre_req_groups.length-1) {
+                                    preReqString += "<br />OR<br />";
+                                }
+                            }
+                            unitinfo += preReqString;
+                        } else {
+                            unitinfo += "None";
+                        }
                         $(this).closest("tr").next().append("<td colspan='5' style='padding-left:3em;font-size:11px;'>"+unitinfo+"</td>");
                     }
                 });

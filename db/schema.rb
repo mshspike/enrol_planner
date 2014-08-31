@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140826032323) do
+ActiveRecord::Schema.define(version: 20140831184442) do
 
   create_table "pre_req_groups", force: true do |t|
     t.integer  "unit_id"
@@ -22,27 +22,27 @@ ActiveRecord::Schema.define(version: 20140826032323) do
   add_index "pre_req_groups", ["unit_id"], name: "index_pre_req_groups_on_unit_id", using: :btree
 
   create_table "pre_reqs", force: true do |t|
-    t.integer  "preUnit_id"
-    t.integer  "unit_id"
     t.integer  "pre_req_group_id"
+    t.integer  "unit_id"
+    t.integer  "preUnit_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "pre_reqs", ["preUnit_id"], name: "index_pre_reqs_on_preUnit_id", using: :btree
   add_index "pre_reqs", ["unit_id"], name: "index_pre_reqs_on_unit_id", using: :btree
 
   create_table "stream_units", force: true do |t|
     t.integer  "stream_id"
     t.integer  "unit_id"
+    t.integer  "plannedYear"
+    t.integer  "plannedSemester"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "plannedYear"
   end
 
   create_table "streams", force: true do |t|
+    t.integer  "streamCode"
     t.string   "streamName"
-    t.string   "streamCode"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -51,10 +51,10 @@ ActiveRecord::Schema.define(version: 20140826032323) do
     t.integer  "unitCode"
     t.string   "unitName"
     t.string   "preUnit"
+    t.integer  "semAvailable"
     t.float    "creditPoints"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "semAvailable"
   end
 
   create_table "users", force: true do |t|
