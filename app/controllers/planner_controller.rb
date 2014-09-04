@@ -1,6 +1,6 @@
 class PlannerController < ApplicationController
 	@stream_units
-	helper_method :get_streamunit_name, :get_unit_credit_points, :get_unit_sem_available, :get_stream_name, :calc_credits, :get_unit_code, :get_has_prereq, :calc_sem_credits
+	helper_method :get_streamunit_name, :get_unit_credit_points, :get_unit_sem_available, :get_stream_name, :calc_credits, :get_unit_code, :calc_sem_credits
 
 	def show
 		
@@ -73,8 +73,14 @@ class PlannerController < ApplicationController
 			session[:enrol_planner_flag] = params[:modflag].to_i
 		end
 
+		# Deciding actions with given control flag. There are five defined actions:
+		# 1. Default action
+		# 2. Add units action
+		# 3. Remove units action
+		# 4. Finalize semester action
+		# 5. Modify previous semester action
 		case session[:enrol_planner_flag]
-			# Default action from "unit_chooser"
+			# Action #1 - Default action
 			when 1
 				@done_units = []
 				
@@ -86,7 +92,7 @@ class PlannerController < ApplicationController
 					end
 				end
 
-				# INITIALISE remain_units session variable
+				# START initialization remain_units session variable
 				session.delete(:remain_units)
 				session[:remain_units] ||= []
 
@@ -112,7 +118,7 @@ class PlannerController < ApplicationController
 				end
 				
 				# Get list of remaining units with done units object
-				@remain_units = getRemainingUnits(@done_units)
+				@remain_units = get_remaining_units(@done_units)
 
 				# Assign remaining units' IDs to session variable
 				@remain_units.each do |ru|
@@ -120,126 +126,73 @@ class PlannerController < ApplicationController
 				end
 				session[:remain_units].sort!
 
-			# Add chosen units to "plan_units" from "remaining units"
+			# Action #2 - Add units action
 			when 2
 				# Validation - proceed if:
-				#  1. semester is not in full credit
-				#  2. available for current semester
-				#  3. No Duplicated units in semester (prevent page refresh)
-				#  4. Done pre-requisites
+				# 1. Input parameter is not empty
+				# 2. No duplication in destination
+				# 3. Available for current semester
+				# 4. Semester is not in full credit
+				# 5. Units has all pre-requisite done
+				
+				# Checking #1 - If param is not nil - Pass
 				unless params[:remain_unit].nil?
 					params[:remain_unit].each do |pru|
+						lastsem_index = session[:semesters].length-1
 						@proceed = false
-						if (!@msg)
-							if (!has_prereq(pru))
-								if (is_avail_for_sem(session[:semesters].length, pru))
-									if (session[:semesters].last.last == 0)
-										@proceed = true
-									else
-										# check if semester still has capacity for enrol in more credit points
-										if (session[:semesters].last.length <= 4)	
-											if (calc_sem_credits((session[:semesters].length)-1) <= (100.0-get_unit_credit_points(pru)))	
-												params[:remain_unit].each do |remain|
-													unless session[:semesters].last.include? remain.to_i
-														@proceed = true
-													else
-														@msg = "Duplicated Unit."
-													end
-												end
-											else
-												@msg = "Credit points full!"
-											end
-										end
-									end
-								else
-									@proceed = false
-									@msg = get_streamunit_name(pru.to_i).to_s + " is not available for this semester!"
-								end
-							else	#check pre-requisite
-								prereq_list = get_prereq_list(pru)
-								isAllDone = false
 
-								prereq_list.each_with_index do |preq, index|
-									if index == 0
-										if (has_done(preq.preUnit_id))
-											isAllDone = true
-										else
-											isAllDone = false
-										end
-									else
-										if (has_done(preq.preUnit_id))
-											if (preq.pre_req_group_id%2 == 1)
-												isAllDone &&= true
-											else
-												isAllDone ||= true
-											end
-										else
-											if (preq.pre_req_group_id%2 == 1)
-												isAllDone &&= false
-											else
-												isAllDone ||= false
-											end
-										end
-									end
-								end
-								if (isAllDone)
-									if (is_avail_for_sem(session[:semesters].length, pru))
-										if (session[:semesters].last.last == 0)
-											@proceed = true
-										else
-											# check if semester still has capacity for enrol in more credit points
-											if (session[:semesters].last.length <= 4)	
-												if (calc_sem_credits((session[:semesters].length)-1) <= (100-get_unit_credit_points(pru)))	
-													params[:remain_unit].each do |remain|
-														unless session[:semesters].last.include? remain.to_i
-															@proceed = true
-														else
-															@msg = "Duplicated Unit."
-														end
-													end
-												else
-													@msg = "Credit points full!"
-												end
-											end
-										end
+						# Checking #2 - No duplication - Pass
+						unless session[:semesters][lastsem_index].include? pru.to_i
+							# Checking #3 - Available for current semester - Pass
+							if is_avail_for_sem(lastsem_index+1, pru.to_i)
+								# Checking #4 - Semester is not in full credit - Pass
+								if sem_is_not_full(lastsem_index, pru.to_i)
+									# Checking #5 - Unit has all pre-requisite done - Pass
+									if has_done_prereq(pru.to_i)
+										@proceed = true
+									# Checking #5 - Unit has all pre-requisite done - Fail
 									else
 										@proceed = false
-										@msg = get_streamunit_name(pru.to_i).to_s + " is not available for this semester!"
+										@msg = "You have not done pre-requisite units for " +get_streamunit_name(pru.to_i) \
+												+ "!"
 									end
+								#Checking #4 - Semester is not in full credit - Fail
 								else
-									@msg = "Unit " + get_streamunit_name(pru) + " has pre-requisite unit that you have not done!"
-									get_prereq_list(pru).each do |preq|
-										@msg = @msg + "\\n  - " + get_streamunit_name(preq.preUnit_id)
-									end
+									@proceed = false
+									@msg = "Semester is in full credit!"
 								end
-							end
-						end
-						if @proceed
-							session[:plan_units].push(pru.to_i)
-
-							# Add unit to "semesters" session variable
-							last_sem = session[:semesters].length-1
-							if (session[:semesters][last_sem][0] == 0)
-								session[:semesters][last_sem][0] = pru.to_i
+							# Checking #3 - Avaiable of current semester - Fail
 							else
-								sem = session[:semesters].last
-								sem.push(pru.to_i)
+								@proceed = false
+								@msg = get_streamunit_name(pru.to_i) + " is not avilable for this semester!"
+							end
+						# Checking #2 - No duplication - Fail
+						else
+							@proceed = false
+							@msg = "Duplicated units in current semester."
+						end
+
+						# If passes all checkings, start adding unit to semester.
+						if (@proceed)
+							# Add unit id to semester and planned unit list.
+							session[:plan_units].push(pru.to_i)
+							if (session[:semesters][lastsem_index][0] != 0)
+								session[:semesters][lastsem_index].push(pru.to_i)
+							else
+								session[:semesters][lastsem_index][0] = pru.to_i
 							end
 
-							# Remove unit from "remaining" list
-							session[:remain_units].length.times do |i|
-								if (session[:remain_units][i] == pru.to_i)
-									session[:remain_units].delete_at(i)
-								end
-							end
+							# Remove unit id from remaining unit list
+							session[:remain_units].delete(pru.to_i)
 						end
 					end
-					session[:remain_units].sort!
+				# Checking #1 - If param is not nil - Fail
 				else
-					@msg = "No unit has been chosen."
+					@proceed = false
+					@msg = "You have not select any unit!"
 				end
 
-			# Delete units from semester.
+			# Action 3 - Remove units actions
 			when 3
 				@proceed = false
 				
@@ -272,7 +225,7 @@ class PlannerController < ApplicationController
 					end
 				end
 
-			# Done semester. One new semester will be added.
+			# Action 4 - Finalize semester action
 			when 4
 				@proceed = false
 				
@@ -295,7 +248,7 @@ class PlannerController < ApplicationController
 					session[:semesters][newsem_index][0] = 0
 				end
 
-			# Modify previous semester
+			# Action 5 - Modify previous semester action
 			when 5
 				semid = (params[:semid].to_i)+1
 				lastrow = session[:semesters].length-1
@@ -317,7 +270,8 @@ class PlannerController < ApplicationController
 	end
 # END enrolment_planner
 
-	def getRemainingUnits done
+
+	def get_remaining_units done
 		# Get StreamUnit where SUs are in "selected stream", and ID is not in "done"
 		# Note that where() method returns ActiveRecord relations
 		unless done.nil?
@@ -330,22 +284,52 @@ class PlannerController < ApplicationController
 	end
 
 	def get_unit_credit_points uid
-		@unit = Unit.find(uid.to_i)
-		return @unit.creditPoints
+		u = Unit.where(:id => uid.to_i)
+		return u.first.creditPoints
 	end
 
-	def get_prereq_list uid
-		prereqs = PreReq.where(:unit_id => uid.to_i).order(id: :asc)
-		return prereqs
-	end
-	
-	def get_has_prereq uid
-		if has_prereq(uid.to_i)
-			pre_req = "Y"
+	def sem_is_not_full sem_index, uid
+		if (calc_sem_credits(sem_index) + get_unit_credit_points(uid.to_i) <= 100)
+			return true
 		else
-			pre_req = "N"
+			return false
 		end
-		return pre_req
+	end
+
+	def has_done_prereq uid
+		# Get all pre-req groups with given uid
+		prereq_groups_id = PreReqGroup.where(:unit_id => uid.to_i)
+		
+		# If has group
+		unless prereq_groups_id.empty?
+			prereq_groups_id.each do |prgroup_id|
+				if has_done_prereq_by_group(prgroup_id.id)
+					return true
+				end
+			end
+			return false
+		else
+			return true
+		end
+	end
+
+	def has_done_prereq_by_group gid
+		prereqs = PreReq.where(:pre_req_group_id => gid.to_i)
+		prereqs.each do |pr|
+			unless has_done_by_code(pr.preUnit_code.to_i)
+				return false
+			end
+		end
+		return true
+	end
+
+	def has_done_by_code ucode
+		u = Unit.where(:unitCode => ucode.to_i)
+		if (session[:plan_units].include? u.first.id) || (session[:done_units].include? u.first.id)
+			return true
+		else
+			return false
+		end
 	end
 
 	def calc_credits which
@@ -372,53 +356,20 @@ class PlannerController < ApplicationController
 
 	def calc_sem_credits sem_index
 		sum = 0
-		session[:semesters][sem_index].each do |sem_unit_id|
-			sum += get_unit_credit_points(sem_unit_id)
+		if session[:semesters][sem_index][0] != 0
+			session[:semesters][sem_index].each do |sem_unit_id|
+				sum += get_unit_credit_points(sem_unit_id)
+			end
 		end
 		return sum
 	end
 
 	def is_avail_for_sem sem_id, uid
-		u = Unit.find_by_id(uid.to_i)
-		if (u.semAvailable%2 == sem_id%2) || (u.semAvailable == 0)
-			avail = true
+		u = Unit.where(:id => uid.to_i).first
+		if (u.semAvailable == sem_id) || (u.semAvailable == 0)
+			return true
 		else
-			avail = false
+			return false
 		end
 	end
-
-	def has_prereq uid
-		has = false
-		if (Unit.find_by_id(uid.to_i).preUnit == "true")
-			has = true
-		end
-		return has
-	end
-
-	def has_done uid
-		if ((session[:done_units].include? uid.to_i) || (session[:plan_units].include? uid.to_i))
-			is_done = true
-		else
-			is_done = false
-		end
-		return is_done
-	end
-
-	def is_full_credit semid
-		total = 0
-		if session[:semesters][semid.to_i][0] != 0
-			session[:semesters][semid.to_i].each do |semunit|
-				total += get_unit_credit_points(semunit.to_i)
-			end
-		else
-			is_full = false
-		end
-		if total == 100
-			is_full = true
-		else
-			is_full = false
-		end
-		return is_full
-	end
-
 end
