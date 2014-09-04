@@ -73,8 +73,12 @@
 
   # START importing units from CSV
   def import
-    Unit.import(params[:file])
-    redirect_to units_path, notice: 'Units Updated Successfully'
+    unless params[:file].nil?
+		Unit.import(params[:file])
+		redirect_to units_path, notice: 'Units Updated Successfully'
+	else
+		redirect_to units_path, notice: 'NO file attached'
+	end
   end
   # END importing units from CSV
 

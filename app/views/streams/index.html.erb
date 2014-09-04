@@ -31,7 +31,7 @@
       <hr>
       <h5 style = 'font-weight:bold'>Resubmit your CSV</h5>
       <br>
-      <%= form_tag import_units_path, multipart: true do %>
+      <%= form_tag import_streams_path, multipart: true do %>
         <%= file_field_tag :file %>
         <br>
         <%= submit_tag "Upload Streams", class: 'btn btn-primary btn-sm' %>

@@ -5,18 +5,20 @@ class Unit < ActiveRecord::Base
 	validates :semAvailable, presence:true
 	
 	def self.import(file)
-		Unit.delete_all
+		#Unit.delete_all
       	ActiveRecord::Base.connection.execute("TRUNCATE units") 
 	    CSV.foreach(file.path, headers: true) do |row|
-	    	Unit.create! row.to_hash
+		units =  find_by_id(row["id"]) || new
+	    	units.attributes = row.to_hash.slice(*["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
+			units.save!
 	    end
 	end
 
 	def self.to_csv
 		CSV.generate do |csv|
-			csv << ["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
+			csv << ["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
 			all.each do |unit|
-				csv << unit.attributes.values_at(*["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
+				csv << unit.attributes.values_at(*["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
 			end
 		end
 	end

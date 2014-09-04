@@ -73,8 +73,13 @@ class StreamsController < ApplicationController
 
   # START importing streams from CSV
   def import
-    Stream.import(params[:file])
-    redirect_to streams_path, notice: "Streams Updated Successfully"
+    unless params[:file].nil?
+		Stream.import(params[:file])
+		redirect_to streams_path, notice: "Streams Updated Successfully"
+	else
+		redirect_to streams_path, notice: 'NO file attached'
+	end
+
   end
   # END importing streams from CSV
 
