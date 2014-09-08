@@ -30,11 +30,17 @@ class PlannerController < ApplicationController
 # START unit_chooser
     def unit_chooser
         unless params["streamSelect"].nil?
-            session[:selected_stream] = params["streamSelect"]
+            session[:selected_stream] = params["streamSelect"].to_i
         end
 
-        str = Stream.find(session[:selected_stream])
-        @stream_units = StreamUnit.where(:stream_id => str)
+        sid = Stream.where(:id => session[:selected_stream]).first
+        @stream_units = StreamUnit.where(:stream_id => sid)
+        @su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+        @su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+        @su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+        @su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+        @su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+        @su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
     end
 
     def get_streamunit_name uid
