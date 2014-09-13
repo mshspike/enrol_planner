@@ -1,6 +1,6 @@
 class PlannerController < ApplicationController
     @stream_units
-    helper_method :get_streamunit_name, :get_unit_credit_points, :get_unit_sem_available, :get_stream_name, :calc_credits, :get_unit_code, :calc_sem_credits
+    helper_method :calc_credits, :calc_sem_credits
 
     def show
         
@@ -17,11 +17,6 @@ class PlannerController < ApplicationController
         session.delete(:plan_units)
         session.delete(:remain_units)
         session.delete(:enrol_planner_flag)
-    end
-
-    def get_stream_name sid
-        s = Stream.find_by_id(sid)
-        return s.streamName
     end
 
 # END stream_chooser
@@ -42,28 +37,6 @@ class PlannerController < ApplicationController
         @su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
         @su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
     end
-
-    def get_streamunit_name uid
-        u = Unit.find_by_id(uid.to_i)
-        return u.unitName
-    end
-    
-    def get_unit_sem_available u
-        @unit = Unit.find(u.to_i)
-        #@unit = Unit.where(id: u.to_i)
-        if (@unit.semAvailable.to_i == 0)
-            return "Both"
-        else
-            return @unit.semAvailable
-        end
-    end
-    
-    def get_unit_code u
-        @unit = Unit.find(u.to_i)
-        #@unit = Unit.where(id: u.to_i)
-        return @unit.unitCode
-    end
-
 # END unit_chooser
 
 
@@ -85,6 +58,7 @@ class PlannerController < ApplicationController
         # 3. Remove units action
         # 4. Finalize semester action
         # 5. Modify previous semester action
+        # 6. Automated enrolment planning
         case session[:enrol_planner_flag]
             # Action #1 - Default action
             when 1
@@ -141,44 +115,44 @@ class PlannerController < ApplicationController
                 # 4. Semester is not in full credit
                 # 5. Units has all pre-requisite done
                 
-                # Checking #1 - If param is not nil - Pass
+                # Validation #1 - If param is not nil - Pass
                 unless params[:remain_unit].nil?
                     params[:remain_unit].each do |pru|
                         lastsem_index = session[:semesters].length-1
                         @proceed = false
 
-                        # Checking #2 - No duplication - Pass
+                        # Validation #2 - No duplication - Pass
                         unless session[:semesters][lastsem_index].include? pru.to_i
-                            # Checking #3 - Available for current semester - Pass
+                            # Validation #3 - Available for current semester - Pass
                             if is_avail_for_sem(lastsem_index+1, pru.to_i)
-                                # Checking #4 - Semester is not in full credit - Pass
+                                # Validation #4 - Semester is not in full credit - Pass
                                 if sem_is_not_full(lastsem_index, pru.to_i)
-                                    # Checking #5 - Unit has all pre-requisite done - Pass
+                                    # Validation #5 - Unit has all pre-requisite done - Pass
                                     if has_done_prereq(pru.to_i)
                                         @proceed = true
-                                    # Checking #5 - Unit has all pre-requisite done - Fail
+                                    # Validation #5 - Unit has all pre-requisite done - Fail
                                     else
                                         @proceed = false
-                                        @msg = "You have not done pre-requisite units for " +get_streamunit_name(pru.to_i) \
-                                                + "!"
+                                        @msg = "You have not done pre-requisite units for " + \
+                                                view_context.get_unit_name(pru) + "!"
                                     end
-                                #Checking #4 - Semester is not in full credit - Fail
+                                #Validation #4 - Semester is not in full credit - Fail
                                 else
                                     @proceed = false
                                     @msg = "Semester is in full credit!"
                                 end
-                            # Checking #3 - Avaiable of current semester - Fail
+                            # Validation #3 - Avaiable of current semester - Fail
                             else
                                 @proceed = false
-                                @msg = get_streamunit_name(pru.to_i) + " is not avilable for this semester!"
+                                @msg = view_context.get_unit_name(pru) + " is not avilable for this semester!"
                             end
-                        # Checking #2 - No duplication - Fail
+                        # Validation #2 - No duplication - Fail
                         else
                             @proceed = false
                             @msg = "Duplicated units in current semester."
                         end
 
-                        # If passes all checkings, start adding unit to semester.
+                        # If passes all Validations, start adding unit to semester.
                         if (@proceed)
                             # Add unit id to semester and planned unit list.
                             session[:plan_units].push(pru.to_i)
@@ -192,7 +166,7 @@ class PlannerController < ApplicationController
                             session[:remain_units].delete(pru.to_i)
                         end
                     end
-                # Checking #1 - If param is not nil - Fail
+                # Validation #1 - If param is not nil - Fail
                 else
                     @proceed = false
                     @msg = "You have not select any unit!"
@@ -272,10 +246,14 @@ class PlannerController < ApplicationController
                     session[:semesters].delete_at(i)
                 end
                 session[:remain_units].sort!
+
+            # Action #6 - Automated enrolment planning
+            when 6
+                sem_index = session[:semesters].length
+
         end
     end
 # END enrolment_planner
-
 
     def get_remaining_units done
         # Get StreamUnit where SUs are in "selected stream", and ID is not in "done".
@@ -290,13 +268,8 @@ class PlannerController < ApplicationController
         return remain_streamunits
     end
 
-    def get_unit_credit_points uid
-        u = Unit.where(:id => uid.to_i)
-        return u.first.creditPoints
-    end
-
     def sem_is_not_full sem_index, uid
-        if (calc_sem_credits(sem_index) + get_unit_credit_points(uid.to_i) <= 100)
+        if (calc_sem_credits(sem_index) + view_context.get_unit_creditpoints(uid.to_i) <= 100)
             return true
         else
             return false
@@ -352,7 +325,7 @@ class PlannerController < ApplicationController
 
         unless list.nil?
             list.each do |u|
-                sum += get_unit_credit_points(u.to_i)
+                sum += view_context.get_unit_creditpoints(u.to_i)
             end
         else
             sum = 0
@@ -365,7 +338,7 @@ class PlannerController < ApplicationController
         sum = 0
         if session[:semesters][sem_index][0] != 0
             session[:semesters][sem_index].each do |sem_unit_id|
-                sum += get_unit_credit_points(sem_unit_id)
+                sum += view_context.get_unit_creditpoints(sem_unit_id)
             end
         end
         return sum

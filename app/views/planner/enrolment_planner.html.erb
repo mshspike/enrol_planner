@@ -69,6 +69,11 @@
                     <h3 class="panel-title"><center>Enrolment Planner</center></h3>
                 </div>
                 <div class="panel-body" style="height:500px; overflow:auto" >
+
+
+                <%= get_unit_name(9) %>
+
+
                     <% session[:semesters].length.times do |i| %>
                         <% if (i%2 == 0) %><div class="row"><%end%>
                             <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
@@ -102,13 +107,13 @@
                                     <%= check_box_tag('remain_unit[]', sru, false) %>
                                 </td>
                                 <td style="font-size:11px; text-align:center"> <!-- unit code -->
-                                    <%= get_unit_code(sru.to_i) %>
+                                    <%= get_unit_code(sru) %>
                                 </td>
                                 <td style="font-size:11px"> <!-- unit name -->
-                                    <%= get_streamunit_name(sru.to_i) %>
+                                    <%= get_unit_name(sru) %>
                                 </td>
                                 <td style="font-size:11px; text-align:center;"> <!-- semester -->
-                                    <%= get_unit_sem_available(sru.to_i) %>
+                                    <%= get_unit_semavailable(sru) %>
                                 </td>
                                 <td style="font-size:11px; text-align:right"> <!-- more info -->
                                     <a href="#" class="showinfo" title="Click to show more info">More Info</a>

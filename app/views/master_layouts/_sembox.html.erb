@@ -17,7 +17,7 @@ numUnits = session[:semesters][count].length
 					<% if (session[:semesters][count][i].to_i > 0) %>
 						<tr>
 							<td style="font-size:11px"><%= get_unit_code(uid) %></td>
-							<td style="font-size:11px"><%=get_streamunit_name(uid)%></td>
+							<td style="font-size:11px"><%=get_unit_name(uid)%></td>
 						</tr>
 					<% end %>
 				<% end %>
