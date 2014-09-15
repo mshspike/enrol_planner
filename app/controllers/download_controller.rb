@@ -1,6 +1,10 @@
 class DownloadController < ApplicationController 
   def index
   end
+  
+  def show
+	  
+  end
 
   def pdf
   	
@@ -9,8 +13,13 @@ class DownloadController < ApplicationController
 
   	#send_file Rails.root.join('private', 'test.pdf'), :type=>"application/pdf", :x_sendfile=>true
   end
+  
+  include PlannerHelper
 
   def csv
-  	send_file Rails.root.join('private', 'test.csv'), :type=>"application/csv", :x_sendfile=>true
+	  time = Time.now.strftime('%Y%m%d%H%M%S')
+	  filename = "Enrolment_" + time
+	  
+	  send_data export_enrol_planner_csv, :type=> 'text/csv', :disposition => "attachment;filename=#{filename}.csv"
   end
 end

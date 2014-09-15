@@ -9,8 +9,16 @@ EnrolPlanner::Application.routes.draw do
   get "system_manager/index"
   resources :pre_req_groups
 
-  resources :planner
-  resources :download
+  resources :planner do
+	  collection do
+		  get "enrolment_planner"
+	  end
+  end
+  resources :download do
+	  collection do
+		  get "csv"
+	  end
+  end
   resources :admin
   resources :users
   resources :user_sessions
@@ -38,7 +46,7 @@ EnrolPlanner::Application.routes.draw do
   get "user_sessions/create"
   get "user_sessions/destroy"
   get 'login' => 'user_sessions#new', :as => :login
-
+  
   post "planner/unit_chooser" => "planner#unit_chooser"
   post "planner/enrolment_planner" => "planner#enrolment_planner"
   post "download/pdf" => "download#pdf"

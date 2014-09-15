@@ -1,6 +1,7 @@
 class PlannerController < ApplicationController
     @stream_units
     helper_method :calc_credits, :calc_sem_credits
+	include PlannerHelper
 
     def show
         
@@ -11,12 +12,7 @@ class PlannerController < ApplicationController
         @streams = Stream.all
 
         # Clear all seesion variables to avoid messing with previous data
-        session.delete(:selected_stream)
-        session.delete(:semesters)
-        session.delete(:done_units)
-        session.delete(:plan_units)
-        session.delete(:remain_units)
-        session.delete(:enrol_planner_flag)
+        clear_enrolment_planner_session
     end
 
 # END stream_chooser
@@ -47,6 +43,10 @@ class PlannerController < ApplicationController
         session[:done_units] ||= []
         session[:plan_units] ||= []
         @proceed = true
+		
+		if request.get?()
+			return
+		end
 
         if params[:modflag].to_i != 0
             session[:enrol_planner_flag] = params[:modflag].to_i
