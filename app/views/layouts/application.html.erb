@@ -10,10 +10,13 @@
 <body>
   <div>
 	<%= render partial: "master_layouts/navbar" %>
-    <span id="notice"><%= flash[:notice] %></span>
-    <span id="alert"><%= flash[:alert] %></span>
   </div>
-<%= yield %>
+	<div class="container">
+	<div class="row">
+		<%= render partial: "master_layouts/messages"%>
+	</div>
+	<%= yield %>
+	</div>
 
 </body>
 </html>
