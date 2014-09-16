@@ -255,19 +255,6 @@ class PlannerController < ApplicationController
     end
 # END enrolment_planner
 
-    def get_remaining_units done
-        # Get StreamUnit where SUs are in "selected stream", and ID is not in "done".
-        # Note that where() method returns ActiveRecord object, even if the result is
-        # only one entry, it return an ActiveRecord array.
-        unless done.nil?
-            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
-                                           .where('id not in (?)', done)
-        else
-            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
-        end
-        return remain_streamunits
-    end
-
     def sem_is_not_full sem_index, uid
         if (calc_sem_credits(sem_index) + view_context.get_unit_creditpoints(uid.to_i) <= 100)
             return true

@@ -17,9 +17,13 @@ class DownloadController < ApplicationController
   include PlannerHelper
 
   def csv
-	  time = Time.now.strftime('%Y%m%d%H%M%S')
-	  filename = "Enrolment_" + time
-	  
-	  send_data export_enrol_planner_csv, :type=> 'text/csv', :disposition => "attachment;filename=#{filename}.csv"
+	  if request.get?()
+		  time = Time.now.strftime('%Y%m%d%H%M%S')
+		  filename = "Enrolment_" + time
+		  
+		  send_data export_enrol_planner_csv, :type=> 'text/csv', :disposition => "attachment;filename=#{filename}.csv"
+	  elsif request.post?()
+		  import_enrol_planner_csv(params[:file])
+	  end
   end
 end

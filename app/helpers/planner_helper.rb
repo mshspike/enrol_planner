@@ -24,11 +24,39 @@ module PlannerHelper
 		return csv
 	end
 	
-	def import_enrol_planner_csv
+	def import_enrol_planner_csv csvdata
 		#clear the enrolment planner session
 		clear_enrolment_planner_session
 		
-		#
+		session[:done_units] = []
+        session[:plan_units] = []
+		session[:semesters] = []
+		
+		#parse csv into session
+		CSV.foreach(csvdata.path) do |row|
+			type = row[0]
+			id = row[1].to_i
+			if row[2]
+				semID = row[2].to_i
+			end
+			if (row[0] == "S")
+				session[:selected_stream] = id
+			elsif (row[0] == "P")
+				session[:plan_units].push(id)
+				if (!session[:semesters][semID])
+					session[:semesters][semID] = []
+				end
+				session[:semesters][semID].push(id)
+			elsif (row[0] == "D")
+				session[:done_units].push(row[1].to_i)
+			end
+		end
+		
+		#populate remaining units for given stream
+		populate_remaining_units(session[:done_units])
+		
+		redirect_to enrolment_planner_planner_index_path, notice: "Session Restored Successfully"
+		
 	end
 	
 	def clear_enrolment_planner_session
@@ -39,5 +67,41 @@ module PlannerHelper
         session.delete(:remain_units)
         session.delete(:enrol_planner_flag)
 	end
+	
+	#assumes selected stream already stored in session
+	def populate_remaining_units done_units_array
+		@done_units = []
+		session[:remain_units] = []
+		# Get list of done units with ID integer
+		unless done_units_array.nil?
+			done_units_array.each do |puid|
+				@done_units += StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => puid)
+			end
+		else
+			@done_units = nil
+		end
+		
+		# Get list of remaining units with done units object
+		@remain_units = get_remaining_units(@done_units)
+		
+		# Assign remaining units' IDs to session variable
+		@remain_units.each do |ru|
+			session[:remain_units].push(ru.unit_id)
+		end
+		session[:remain_units].sort!
+	end
+	
+	def get_remaining_units done
+        # Get StreamUnit where SUs are in "selected stream", and ID is not in "done".
+        # Note that where() method returns ActiveRecord object, even if the result is
+        # only one entry, it return an ActiveRecord array.
+        unless done.nil?
+            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
+			.where('id not in (?)', done)
+			else
+            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
+        end
+        return remain_streamunits
+    end
 	
 end

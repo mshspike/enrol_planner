@@ -17,6 +17,7 @@ EnrolPlanner::Application.routes.draw do
   resources :download do
 	  collection do
 		  get "csv"
+		  post "csv"
 	  end
   end
   resources :admin
