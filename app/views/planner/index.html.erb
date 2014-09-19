@@ -1,15 +1,15 @@
 <div class = "container">			<!--select stream begins-->
+	<div class="row">
+		<div class="col-md-8">
+		<div class = "panel panel-default">
 
-	<center>
-		<div class = "jumbotron" style="width:75%">
-
-			<div class="container">
-				<h2>Hello, Welcome to Enrolment Planer</h2>
+			<div class="panel-heading text-center">
+				<h3 class="panel-title">Hello, Welcome to Enrolment Planer</h3>
 			</div>
 
 			<br>
 			<%= form_tag :action => "unit_chooser" do %>
-			<div class="container">
+			<div class="panel-body">
 				<h4 align="left">Please select your stream</h4>
 
 				<%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
@@ -20,8 +20,30 @@
 			</div>
 
 		</div>
+		</div>
+		
+		<div class="col-md-3 col-md-offset-1"> <!-- upload your CSV -->
+	        <div class="panel panel-default">
 
-	</center>
+	            <div class="panel-heading">
+	                <h3 class="panel-title"><center>Continue Previous Session</center></h3>
+	            </div>      
+
+	            <div class="panel-body" style="overflow:hidden;">
+					<%= form_tag download_csv_path, multipart: true do %>
+	                <div class="form-group">
+	                    <%= file_field_tag :file %><br>
+						<%= submit_tag "Upload CSV File", class: 'btn btn-default' %>
+	                </div>
+					<% end %>
+	            </div>
+
+	        </div>
+	    </div>      <!-- end of upload your CSV -->
+		
+	</div>
+	
+	
 
 </div>					<!--select steam ends-->
 

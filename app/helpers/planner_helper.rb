@@ -8,7 +8,9 @@ module PlannerHelper
 		#store the planned units for each semester
 		session[:semesters].each_with_index do |semUnits, semID|
 			semUnits.each do |unitID|
-				rows.push({:type => "P", :unitID => unitID, :semID => semID})
+				if (unitID != 0)
+					rows.push({:type => "P", :unitID => unitID, :semID => semID})
+				end
 			end
 		end
 		#store the units already completed
@@ -39,21 +41,23 @@ module PlannerHelper
 			if row[2]
 				semID = row[2].to_i
 			end
-			if (row[0] == "S")
+			if (type == "S")
 				session[:selected_stream] = id
-			elsif (row[0] == "P")
-				session[:plan_units].push(id)
+			elsif (type == "P")
+				if (id > 0)
+					session[:plan_units].push(id)
+				end
 				if (!session[:semesters][semID])
 					session[:semesters][semID] = []
 				end
 				session[:semesters][semID].push(id)
-			elsif (row[0] == "D")
-				session[:done_units].push(row[1].to_i)
+			elsif (type == "D")
+				session[:done_units].push(id)
 			end
 		end
 		
 		#populate remaining units for given stream
-		populate_remaining_units(session[:done_units])
+		populate_remaining_units(session[:plan_units].concat(session[:done_units]))
 		
 		redirect_to enrolment_planner_planner_index_path, notice: "Session Restored Successfully"
 		
@@ -96,9 +100,8 @@ module PlannerHelper
         # Note that where() method returns ActiveRecord object, even if the result is
         # only one entry, it return an ActiveRecord array.
         unless done.nil?
-            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
-			.where('id not in (?)', done)
-			else
+            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]).where('id not in (?)', done)
+		else
             remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
         end
         return remain_streamunits
