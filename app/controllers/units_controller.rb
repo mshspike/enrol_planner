@@ -35,7 +35,6 @@
   # POST /units.json
   def create
     @unit = Unit.new(unit_params)
-
     respond_to do |format|
       if @unit.save
         format.html { redirect_to @unit, notice: 'Unit was successfully created.' }
@@ -74,8 +73,12 @@
   # START importing units from CSV
   def import
     unless params[:file].nil?
-		Unit.import(params[:file])
-		redirect_to units_path, notice: 'Units Updated Successfully'
+		@valid = Unit.import(params[:file])
+		if @valid = 1
+		redirect_to units_path, notice: 'Unit imported Successfully'
+		else
+		redirect_to units_path, notice: 'Unit imported Failed'
+		end
 	else
 		redirect_to units_path, notice: 'NO file attached'
 	end

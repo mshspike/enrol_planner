@@ -1,17 +1,42 @@
 class Unit < ActiveRecord::Base 
-	validates :unitCode, presence:true
-	validates :unitName, presence:true
-	validates :creditPoints, presence:true
-	validates :semAvailable, presence:true
+	validates :unitCode, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
+	validates :unitName, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
+	validates :creditPoints, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
+	validates :semAvailable, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
 	
 	def self.import(file)
-		#Unit.delete_all
+		arr = Array.new
       	ActiveRecord::Base.connection.execute("TRUNCATE units") 
+		ActiveRecord::Base.connection.execute("TRUNCATE pre_req_groups") 
+		ActiveRecord::Base.connection.execute("TRUNCATE pre_reqs")
 	    CSV.foreach(file.path, headers: true) do |row|
-		units =  find_by_id(row["id"]) || new
+			units =  find_by_id(row["id"]) || new
 	    	units.attributes = row.to_hash.slice(*["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
-			units.save!
+			if units.valid?
+				units.save!
+				unless units.preUnit.nil?
+					
+					pre_req_groups = units.pre_req_groups.find_by_unit_id(row["id"])|| units.pre_req_groups.new
+					pre_req_groups.attributes = row.to_hash.slice(*["id", "unit_id"])
+					pre_req_groups.save!
+					
+					
+					arr = units.preUnit.to_s
+					arr.split(/[^\w]/).map{ |s| s.to_s
+					
+					unless arr[s].empty?
+					
+						pre_reqs = units.pre_reqs.new
+						pre_reqs.preUnit_code = arr[s]
+						pre_reqs.pre_req_group_id = pre_req_groups.id
+						pre_reqs.attributes = row.to_hash.slice(*["id","unit_id"])
+						pre_reqs.save!
+					end
+					}
+				end
+			end
 	    end
+		return 1
 	end
 
 	def self.to_csv
