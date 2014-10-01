@@ -25,7 +25,9 @@ units = Unit.create([{unitCode: "1920", unitName: "Object Oriented Program Desig
                      {unitCode: "8933", unitName: "Software Engineering 110", creditPoints: "25", semAvailable: "1", preUnit: "false"},
                      {unitCode: "307554", unitName: "Science Communications 101", creditPoints: "12.5", semAvailable: "0", preUnit: "false"},
                      {unitCode: "300538", unitName: "Data Communications and Network Management 203", creditPoints: "25", semAvailable: "1", preUnit: "false"},
-                     {unitCode: "310207", unitName: "Engineering Programming 100", creditPoints: "25", semAvailable: "0", preUnit: "false"}])
+                     {unitCode: "310207", unitName: "Engineering Programming 100", creditPoints: "25", semAvailable: "0", preUnit: "false"},
+                     {unitCode: "305640", unitName: "Mathematics 136", creditPoints: "25", semAvailable: "0", preUnit: "false"},
+                     {unitCode: "305639", unitName: "Mathematics 135", creditPoints: "25", semAvailable: "0", preUnit: "false"}])
 
 streamunits = StreamUnit.create([{stream_id: "1", unit_id: "1", plannedYear: "1", plannedSemester: "1"},
                                  {stream_id: "2", unit_id: "1", plannedYear: "1", plannedSemester: "1"},

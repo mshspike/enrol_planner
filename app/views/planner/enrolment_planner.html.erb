@@ -7,54 +7,9 @@
         document.getElementById("semid").value = semID;
         document.getElementById("modflag").value = flag;
     }
-    
-    
-    $(document).ready(function() {
-        $("a.showinfo").click(function() {
-            var $inforow = $(this).closest("tr").next();
-            if ($inforow.children().length == 0) {
-                $.ajax({
-                    type: 'GET',
-                    url: '/units/'+$(this).closest("tr").attr("id")+'.json',
-                    context: this,
-                    success: function(data) {
-                        if (data.semAvailable===0) {
-                            var sem = "Both";
-                        } else {
-                            var sem = data.semAvailable;
-                        }
-                        var unitinfo = "<b>Semester Available:</b> " + sem +
-                                       "<br /><b>Credit Points:</b> " + data.creditPoints +
-                                       "<br /><b>Pre-requisites:</b> ";
-                        if (data.preUnit==="true") {
-                            var preReqString = "(";
-                            for (var i=0; i<data.pre_req_groups.length; i++) {
-                                var prGroup = data.pre_req_groups[i];
-                                for (var j=0; j<prGroup.preUnits.length; j++) {
-                                    preReqString += prGroup.preUnits[j].unitName;
-                                    if (j != prGroup.preUnits.length-1) {
-                                        preReqString += " AND ";
-                                    }
-                                }
-                                preReqString += ")"
-                                if (i != data.pre_req_groups.length-1) {
-                                    preReqString += "<br />OR<br />";
-                                }
-                            }
-                            unitinfo += preReqString;
-                        } else {
-                            unitinfo += "None";
-                        }
-                        $(this).closest("tr").next().append("<td colspan='5' style='padding-left:3em;font-size:11px;'>"+unitinfo+"</td>");
-                    }
-                });
-            }
-            $inforow.toggle();
-            return false;
-        });
-    });
 </script>
 
+<div class="container">
     <!-- START enrolment_planner form -->
     <%= form_tag :action => "enrolment_planner" do %>
     <%= hidden_field_tag "modflag", 0 %>
@@ -73,6 +28,9 @@
                             <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
                         <% if ((i%2 == 1)||(i==session[:semesters].length-1)) %></div><%end%>
                     <% end %>
+                </div>
+                <div class="panel-footer" style="text-align:center;">
+                    <%= submit_tag "Auto plan!", class: "btn btn-default btn-sm", onclick: "changeFlag(6)" %>
                 </div>
             
             </div>
@@ -161,12 +119,12 @@
                 </div>      
                 
                 <div class="panel-body" style="height: 110px; margin-top: 5px">
-					<%= form_tag download_csv_path, multipart: true do %>
+                    <%= form_tag download_csv_path, multipart: true do %>
                     <div class="form-group">
                         <%= file_field_tag :file %><br>
-						<%= submit_tag "Upload", class: 'btn btn-default' %>
+                        <%= submit_tag "Upload", class: 'btn btn-default' %>
                     </div>
-					<% end %>
+                    <% end %>
                 </div>
                 
             </div>
@@ -184,6 +142,7 @@
     </div>
     
     <br><br>
+</div>
 
 <% if @proceed == false %>
     <script type="text/javascript">window.alert("<%= @msg %>");</script>

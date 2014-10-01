@@ -40,4 +40,8 @@ module UnitsHelper
         end
         return prereq_code_list.uniq
     end
+
+    def get_uid_by_unitCode ucode
+        return Unit.where(:unitCode => ucode.to_i).first.id
+    end
 end

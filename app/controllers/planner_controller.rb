@@ -1,7 +1,7 @@
 class PlannerController < ApplicationController
     @stream_units
     helper_method :calc_credits, :calc_sem_credits
-	include PlannerHelper
+    include PlannerHelper
 
     def show
         
@@ -11,7 +11,7 @@ class PlannerController < ApplicationController
     def index
         @streams = Stream.all
 
-        # Clear all seesion variables to avoid messing with previous data
+        # Clear all session variables to avoid messing with previous data
         clear_enrolment_planner_session
     end
 
@@ -24,8 +24,25 @@ class PlannerController < ApplicationController
             session[:selected_stream] = params["streamSelect"].to_i
         end
 
-        sid = Stream.where(:id => session[:selected_stream]).first
-        @stream_units = StreamUnit.where(:stream_id => sid)
+        # Pass the selected maths subject to session variable
+        unless (params["maths"].nil?)
+            session[:maths] = params["maths"].last
+            if (session[:maths] == "2cd")
+                # Replace 2 electives with MATH135 and MATH136
+            elsif (session[:maths] == "3ab")
+                # Replace 1 elective with MATH135
+            elsif (session[:maths] == "3cd")
+                # Remain the same (MATH103)
+            end
+        else
+            session[:maths] = false
+        end
+
+        # Get the full list of units of selected stream
+        sid = Stream.where(:id => session[:selected_stream]).first.id
+        @stream_units = StreamUnit.where(:stream_id => sid.to_i)
+
+        # Put the list into array of StreamUnits, seperated by planned year and semester
         @su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
         @su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
         @su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
@@ -43,10 +60,10 @@ class PlannerController < ApplicationController
         session[:done_units] ||= []
         session[:plan_units] ||= []
         @proceed = true
-		
-		if request.get?()
-			return
-		end
+
+        if request.get?()
+            return
+        end
 
         if params[:modflag].to_i != 0
             session[:enrol_planner_flag] = params[:modflag].to_i
@@ -249,11 +266,76 @@ class PlannerController < ApplicationController
 
             # Action #6 - Automated enrolment planning
             when 6
-                sem_index = session[:semesters].length
-
+                #auto_planning(session[:semesters].length-1)
         end
     end
 # END enrolment_planner
+
+
+    # This method is under-development.
+    # It is currently not working. Will continue to work on it later.
+    def auto_planning sem_index
+        
+        if (session[:remain_units].any?)
+            # Seperate remainings to 3 array, based on semester available
+            sem1_units = StreamUnit.where(:unit_id => session[:remain_units]) \
+                                  .where(:plannedSemester => 1).order(:plannedYear).pluck(:unit_id)
+            sem2_units = StreamUnit.where(:unit_id => session[:remain_units]) \
+                                  .where(:plannedSemester => 2).order(:plannedYear).pluck(:unit_id)
+            sem0_units = Unit.where(:semAvailable => 0).pluck(:id)
+            sem0_units = StreamUnit.where(:unit_id => session[:remain_units]).where(:unit_id => sem0_units) \
+                                   .order(:plannedYear).pluck(:unit_id)
+
+            sem1_units.each do |s1u|
+                if (sem_is_not_full(sem_index, s1u))
+                    if (has_done_prereq(s1u))
+                        add_to_sem(sem_index, s1u)
+                    end
+                end
+            end
+        end
+    end
+
+    def add_to_sem sem_index, uid
+        if (session[:semesters][sem_index][0] == 0)
+            session[:semesters][sem_index][0] = uid.to_i
+        else
+            session[:semesters][sem_index].push(uid.to_i)
+        end
+        session[:plan_units].push(uid.to_i)
+        session[:remain_units].delete(uid.to_i)
+    end
+
+    def remove_from_sem sem_index, uid
+        if (session[:semesters][sem_index].delete(uid.to_i))
+            session[:plan_units].delete(uid.to_i)
+            session[:remain_units].push(uid.to_i)
+            return true
+        else
+            return false
+        end
+    end
+
+    def is_sem0_unit uid
+        if (Unit.where(:id => uid.to_i).first.semAvailable == 0)
+            return true
+        else
+            return false
+        end
+    end
+
+    def get_remaining_units done
+        # Get StreamUnit where SUs are in "selected stream", and ID is not in "done".
+        # Note that where() method returns ActiveRecord object, even if the result is
+        # only one entry, it return an ActiveRecord array.
+        unless done.nil?
+            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
+                                           .where('id not in (?)', done)
+        else
+            remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
+        end
+        return remain_streamunits
+    end
 
     def sem_is_not_full sem_index, uid
         if (calc_sem_credits(sem_index) + view_context.get_unit_creditpoints(uid.to_i) <= 100)

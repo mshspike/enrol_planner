@@ -70,6 +70,11 @@ module PlannerHelper
         session.delete(:plan_units)
         session.delete(:remain_units)
         session.delete(:enrol_planner_flag)
+
+        session.delete(:sem0_units)
+        session.delete(:sem1_units)
+        session.delete(:sem2_units)
+        session.delete(:maths)
 	end
 	
 	#assumes selected stream already stored in session

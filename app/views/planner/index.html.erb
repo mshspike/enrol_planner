@@ -1,51 +1,60 @@
-<div class = "container">			<!--select stream begins-->
-	<div class="row">
-		<div class="col-md-8">
-		<div class = "panel panel-default">
+<div class = "container">           <!--select stream begins-->
+    <div class="row">
+        <div class="col-md-8">
+        <div class = "panel panel-default">
 
-			<div class="panel-heading text-center">
-				<h3 class="panel-title">Hello, Welcome to Enrolment Planer</h3>
-			</div>
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">Hello, Welcome to Enrolment Planer</h3>
+            </div>
 
-			<br>
-			<%= form_tag :action => "unit_chooser" do %>
-			<div class="panel-body">
-				<h4 align="left">Please select your stream</h4>
+            <br>
+            <%= form_tag :action => "unit_chooser" do %>
+            <div class="panel-body">
+                <h4 align="left">Please select your stream</h4>
 
-				<%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
-				<br>
+                <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
+                <br />
 
-				<%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
-			<% end %>
-			</div>
+                <hr style="border-color:#CCC">
+                <div style="text-align:left; font-size:15px;">
+                    Please select one of the maths subjects that you have done:<br />
 
-		</div>
-		</div>
-		
-		<div class="col-md-3 col-md-offset-1"> <!-- upload your CSV -->
-	        <div class="panel panel-default">
+                    <div><label><input type="checkbox" name="maths[]" value="2cd"> Mathematics 2C/D</label></div>
+                    <div><label><input type="checkbox" name="maths[]" value="3ab"> Mathematics 3A/B</label></div>
+                    <div><label><input type="checkbox" name="maths[]" value="3cd"> Mathematics 3C/D</label></div>
+                </div>
 
-	            <div class="panel-heading">
-	                <h3 class="panel-title"><center>Continue Previous Session</center></h3>
-	            </div>      
+                <%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
+            <% end %>
+            </div>
 
-	            <div class="panel-body" style="overflow:hidden;">
-					<%= form_tag download_csv_path, multipart: true do %>
-	                <div class="form-group">
-	                    <%= file_field_tag :file %><br>
-						<%= submit_tag "Upload CSV File", class: 'btn btn-default' %>
-	                </div>
-					<% end %>
-	            </div>
+        </div>
+        </div>
+        
+        <div class="col-md-3 col-md-offset-1"> <!-- upload your CSV -->
+            <div class="panel panel-default">
 
-	        </div>
-	    </div>      <!-- end of upload your CSV -->
-		
-	</div>
-	
-	
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center>Continue Previous Session</center></h3>
+                </div>      
 
-</div>					<!--select steam ends-->
+                <div class="panel-body" style="overflow:hidden;">
+                    <%= form_tag download_csv_path, multipart: true do %>
+                    <div class="form-group">
+                        <%= file_field_tag :file %><br>
+                        <%= submit_tag "Upload CSV File", class: 'btn btn-default' %>
+                    </div>
+                    <% end %>
+                </div>
+
+            </div>
+        </div>      <!-- end of upload your CSV -->
+        
+    </div>
+    
+    
+
+</div>                  <!--select steam ends-->
 
 
 

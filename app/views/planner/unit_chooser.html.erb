@@ -3,6 +3,7 @@
 	<center>
 		
 		<div class = "jumbotron" style="width:75%">
+
 		<h3><b><%= get_stream_name(session[:selected_stream]) %></b><br /><br /></h3>
 		<h5 align="left">Here is the default course structure, you can choose the units that you have completed, and proceed for further planning.</h5>
 			<%= form_tag :action => "enrolment_planner" do %>
@@ -14,24 +15,24 @@
 							<th style="text-align:center;">Year 2 Semester 2</th>
 						</tr>
 						<tr>
-							<td id="11"><%@su_y1s1.each do |u|%><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %><br /><%end%></td>
-							<td id="12"><%@su_y1s2.each do |u|%><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %><br /><%end%></td>
+							<td id="11"><%@su_y1s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+							<td id="12"><%@su_y1s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
 						</tr>
 						<tr>
 							<th style="text-align:center;">Year 2 Semester 1</th>
 							<th style="text-align:center;">Year 2 Semester 2</th>
 						</tr>
 						<tr>
-							<td id="21"><%@su_y2s1.each do |u|%><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %><br /><%end%></td>
-							<td id="22"><%@su_y2s2.each do |u|%><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %><br /><%end%></td>
+							<td id="21"><%@su_y2s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+							<td id="22"><%@su_y2s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
 						</tr>
 						<tr>
 							<th style="text-align:center;">Year 3 Semester 1</th>
 							<th style="text-align:center;">Year 3 Semester 2</th>
 						</tr>
 						<tr>
-							<td id="31"><%@su_y3s1.each do |u|%><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %><br /><%end%></td>
-							<td id="32"><%@su_y3s2.each do |u|%><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %><br /><%end%></td>
+							<td id="31"><%@su_y3s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+							<td id="32"><%@su_y3s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
 						</tr>
 					</table>
 				</div>
