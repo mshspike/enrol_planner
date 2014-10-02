@@ -2,11 +2,7 @@ class SemboxPdf < Prawn::Document
   def initialize sembox
     super()
 	@semboxes = sembox
-	@arr = []
-
-
     header
-	session
     text_content
     table_content
     end_record
@@ -20,13 +16,7 @@ class SemboxPdf < Prawn::Document
     text "Course Planned", :size => 20
     move_down 15
   end
-  
-  def session
-	text "Session", :size => 15
-	move_down 30
-  end
-  
- 
+
   def text_content
     # The cursor for inserting content starts on the top left of the page. Here we move it down a little to create more space between the text and the image inserted above
     y_position = cursor - 50
@@ -53,7 +43,7 @@ class SemboxPdf < Prawn::Document
 		#end
 	@a = [[2,3],[4,5]]
 	#@u = a.pop
-	table sembox_columns(@a) do
+	table sembox_rows(@a) do
       row(0).font_style = :bold
       self.header = false
       self.row_colors = ['DDDDDD', 'FFFFFF']
@@ -68,11 +58,13 @@ class SemboxPdf < Prawn::Document
     #end
   #end
   
-  def sembox_columns a
+  def sembox_rows a
   
 	 move_down 15
-	#[['Unit Id','Unit Name']] + 
-	@u = a
+	a.map { |box|
+	box.map {|unit|[[unit]]}
+	}
+
 	#@u
 	
 	

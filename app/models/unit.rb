@@ -3,16 +3,24 @@ class Unit < ActiveRecord::Base
 	validates :unitName, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
 	validates :creditPoints, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
 	validates :semAvailable, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
+	validates :unitCode, uniqueness: { strict: true, message: 'Unit Code not unique' }
 	
+
 	def self.import(file)
-		arr = Array.new
-      	ActiveRecord::Base.connection.execute("TRUNCATE units") 
-		ActiveRecord::Base.connection.execute("TRUNCATE pre_req_groups") 
-		ActiveRecord::Base.connection.execute("TRUNCATE pre_reqs")
-	    CSV.foreach(file.path, headers: true) do |row|
+	
+		spreadsheet = open_spreadsheet(file)
+
+			arr = Array.new
+			ActiveRecord::Base.connection.execute("TRUNCATE units") 
+			ActiveRecord::Base.connection.execute("TRUNCATE pre_req_groups") 
+			ActiveRecord::Base.connection.execute("TRUNCATE pre_reqs")
+		
+			header = spreadsheet.row(1)
+			(2..spreadsheet.last_row).each do |i|
+			row = Hash[[header, spreadsheet.row(i)].transpose]
 			units =  find_by_id(row["id"]) || new
 	    	units.attributes = row.to_hash.slice(*["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
-			if units.valid?
+			if units.valid? 
 				units.save!
 				unless units.preUnit.nil?
 					
@@ -34,9 +42,9 @@ class Unit < ActiveRecord::Base
 					end
 					}
 				end
-			end
-	    end
-		return 1
+			end #for if
+			end #For do
+		return 1	
 	end
 
 	def self.to_csv
@@ -47,6 +55,17 @@ class Unit < ActiveRecord::Base
 			end
 		end
 	end
+	
+	def self.open_spreadsheet(file)
+		case File.extname(file.original_filename)
+			when ".csv" then Roo::Csv.new(file.path)
+			when ".xls" then Roo::Excel.new(file.path)
+			when ".xlsx" then Roo::Excelx.new(file.path)
+		else 
+			raise "You have imported an unknown file type: #{file.original_filename}."
+		end
+	end	
+	
 
 	def unit_to_s
 		"#{unitCode} #{unitName}"
@@ -59,5 +78,5 @@ class Unit < ActiveRecord::Base
 	has_many :preUnits, through: :pre_reqs
 
 	has_many :pre_req_groups, :foreign_key=> :unit_id
-
+	validates_uniqueness_of :unitCode
 end
