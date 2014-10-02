@@ -4,7 +4,18 @@ class PlannerController < ApplicationController
     include PlannerHelper
 
     def show
-        
+		@sembox = session[:semesters]
+
+		time = Time.now.strftime('%Y%m%d%H%M%S')
+		filename = "CoursePlan_" + time
+		respond_to do |format|
+			format.html
+			format.pdf do
+			pdf = SemboxPdf.new(@sembox)
+        send_data pdf.render, :disposition => "attachment; filename=#{filename}.pdf", type: 'application/pdf', :page_size => "A4"
+
+			end
+		end        
     end
 
 # START stream_chooser
@@ -421,4 +432,9 @@ class PlannerController < ApplicationController
             return false
         end
     end
+	
+	def send_email 
+			@email = params[:RecipientEmail]
+			UserMailer.send_sp(@email).deliver 
+	end	
 end

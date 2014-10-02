@@ -35,7 +35,8 @@ EnrolPlanner::Application.routes.draw do
   resources :stream_units do
     collection { post :import }
   end
-
+  get "planner/send_email"
+  get "planner/sembox"
   get "download/index"
   get "download/pdf"
   get "download/csv"
@@ -50,6 +51,8 @@ EnrolPlanner::Application.routes.draw do
   
   post "planner/unit_chooser" => "planner#unit_chooser"
   post "planner/enrolment_planner" => "planner#enrolment_planner"
+  post "planner/sembox" => "planner#sembox"
+  post "planner/send_email" => "planner#send_email"
   post "download/pdf" => "download#pdf"
   post "download/csv" => "download#csv"
   post "admin/login" => "admin#login"
