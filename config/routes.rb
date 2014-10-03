@@ -36,6 +36,8 @@ EnrolPlanner::Application.routes.draw do
     collection { post :import }
   end
 
+  resources :pre_req_checker
+
   get "download/index"
   get "download/pdf"
   get "download/csv"

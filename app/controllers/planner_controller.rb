@@ -3,6 +3,8 @@ class PlannerController < ApplicationController
     helper_method :calc_credits, :calc_sem_credits
     include PlannerHelper
 
+    require "unit_module.rb"
+
     def show
         
     end
@@ -145,7 +147,7 @@ class PlannerController < ApplicationController
                                 # Validation #4 - Semester is not in full credit - Pass
                                 if sem_is_not_full(lastsem_index, pru.to_i)
                                     # Validation #5 - Unit has all pre-requisite done - Pass
-                                    if has_done_prereq(pru.to_i)
+                                    if view_context.has_done_prereq(session[:plan_units], session[:done_units], pru.to_i)
                                         @proceed = true
                                     # Validation #5 - Unit has all pre-requisite done - Fail
                                     else
@@ -266,7 +268,7 @@ class PlannerController < ApplicationController
 
             # Action #6 - Automated enrolment planning
             when 6
-                #auto_planning(session[:semesters].length-1)
+                auto_planning(session[:semesters].length-1)
         end
     end
 # END enrolment_planner
@@ -277,7 +279,7 @@ class PlannerController < ApplicationController
     def auto_planning sem_index
         
         if (session[:remain_units].any?)
-            # Seperate remainings to 3 array, based on semester available
+            # Prepare the 3 units stack
             sem1_units = StreamUnit.where(:unit_id => session[:remain_units]) \
                                   .where(:plannedSemester => 1).order(:plannedYear).pluck(:unit_id)
             sem2_units = StreamUnit.where(:unit_id => session[:remain_units]) \
@@ -286,10 +288,18 @@ class PlannerController < ApplicationController
             sem0_units = StreamUnit.where(:unit_id => session[:remain_units]).where(:unit_id => sem0_units) \
                                    .order(:plannedYear).pluck(:unit_id)
 
-            sem1_units.each do |s1u|
+            # Start adding units to semester
+            sem1_units.each do |s1u|    # Semester 1 units
                 if (sem_is_not_full(sem_index, s1u))
-                    if (has_done_prereq(s1u))
+                    if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s1u))
                         add_to_sem(sem_index, s1u)
+                    end
+                end
+            end
+            sem0_units.each do |s0u|    # Semester 0 units
+                if (sem_is_not_full(sem_index, s0u))
+                    if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s0u))
+                        add_to_sem(sem_index, s0u)
                     end
                 end
             end
@@ -339,42 +349,6 @@ class PlannerController < ApplicationController
 
     def sem_is_not_full sem_index, uid
         if (calc_sem_credits(sem_index) + view_context.get_unit_creditpoints(uid.to_i) <= 100)
-            return true
-        else
-            return false
-        end
-    end
-
-    def has_done_prereq uid
-        # Get all pre-req groups with given uid
-        prereq_groups_id = PreReqGroup.where(:unit_id => uid.to_i)
-        
-        # If has group
-        unless prereq_groups_id.empty?
-            prereq_groups_id.each do |prgroup_id|
-                if has_done_prereq_by_group(prgroup_id.id)
-                    return true
-                end
-            end
-            return false
-        else
-            return true
-        end
-    end
-
-    def has_done_prereq_by_group gid
-        prereqs = PreReq.where(:pre_req_group_id => gid.to_i)
-        prereqs.each do |pr|
-            unless has_done_by_code(pr.preUnit_code.to_i)
-                return false
-            end
-        end
-        return true
-    end
-
-    def has_done_by_code ucode
-        u = Unit.where(:unitCode => ucode.to_i)
-        if (session[:plan_units].include? u.first.id) || (session[:done_units].include? u.first.id)
             return true
         else
             return false
