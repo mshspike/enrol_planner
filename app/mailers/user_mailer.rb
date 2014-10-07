@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
   
 	def send_sp(recipient)
 		@email = recipient
-		mail(to: @email, subject: 'testingEP') 
+		mail(to: @email, subject: 'Study Plan From Enrolment Planner ') 
 		attachments["StudyPlan.pdf"] = SemboxPdf.new(view_context).render
 
 	end

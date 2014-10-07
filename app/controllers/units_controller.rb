@@ -72,7 +72,9 @@
 
   # START importing units from CSV
   def import
+	# check if the user attach empty file 
     unless params[:file].nil?
+		# if it is imported successfully, the import method will return 1
 		@valid = Unit.import(params[:file])
 		if @valid = 1
 		redirect_to units_path, notice: 'Unit imported Successfully'

@@ -27,20 +27,7 @@ class SemboxPdf < Prawn::Document
     # This makes a call to product_rows and gets back an array of data that will populate the columns and rows of a table
     # I then included some styling to include a header and make its text bold. I made the row background colors alternate between grey and white
     # Then I set the table column widths
-    #table unit_rows do
-     # row(0).font_style = :bold
-    #  self.header = false
-     # self.row_colors = ['DDDDDD', 'FFFFFF']
-      #self.column_widths = [40, 300, 200]
-   # end
 
-			#table sembox_rows(@arr) do
-			#row(0).font_style = :bold
-			#self.header = false
-			#self.row_colors = ['DDDDDD', 'FFFFFF']
-			#self.column_widths = [50, 90, 400]
-
-		#end
 	@a = [[2,3],[4,5]]
 	#@u = a.pop
 	table sembox_rows(@a) do
@@ -51,12 +38,7 @@ class SemboxPdf < Prawn::Document
     end
   end
  
-  #def unit_rows
-    #[['Unit Code', 'Unit Name', 'Pre Unit', 'Credit Points', 'Semester Available']] +
-     # Unit.all.map do |unit|
-     # [unit.unitCode, unit.unitName, unit.preUnit, unit.creditPoints, unit.semAvailable]
-    #end
-  #end
+
   
   def sembox_rows a
   
@@ -65,20 +47,7 @@ class SemboxPdf < Prawn::Document
 	box.map {|unit|[[unit]]}
 	}
 
-	#@u
-	
-	
-	#.each do |arr|
-		#[Unit.where(:id =>arr).pluck(:unitName) ]
-	
-  	#@semboxes.map do |box|
 
-			# u = Unit.where(:id =>u).pluck(:unitName)
-			 
-
-	#end	
-	#.each do |sembox|
-		#u = Unit.where(:id => sembox).first
   end
   def end_record
     move_down 35
