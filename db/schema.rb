@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140831184442) do
+ActiveRecord::Schema.define(version: 20141009113546) do
 
   create_table "pre_req_groups", force: true do |t|
     t.integer  "unit_id"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20140831184442) do
   create_table "pre_reqs", force: true do |t|
     t.integer  "pre_req_group_id"
     t.integer  "unit_id"
-    t.integer  "preUnit_code"
+    t.string   "preUnit_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -41,14 +41,14 @@ ActiveRecord::Schema.define(version: 20140831184442) do
   end
 
   create_table "streams", force: true do |t|
-    t.integer  "streamCode"
+    t.string   "streamCode"
     t.string   "streamName"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "units", force: true do |t|
-    t.integer  "unitCode"
+    t.string   "unitCode"
     t.string   "unitName"
     t.string   "preUnit"
     t.integer  "semAvailable"

@@ -193,7 +193,7 @@ class PlannerController < ApplicationController
                             end
 
                             # Remove unit id from remaining unit list
-                            session[:remain_units].delete(pru.to_i)
+                            session[:remain_units].slice!(session[:remain_units].index(pru.to_i))
                         end
                     end
                 # Validation #1 - If param is not nil - Fail
@@ -324,17 +324,13 @@ class PlannerController < ApplicationController
             session[:semesters][sem_index].push(uid.to_i)
         end
         session[:plan_units].push(uid.to_i)
-        session[:remain_units].delete(uid.to_i)
+        session[:remain_units].slice!(session[:remain_units].index(uid.to_i))
     end
 
     def remove_from_sem sem_index, uid
-        if (session[:semesters][sem_index].delete(uid.to_i))
-            session[:plan_units].delete(uid.to_i)
-            session[:remain_units].push(uid.to_i)
-            return true
-        else
-            return false
-        end
+        session[:semesters][sem_index].slice!(session[:semesters][sem_index].index(uid.to_i))
+        session[:plan_units].slice!(session[:plan_units].index(uid.to_i))
+        session[:remain_units].push(uid.to_i)
     end
 
     def is_sem0_unit uid
