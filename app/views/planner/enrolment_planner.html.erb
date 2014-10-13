@@ -7,9 +7,83 @@
         document.getElementById("semid").value = semID;
         document.getElementById("modflag").value = flag;
     }
+	
+	$(function() {
+		/* configure unitLists to be sortable */
+		$( ".unitsList tbody" ).sortable({
+		      connectWith: ".unitsList tbody",
+			  items: ".unitRow",
+			  receive: function(event, ui) {
+					/* validate the change */
+					var unitSem = ui.item.attr('sem-avail');
+					var thisSem = $(this).parent().attr('sem');
+					if ((unitSem=="Both") || (thisSem == unitSem) || ($(this).parent().is('#remainUnits'))) {
+						$(".semtable tbody").each(validateUnitsList);
+						$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody").children().length);
+						updateCreditPointsBox();
+					} else {
+						alert("Unit not available this semester.");
+						$(ui.sender).sortable('cancel');
+					}
+			    }
+	    	}).disableSelection();
+	
+		/* validate immediately */
+		$(".unitsList tbody").each(validateUnitsList);
+	});
+	
+	function validateUnitsList() {
+		var credits = 0;
+		var creditsRow = $(this).parent().children("tfoot").children(".creditsRow");
+		$(this).children(".unitRow").each(function() {
+			credits+=parseFloat($(this).attr('credit-points'));
+		});
+		$(this).parent().attr('credit-points', credits);
+		$(this).children().remove(".sort-disabled");
+		if (credits>100) {
+			//$(ui.sender).sortable('cancel');
+			//alert('Your selection has been cancelled. Credit points exceeded');
+			creditsRow.css("color", "#cc0000");creditsRow.css("font-weight", "bold");
+		} else if (credits == 0) {
+			$(this).append('<tr class="sort-disabled"><td>No units planned</td><td></td></tr>');
+		} else {creditsRow.css("color", "");creditsRow.css("font-weight", "");}
+			creditsRow.html('<td colspan="3"><div style="font-size:11px; text-align:right;">Credit points: '+credits+'</div></td>');
+	}
+	
+	function updateCreditPointsBox() {
+		var creditsPlanned = 0;
+		var creditsRemaining = 0;
+		$('.semtable').each(function() {
+			$(this).children("tbody").children('.unitRow').each(function() {
+				creditsPlanned += parseFloat($(this).attr('credit-points'));
+			});
+		});
+		$('#remainUnits tbody').children(".unitRow").each(function() {
+			creditsRemaining += parseFloat($(this).attr('credit-points'));
+		});
+		$('#plan-pts').attr('placeholder', creditsPlanned);
+		$('#rem-pts').attr('placeholder', creditsRemaining);
+	}
+	
+	function requestPreReqValidation() {
+		/* create unit planning data structure. */
+		var semesters = [];
+		var remainUnits = [];
+		/* populate unit planning data structure */
+		$('.semtable').each(function() {
+			var semUnits = [];
+			$(this).children("tbody").children('.unitRow').each(function() {
+				semUnits.push($(this).attr('code'));
+			});
+			semesters[$(this).attr('semtable-id')] = semUnits;
+		});
+		$('#remainUnits tbody').children(".unitRow").each(function() {
+			remainUnits.push($(this).attr('code'));
+		});
+	}
+	
 </script>
 
-<div class="container">
     <!-- START enrolment_planner form -->
     <%= form_tag :action => "enrolment_planner" do %>
     <%= hidden_field_tag "modflag", 0 %>
@@ -22,7 +96,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title"><center>Enrolment Planner</center></h3>
                 </div>
-                <div class="panel-body" style="height:500px; overflow:auto" >
+                <div class="panel-body" style="height:500px; overflow:auto;overflow-x;hidden;" >
                     <% session[:semesters].length.times do |i| %>
                         <% if (i%2 == 0) %><div class="row"><%end%>
                             <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
@@ -45,20 +119,16 @@
                 
                 <div class="panel-body" style="height:500px; overflow:auto;">
                     <% unless session[:remain_units].nil? %> 
-                    <table class="table table-condensed table-striped table-hover">
-                        <tr class="showinforow">
-                            <th style="font-size:11px;"><!--check box button column--></th>
+                    <table class="table table-condensed table-hover unitsList" id="remainUnits">
+                        <thead><tr class="showinforow">
                             <th style="font-size:11px; text-align:center;">Code</th>
                             <th style="font-size:11px;">Unit Name</th>
                             <th style="font-size:11px; text-align:center;">Sem</th>
-                            <th style="font-size:11px;"></th>
-                        </tr>
-                        <% session[:remain_units].each do |sru| %>
-                            <tr id="<%=sru%>">
-                                <td style="font-size:11px"> <!-- checkbox button -->
-                                    <%= check_box_tag('remain_unit[]', sru, false) %>
-                                </td>
-                                <td style="font-size:11px; text-align:center"> <!-- unit code -->
+                        </tr></thead>
+						<tbody>
+						<% session[:remain_units].each do |sru| %>
+                            <tr code="<%=sru%>" credit-points="<%=get_unit_creditpoints(sru)%>" sem-avail="<%=get_unit_semavailable(sru)%>" class="unitRow">
+                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
                                     <%= get_unit_code(sru) %>
                                 </td>
                                 <td style="font-size:11px"> <!-- unit name -->
@@ -67,16 +137,15 @@
                                 <td style="font-size:11px; text-align:center;"> <!-- semester -->
                                     <%= get_unit_semavailable(sru) %>
                                 </td>
-                                <td style="font-size:11px; text-align:right"> <!-- more info -->
-                                    <a href="#" class="showinfo" title="Click to show more info">More Info</a>
-                                </td>
-                            </tr>
-                            <tr style="display: none;">
                             </tr>
                         <% end %>
+						</tbody>
+						<tfoot>
+						<tr class="remainCountRow">
+							<td colspan="3"><p align="right">Total remaining units: <%= session[:remain_units].length %></p></td>
+						</tr>
                     </table>
                     <% end %>
-                    <p align="right">Total remaining units: <%= session[:remain_units].length %></p>
                 </div>              
             </div>
         </div>      <!-- end of Remaining Units -->
@@ -144,8 +213,23 @@
     
     </div>
     
-    <br><br>
-</div>
+ <!-- modal for unit info -->
+	<div class="modal fade" id="unitInfoModal" tabindex="-1" role="dialog" aria-labelledby="unitInfoModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="unitInfoModalLabel">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 <% if @proceed == false %>
     <script type="text/javascript">window.alert("<%= @msg %>");</script>

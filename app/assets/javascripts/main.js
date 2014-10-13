@@ -1,19 +1,18 @@
 // Document-ready function to listen for clicking
 // "More Info" on Remaining Units section.
 $(document).ready(function() {
-        $("a.showinfo").click(function() {
-            var $inforow = $(this).closest("tr").next();
-            var $uid = $(this).closest("tr").attr("id");
+        $(".unitRow").click(function() {
+            var inforow = $(this).closest("tr").next();
+            var uid = $(this).closest("tr").attr("code");
 
-            if ($inforow.children().length == 0) {
                 // START Ajax GET request
                 $.ajax({
                     type: 'GET',
-                    url: '/units/'+$(this).closest("tr").attr("id")+'.json',
+                    url: '/units/'+$(this).closest("tr").attr("code")+'.json',
                     context: this,
                     success: function(data) {
                         // When Ajax request success, perform the following code.
-                        var uid = $(this).closest("tr").attr("id");
+                        var uid = $(this).closest("tr").attr("code");
 
                         // START appending unit infos to "unitinfo" string
                         if (data.semAvailable === 0) {
@@ -48,15 +47,13 @@ $(document).ready(function() {
                         }
 
                         // Append unitinfo string to actual HTML code
-                        $(this).closest("tr").next().append("<td colspan='5' style='padding-left:3em;font-size:11px;'>"
-                            + unitinfo + "<br /><a href='#' onclick='checkPrereq("
-                            + uid + ");'>Click to check Pre-requisite</a></td>");
+						// (populate the modal)
+						$("#unitInfoModal .modal-body").html(unitinfo + "<br /><a href='#' onclick='checkPrereq("
+	                            + uid + ");'>Click to check Pre-requisite</a>");
+						$("#unitInfoModal .modal-title").html(data.unitName);
+						$('#unitInfoModal').modal('show');
                     }
                 });
-            }
-
-            // Show info row (default as hidden)
-            $inforow.toggle();
 
             // This line is to avoid current webpage to refresh.
             return false;
