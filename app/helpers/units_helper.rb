@@ -37,14 +37,14 @@ module UnitsHelper
             prereq = PreReq.where(:prereq_groups_id => prg.id.to_i)
             
             prereq.each do |pr|
-                prereq_code_list.push(pr.preUnit_code.to_i)
+                prereq_code_list.push(pr.preUnit_code)
             end
         end
         return prereq_code_list.uniq
     end
 
     def get_uid_by_unitCode ucode
-        return Unit.where(:unitCode => ucode.to_i).first.id
+        return Unit.where(:unitCode => ucode).first.id
     end
 
     def has_done_prereq plan_units, done_units, uid
@@ -67,7 +67,7 @@ module UnitsHelper
     def has_done_prereq_by_group plan_units, done_units, gid
         prereqs = PreReq.where(:pre_req_group_id => gid.to_i)
         prereqs.each do |pr|
-            unless has_done_by_code(plan_units, done_units, pr.preUnit_code.to_i)
+            unless has_done_by_code(plan_units, done_units, pr.preUnit_code)
                 return false
             end
         end
@@ -75,7 +75,7 @@ module UnitsHelper
     end
 
     def has_done_by_code plan_units, done_units, ucode
-        u = Unit.where(:unitCode => ucode.to_i)
+        u = Unit.where(:unitCode => ucode)
         if (plan_units.include? u.first.id) || (done_units.include? u.first.id)
             return true
         else

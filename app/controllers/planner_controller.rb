@@ -128,13 +128,7 @@ class PlannerController < ApplicationController
                 end
                 
                 # Get list of remaining units with done units object
-                @remain_units = get_remaining_units(@done_units)
-
-                # Assign remaining units' IDs to session variable
-                @remain_units.each do |ru|
-                    session[:remain_units].push(ru.unit_id)
-                end
-                session[:remain_units].sort!
+                session[:remain_units] = get_remaining_units(@done_units)
 
             # Action #2 - Add units action
             when 2
@@ -193,7 +187,7 @@ class PlannerController < ApplicationController
                             end
 
                             # Remove unit id from remaining unit list
-                            session[:remain_units].delete(pru.to_i)
+                            session[:remain_units].slice!(session[:remain_units].index(pru.to_i))
                         end
                     end
                 # Validation #1 - If param is not nil - Fail
@@ -281,81 +275,150 @@ class PlannerController < ApplicationController
             when 6
                 auto_planning(session[:semesters].length-1)
         end
+
+        # Print out session variables to console.
+        puts "Session variables:"
+        print "    selected_stream: "
+            puts session[:selected_stream]
+        print "    enrol_planner_flag: "
+            puts session[:enrol_planner_flag]
+        print "    done_units: "
+            puts "[" + session[:done_units].join(',') + "]"
+        print "    remain_units: "
+            puts "[" + session[:remain_units].join(',') + "]"
+        print "    plan_units: "
+            puts "[" + session[:plan_units].join(',') + "]"
+        print "    semesters: "
+            session[:semesters].each do |sem|
+                print "[" + sem.join(',') + "],"
+            end
+            puts ""
     end
 # END enrolment_planner
 
 
     # This method is under-development.
     # It is currently not working. Will continue to work on it later.
+    # Params:
+    # +sem_index+:: Latest semester's index in session variable
     def auto_planning sem_index
-        
-        if (session[:remain_units].any?)
-            # Prepare the 3 units stack
-            sem1_units = StreamUnit.where(:unit_id => session[:remain_units]) \
-                                  .where(:plannedSemester => 1).order(:plannedYear).pluck(:unit_id)
-            sem2_units = StreamUnit.where(:unit_id => session[:remain_units]) \
-                                  .where(:plannedSemester => 2).order(:plannedYear).pluck(:unit_id)
-            sem0_units = Unit.where(:semAvailable => 0).pluck(:id)
-            sem0_units = StreamUnit.where(:unit_id => session[:remain_units]).where(:unit_id => sem0_units) \
-                                   .order(:plannedYear).pluck(:unit_id)
 
-            # Start adding units to semester
-            sem1_units.each do |s1u|    # Semester 1 units
-                if (sem_is_not_full(sem_index, s1u))
-                    if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s1u))
-                        add_to_sem(sem_index, s1u)
+
+        sem1_units = StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => session[:remain_units]) \
+                               .where(:plannedSemester => 1).order(:plannedYear).pluck(:unit_id)
+        sem2_units = StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => session[:remain_units]) \
+                               .where(:plannedSemester => 2).order(:plannedYear).pluck(:unit_id)
+        sem0_units = Unit.where(:semAvailable => 0).pluck(:id)
+        sem0_units = StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => session[:remain_units]) \
+                                   .where(:unit_id => sem0_units).order(:plannedYear).pluck(:unit_id)
+        
+        while (!session[:remain_units].blank?)
+            # Preparing units tacks
+            #  sem1_units:: Stack of units available for semester 1 
+            #  sem2_units:: Stack of units available for semester 2
+            #  sem0_units:: Stack of units available for all semester and flexible units such as electives and SEP
+
+
+            # Determining Semester 1 or Semester 2
+            if (sem_index % 2 == 0)     # Semester 1
+                aryDel = Array.new
+                # Foreach sem1 stack units
+                sem1_units.each do |s1u|
+                    # Checkings before adding
+                    if (sem_is_not_full(sem_index, s1u))
+                        if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s1u))
+                            add_to_sem(sem_index, s1u)
+                            aryDel.push(s1u)
+                        end
                     end
                 end
-            end
-            sem0_units.each do |s0u|    # Semester 0 units
-                if (sem_is_not_full(sem_index, s0u))
-                    if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s0u))
-                        add_to_sem(sem_index, s0u)
+                delete_from_sem_stacks(sem0_units, sem1_units, sem2_units, aryDel)
+
+                aryDel = Array.new
+                sem0_units.each do |s0u|
+                    if (sem_is_not_full(sem_index, s0u))
+                        if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s0u))
+                            add_to_sem(sem_index, s0u)
+                            aryDel.push(s0u)
+                        end
                     end
                 end
+                delete_from_sem_stacks(sem0_units, sem1_units, sem2_units, aryDel)
+            
+            else    # Semester 2
+                aryDel = Array.new
+                # Foreach sem1 stack units
+                sem2_units.each do |s2u|
+                    # Checkings before adding
+                    if (sem_is_not_full(sem_index, s2u))
+                        if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s2u))
+                            add_to_sem(sem_index, s2u)
+                            aryDel.push(s2u)
+                        end
+                    end
+                end
+                delete_from_sem_stacks(sem0_units, sem1_units, sem2_units, aryDel)
+
+                aryDel = Array.new
+                sem0_units.each do |s0u|
+                    if (sem_is_not_full(sem_index, s0u))
+                        if (view_context.has_done_prereq(session[:plan_units], session[:done_units], s0u))
+                            add_to_sem(sem_index, s0u)
+                            aryDel.push(s0u)
+                        end
+                    end
+                end
+                delete_from_sem_stacks(sem0_units, sem1_units, sem2_units, aryDel)
             end
+
+            sem_index = sem_index + 1
+            session[:semesters][sem_index] ||= []
+            session[:semesters][sem_index][0] = 0
         end
     end
 
+    def scan_sem_stack
+        
+    end
+
     def add_to_sem sem_index, uid
+        puts "****** Adding to sem... sem_index=" + sem_index.to_s + " , uid=" + uid.to_s
         if (session[:semesters][sem_index][0] == 0)
             session[:semesters][sem_index][0] = uid.to_i
         else
             session[:semesters][sem_index].push(uid.to_i)
         end
         session[:plan_units].push(uid.to_i)
-        session[:remain_units].delete(uid.to_i)
+        session[:remain_units].slice!(session[:remain_units].index(uid))
     end
 
-    def remove_from_sem sem_index, uid
-        if (session[:semesters][sem_index].delete(uid.to_i))
-            session[:plan_units].delete(uid.to_i)
-            session[:remain_units].push(uid.to_i)
-            return true
-        else
-            return false
+    def delete_from_sem_stacks stack0, stack1, stack2, uids
+        uids.each do |uid|
+            if (stack1.include?(uid))
+                stack1.slice!(stack1.index(uid))
+            end
+            if (stack2.include?(uid))
+                stack2.slice!(stack2.index(uid))
+            end
+            if (stack0.include?(uid))
+                stack0.slice!(stack0.index(uid))
+            end
         end
     end
 
-    def is_sem0_unit uid
-        if (Unit.where(:id => uid.to_i).first.semAvailable == 0)
-            return true
-        else
-            return false
-        end
-    end
-
+    # Return a list of remaining units' ID based on done units. The returning array
+    # will be sorted by plannedYear and plannedSemester.
+    # Params:
+    # +done+:: Array of done units. Note that the array may be empty,
+    #          make sure to empty-check first before accessing.
     def get_remaining_units done
-        # Get StreamUnit where SUs are in "selected stream", and ID is not in "done".
-        # Note that where() method returns ActiveRecord object, even if the result is
-        # only one entry, it return an ActiveRecord array.
         unless done.nil?
             remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
                                            .where('id not in (?)', done)
         else
             remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream])
         end
-        return remain_streamunits
+        return remain_streamunits.order(:plannedYear, :plannedSemester).pluck(:unit_id)
     end
 
     def sem_is_not_full sem_index, uid
