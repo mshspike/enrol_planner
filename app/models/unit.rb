@@ -85,8 +85,8 @@ class Unit < ActiveRecord::Base
 		"#{unitCode} #{unitName}"
 	end
 
-	has_many :streamunits, :foreign_key=> :unit_id
-	has_many :streams, through: :streamunits
+	has_many :stream_units, :foreign_key=> :unit_id
+	has_many :streams, through: :stream_units
 
 	has_many :pre_reqs, :foreign_key=> :unit_id
 	has_many :preUnits, through: :pre_reqs

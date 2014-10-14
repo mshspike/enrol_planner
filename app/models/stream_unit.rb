@@ -17,7 +17,7 @@ class StreamUnit < ActiveRecord::Base
 		end
 	end
 
-  belongs_to :stream, :foreign_key=>:stream_id, :primary_key=> :stream_id, inverse_of: :streamunits
+  belongs_to :stream, :foreign_key=>:stream_id, :primary_key=> :stream_id, inverse_of: :stream_units
   belongs_to :unit, :foreign_key=> :unit_id, :primary_key=> :unit_id, inverse_of: :Unit
 
   #delegate :stream_id, to: :stream
