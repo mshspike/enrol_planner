@@ -289,9 +289,27 @@ class PlannerController < ApplicationController
 			session[:plan_units] = session[:semesters].flatten
 			session[:remain_units] = JSON.parse(params[:remain_units])
 			#validate_all
+			@invalid_units = []
+			plan_units_so_far = []
+			session[:semesters].each_with_index do |semester, semId|
+				sem = (semId%2)+1
+				semester.each do |uid|
+					unless (uid == -1)
+						unless view_context.has_done_prereq(plan_units_so_far, session[:done_units], uid.to_i) and is_avail_for_sem(sem, uid)
+							@invalid_units.push(uid)
+						end
+					end
+				end
+				plan_units_so_far.concat semester
+			end
 			@valid = true
+			if not @invalid_units.empty?
+				@valid = false
+			end
 			# Print out session variables to console.
 			debug_print_session
+			print "    invalid_units: "
+			puts "[" + @invalid_units.join(',') + "]"
 		end
 	end
 	

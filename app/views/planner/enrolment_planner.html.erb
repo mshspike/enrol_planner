@@ -34,6 +34,7 @@
 	
 		/* validate immediately */
 		$(".unitsList tbody").each(validateUnitsList);
+		requestPreReqValidation();
 	});
 	
 	function validateUnitsList() {
@@ -55,7 +56,7 @@
 			creditsRow.css("color", "#cc0000");creditsRow.css("font-weight", "bold");
 		} else if (credits == 0) {
 			//if last sembox
-			if ($(this).parent().attr('semtable-id') == $(".semtable tbody").length-1) {
+			if (($(this).parent().attr('semtable-id') == $(".semtable tbody").length-1) && ($(this).parent().attr('semtable-id')!=0)) {
 				$(this).parent().parent().parent().parent().prepend('<button class="close" onClick="removeSemBox(this);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Close</span></button>');	
 			}
 			$(this).append('<tr class="sort-disabled"><td>No units planned</td><td></td></tr>');
@@ -94,6 +95,9 @@
 			remainUnits.push(parseInt($(this).attr('uid')));
 		});
 		
+		/* handle sem2 start */
+		if (semesters[0]==null) {semesters[0]=[];semesters[0].push(-1);}
+		
 		$.ajax({
 	        type: 'POST',
 	        url: '/planner/validate',
@@ -103,9 +107,16 @@
 				remain_units: JSON.stringify(remainUnits)
 				},
 	        success: function(data) {
+				// clear invalid highligting
+				$(".semtable tbody .unitRow").css('color', '');
+				// highlight invalid units
 	            if (data.valid === false) {
-	                alert("Something is invalid.");
-					// highlight invalid units
+					$(".semtable tbody .unitRow").each(function() {
+						var uid = parseInt($(this).attr('uid'));
+						if (-1!=$.inArray(uid, data.invalid_units)) {
+							$(this).css('color', '#cc0000');
+						}
+					});
 	            }
 	            return false;
 	        }
