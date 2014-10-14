@@ -3,16 +3,16 @@
 $(document).ready(function() {
         $(".unitRow").click(function() {
             var inforow = $(this).closest("tr").next();
-            var uid = $(this).closest("tr").attr("code");
+            var uid = $(this).closest("tr").attr("uid");
 
                 // START Ajax GET request
                 $.ajax({
                     type: 'GET',
-                    url: '/units/'+$(this).closest("tr").attr("code")+'.json',
+                    url: '/units/'+$(this).closest("tr").attr("uid")+'.json',
                     context: this,
                     success: function(data) {
                         // When Ajax request success, perform the following code.
-                        var uid = $(this).closest("tr").attr("code");
+                        var uid = $(this).closest("tr").attr("uid");
 
                         // START appending unit infos to "unitinfo" string
                         if (data.semAvailable === 0) {

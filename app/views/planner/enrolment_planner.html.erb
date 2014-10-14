@@ -8,26 +8,29 @@
         document.getElementById("modflag").value = flag;
     }
 	
+	var sortableConfig = {
+	      connectWith: ".unitsList tbody",
+		  items: ".unitRow",
+		  cursor: "move",
+		  receive: function(event, ui) {
+				/* validate the change */
+				var unitSem = ui.item.attr('sem-avail');
+				var thisSem = $(this).parent().attr('sem');
+				if ((unitSem=="Both") || (thisSem == unitSem) || ($(this).parent().is('#remainUnits'))) {
+					$(".unitsList tbody").each(validateUnitsList);
+					$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody .unitRow").length);
+					updateCreditPointsBox();
+					requestPreReqValidation();
+				} else {
+					alert("Unit not available this semester.");
+					$(ui.sender).sortable('cancel');
+				}
+		    }
+    	}
+	
 	$(function() {
 		/* configure unitLists to be sortable */
-		$( ".unitsList tbody" ).sortable({
-		      connectWith: ".unitsList tbody",
-			  items: ".unitRow",
-			  receive: function(event, ui) {
-					/* validate the change */
-					var unitSem = ui.item.attr('sem-avail');
-					var thisSem = $(this).parent().attr('sem');
-					if ((unitSem=="Both") || (thisSem == unitSem) || ($(this).parent().is('#remainUnits'))) {
-						$(".semtable tbody").each(validateUnitsList);
-						$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody").children().length);
-						updateCreditPointsBox();
-						requestPreReqValidation();
-					} else {
-						alert("Unit not available this semester.");
-						$(ui.sender).sortable('cancel');
-					}
-			    }
-	    	}).disableSelection();
+		$( ".unitsList tbody" ).sortable(sortableConfig).disableSelection();
 	
 		/* validate immediately */
 		$(".unitsList tbody").each(validateUnitsList);
@@ -41,14 +44,23 @@
 		});
 		$(this).parent().attr('credit-points', credits);
 		$(this).children().remove(".sort-disabled");
+		$(this).parent().parent().parent().parent().children().remove(".close");
+		if ($(this).parent().is('#remainUnits') && (credits==0)) {
+			$(this).append('<tr class="sort-disabled"><td>No units remaining!</td><td></td></tr>');
+			return;
+		}
 		if (credits>100) {
 			//$(ui.sender).sortable('cancel');
 			//alert('Your selection has been cancelled. Credit points exceeded');
 			creditsRow.css("color", "#cc0000");creditsRow.css("font-weight", "bold");
 		} else if (credits == 0) {
+			//if last sembox
+			if ($(this).parent().attr('semtable-id') == $(".semtable tbody").length-1) {
+				$(this).parent().parent().parent().parent().prepend('<button class="close" onClick="removeSemBox(this);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Close</span></button>');	
+			}
 			$(this).append('<tr class="sort-disabled"><td>No units planned</td><td></td></tr>');
 		} else {creditsRow.css("color", "");creditsRow.css("font-weight", "");}
-			creditsRow.html('<td colspan="3"><div style="font-size:11px; text-align:right;">Credit points: '+credits+'</div></td>');
+		creditsRow.html('<td colspan="3"><div style="font-size:11px; text-align:right;">Credit points: '+credits+'</div></td>');
 	}
 	
 	function updateCreditPointsBox() {
@@ -102,6 +114,51 @@
 		
 	}
 	
+	function removeSemBox(icon) {
+		$(icon).parent().remove();
+		/* validate immediately */
+		$(".unitsList tbody").each(validateUnitsList);
+		requestPreReqValidation();
+	}
+	
+	function addSemBox() {
+		var semId = parseInt($(".semtable").last().attr('semtable-id'))+1;
+		var year = parseInt(semId / 2)+1;
+		var sem = (semId%2)+1;
+		// find row
+		var row = null;
+		$(".row").each(function() {
+			if (parseInt($(this).attr('year-id')) == year) {
+				row = this;
+			}
+		});
+		//if not exist, create
+		if (row==null) {
+			row=document.createElement('div');
+			$(row).addClass("row");$(row).attr('year-id', year);
+			$("#planner-body").append(row);
+		}
+		var col = document.createElement('div');$(col).addClass("col-md-6");
+		var thumb = document.createElement('div');$(thumb).addClass("thumbnail");
+		$(thumb).html("<h5><center>Year "+year+" Semester "+sem+"</center></h5>");
+		var cap = document.createElement('div');$(cap).addClass("caption");
+		var table = document.createElement('table');$(table).addClass("table table-condensed table-hover unitsList semtable");
+		$(table).attr('semtable-id', semId);$(table).attr('sem', sem);
+		$(table).append(document.createElement('tbody'));
+		$(table).append(document.createElement('tfoot'));
+		$(table).children('tfoot').html('<tr class="creditsRow"></tr>');
+		$(cap).append(table);
+		$(thumb).append(cap);
+		$(col).append(thumb);
+		$(row).append(col);
+		
+		/* add new list to sortable */
+		$(table).children('tbody').sortable(sortableConfig).disableSelection();
+		
+		/* validate immediately */
+		$(".unitsList tbody").each(validateUnitsList);
+		requestPreReqValidation();
+	}
 	
 </script>
 
@@ -121,16 +178,17 @@
                 <div class="panel-heading">
                     <h3 class="panel-title"><center>Enrolment Planner</center></h3>
                 </div>
-                <div class="panel-body" style="height:500px; overflow:auto;overflow-x;hidden;" >
+                <div class="panel-body" id="planner-body" style="height:500px; overflow:auto;overflow-x;hidden;" >
                     <% session[:semesters].length.times do |i| %>
-                        <% if (i%2 == 0) %><div class="row"><%end%>
+                        <% if (i%2 == 0) %><div class="row" year-id="<%=(i+2)/2 %>"><%end%>
                             <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
                         <% if ((i%2 == 1)||(i==session[:semesters].length-1)) %></div><%end%>
                     <% end %>
                 </div>
                 <div class="panel-footer" style="text-align:center;">
                     <%= submit_tag "Auto plan!", class: "btn btn-default btn-sm", onclick: "changeFlag(6)" %>
-                </div>
+					<button class="btn btn-default btn-sm" onclick="addSemBox();" type="button"><i class="glyphicon glyphicon-plus"></i></input>
+				</div>
             
             </div>
         </div>  <!-- end of enrolment planner -->

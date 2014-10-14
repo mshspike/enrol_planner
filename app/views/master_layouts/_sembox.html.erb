@@ -13,7 +13,6 @@ numUnits = session[:semesters][count].length
 			<!-- display units of current semester. This need to be modify to "semester compatible". -->
 			<table class="table table-condensed table-hover unitsList semtable" semtable-id="<%=semester-1%>" sem="<%=sem%>">
 			<tbody>
-			<% if (semester < session[:semesters].length) %>
 				<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
 					<% if (session[:semesters][count][i].to_i > 0) %>
 						<tr class="unitRow" credit-points="<%=get_unit_creditpoints(uid)%>" sem-avail="<%=get_unit_semavailable(uid)%>" uid="<%=uid%>" >
@@ -23,11 +22,6 @@ numUnits = session[:semesters][count].length
 						</tr>
 					<% end %>
 				<% end %>
-			<% else %>
-				<% if session[:semesters][count][0] != 0 %>
-					<%= select_tag "current_sem", options_from_collection_for_select(Unit.find(session[:semesters][count]), :id, :unit_to_s), multiple: true, class: "form-control", style: "font-size:11px;", size: 6 %>
-				<% end %>
-			<% end %>
 			</tbody>
 			<tfoot>
 				<tr class="creditsRow">
@@ -42,16 +36,6 @@ numUnits = session[:semesters][count].length
 				</tr>
 			</tfoot>
 			</table>
-			<!-- buttons -->
-			<p><center>
-				<% if (semester == session[:semesters].length) %>
-					<%= submit_tag "Add", class: "btn btn-default btn-sm", onclick: "changeFlag(2)" %>
-					<%= submit_tag "Remove", class: "btn btn-default btn-sm", onclick: "changeFlag(3)" %>
-					<%= submit_tag "Done", class: "btn btn-primary btn-sm", onclick: "changeFlag(4)" %>
-				<% else %>
-					<%= submit_tag "Modify", class: "btn btn-default btn-sm", data: { confirm: "You sure want to modify? Any later semesters will be erased."}, id: count, onclick: "setSemID(this.id, 5)" %>
-				<% end %>
-			</center></p>
 		</div>
 	</div>
 </div>
