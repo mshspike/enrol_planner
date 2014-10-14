@@ -4,20 +4,45 @@ class Stream < ActiveRecord::Base
 	validates :streamCode, uniqueness: { strict: true, message: 'not unique' }
 	
 	def self.import(file)
-	
 		spreadsheet = open_spreadsheet(file)
-		ActiveRecord::Base.connection.execute("TRUNCATE streams") 
 		
+		arr = Array.new
+		ActiveRecord::Base.connection.execute("TRUNCATE streams") 
+		ActiveRecord::Base.connection.execute("TRUNCATE stream_units") 
+
 		header = spreadsheet.row(1)
 		(2..spreadsheet.last_row).each do |i|
 		row = Hash[[header, spreadsheet.row(i)].transpose]
+		#Import Data to Stream Table
 		streams =  find_by_id(row["id"]) || new
-	    	streams.attributes = row.to_hash.slice(*["id", "streamCode", "streamName"])
+	    streams.attributes = row.to_hash.slice(*["id", "streamCode", "streamName"])
 			if streams.valid? 
 				streams.save!
+				
+				arr2 = Array.new
+				arr = row["units"]
+				arr.split(/[^\w]/).map{ |a| a.to_s
+				# To Get rid of empty index
+					unless arr[a].empty?
+						arr2.push(arr[a])
+					end
+					}			
+					#Import data to stream_units table
+					(0..arr2.length-1).step(3).each do |c|
+					# Create a new row in stream_units table
+						stream_units = streams.stream_units.new
+						stream_units.stream_id = streams.id
+						aId = Unit.where(unitCode: arr2[c]).pluck(:id)
+						stream_units.unit_id = aId.pop
+						stream_units.plannedYear = arr2[c+1]
+						stream_units.plannedSemester = arr2[c+2]
+						stream_units.save!	
+					
+					end					
 			end
-		end
-		return 1
+		end	
+		return 1	
+
 	end
 
 	def self.to_csv
