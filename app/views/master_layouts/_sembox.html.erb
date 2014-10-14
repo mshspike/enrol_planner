@@ -11,12 +11,12 @@ numUnits = session[:semesters][count].length
 
 		<div class="caption">
 			<!-- display units of current semester. This need to be modify to "semester compatible". -->
-			<table class="table table-condensed table-hover unitsList semtable" semtable-id="<%=semester%>" sem="<%=sem%>">
+			<table class="table table-condensed table-hover unitsList semtable" semtable-id="<%=semester-1%>" sem="<%=sem%>">
 			<tbody>
 			<% if (semester < session[:semesters].length) %>
 				<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
 					<% if (session[:semesters][count][i].to_i > 0) %>
-						<tr class="unitRow" credit-points="<%=get_unit_creditpoints(uid)%>" sem-avail="<%=get_unit_semavailable(uid)%>" code="<%=uid%>" >
+						<tr class="unitRow" credit-points="<%=get_unit_creditpoints(uid)%>" sem-avail="<%=get_unit_semavailable(uid)%>" uid="<%=uid%>" >
 							<td style="font-size:11px; text-align:center;"><%= get_unit_code(uid) %></td>
 							<td style="font-size:11px;"><%=get_unit_name(uid)%></td>
 							<td style="font-size:11px; text-align:center;"><%=get_unit_semavailable(uid)%></td>

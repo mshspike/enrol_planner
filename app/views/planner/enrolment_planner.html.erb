@@ -21,6 +21,7 @@
 						$(".semtable tbody").each(validateUnitsList);
 						$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody").children().length);
 						updateCreditPointsBox();
+						requestPreReqValidation();
 					} else {
 						alert("Unit not available this semester.");
 						$(ui.sender).sortable('cancel');
@@ -73,16 +74,40 @@
 		$('.semtable').each(function() {
 			var semUnits = [];
 			$(this).children("tbody").children('.unitRow').each(function() {
-				semUnits.push($(this).attr('code'));
+				semUnits.push(parseInt($(this).attr('uid')));
 			});
 			semesters[$(this).attr('semtable-id')] = semUnits;
 		});
 		$('#remainUnits tbody').children(".unitRow").each(function() {
-			remainUnits.push($(this).attr('code'));
+			remainUnits.push(parseInt($(this).attr('uid')));
 		});
+		
+		$.ajax({
+	        type: 'POST',
+	        url: '/planner/validate',
+	        context: this,
+			data: {
+				semesters: JSON.stringify(semesters),
+				remain_units: JSON.stringify(remainUnits)
+				},
+	        success: function(data) {
+	            if (data.valid === false) {
+	                alert("Something is invalid.");
+					// highlight invalid units
+	            }
+	            return false;
+	        }
+	    });
+		
+		
 	}
 	
+	
 </script>
+
+<%= javascript_tag do %>
+  var session_sems = <%= session[:semesters].to_json %>;
+<% end %>
 
     <!-- START enrolment_planner form -->
     <%= form_tag :action => "enrolment_planner" do %>
@@ -127,7 +152,7 @@
                         </tr></thead>
 						<tbody>
 						<% session[:remain_units].each do |sru| %>
-                            <tr code="<%=sru%>" credit-points="<%=get_unit_creditpoints(sru)%>" sem-avail="<%=get_unit_semavailable(sru)%>" class="unitRow">
+                            <tr uid="<%=sru%>" credit-points="<%=get_unit_creditpoints(sru)%>" sem-avail="<%=get_unit_semavailable(sru)%>" class="unitRow">
                                 <td style="font-size:11px; text-align:center;"> <!-- unit code -->
                                     <%= get_unit_code(sru) %>
                                 </td>

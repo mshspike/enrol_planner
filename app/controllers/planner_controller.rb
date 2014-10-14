@@ -274,28 +274,46 @@ class PlannerController < ApplicationController
             # Action #6 - Automated enrolment planning
             when 6
                 auto_planning(session[:semesters].length-1)
+			
         end
 
         # Print out session variables to console.
-        puts "Session variables:"
-        print "    selected_stream: "
-            puts session[:selected_stream]
-        print "    enrol_planner_flag: "
-            puts session[:enrol_planner_flag]
-        print "    done_units: "
-            puts "[" + session[:done_units].join(',') + "]"
-        print "    remain_units: "
-            puts "[" + session[:remain_units].join(',') + "]"
-        print "    plan_units: "
-            puts "[" + session[:plan_units].join(',') + "]"
-        print "    semesters: "
-            session[:semesters].each do |sem|
-                print "[" + sem.join(',') + "],"
-            end
-            puts ""
+        debug_print_session
     end
 # END enrolment_planner
 
+	def validate
+		unless params[:semesters].nil?
+			# update session with posted data
+			session[:semesters] = JSON.parse(params[:semesters])
+			session[:plan_units] = session[:semesters].flatten
+			session[:remain_units] = JSON.parse(params[:remain_units])
+			#validate_all
+			@valid = true
+			# Print out session variables to console.
+			debug_print_session
+		end
+	end
+	
+	def debug_print_session
+		# Print out session variables to console.
+        puts "Session variables:"
+        print "    selected_stream: "
+		puts session[:selected_stream]
+        print "    enrol_planner_flag: "
+		puts session[:enrol_planner_flag]
+        print "    done_units: "
+		puts "[" + session[:done_units].join(',') + "]"
+        print "    remain_units: "
+		puts "[" + session[:remain_units].join(',') + "]"
+        print "    plan_units: "
+		puts "[" + session[:plan_units].join(',') + "]"
+        print "    semesters: "
+		session[:semesters].each do |sem|
+			print "[" + sem.join(',') + "],"
+		end
+		puts ""
+	end
 
     # This method is under-development.
     # It is currently not working. Will continue to work on it later.

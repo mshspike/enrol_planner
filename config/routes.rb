@@ -56,6 +56,7 @@ EnrolPlanner::Application.routes.draw do
   post "planner/enrolment_planner" => "planner#enrolment_planner"
   post "planner/sembox" => "planner#sembox"
   post "planner/send_email" => "planner#send_email"
+  post "planner/validate" => "planner#validate"
   post "download/pdf" => "download#pdf"
   post "download/csv" => "download#csv"
   post "admin/login" => "admin#login"
