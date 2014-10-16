@@ -64,7 +64,7 @@ class Stream < ActiveRecord::Base
 		end
 	end
 	
-	has_many :streamunits, :foreign_key=> :stream_id
+	has_many :stream_units, :foreign_key=> :stream_id
 	has_many :units, through:  :stream_units
 
 end
