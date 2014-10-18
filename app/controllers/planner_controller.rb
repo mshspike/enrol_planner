@@ -254,7 +254,7 @@ class PlannerController < ApplicationController
                 end
                 session[:remain_units].sort!
 
-            # Action #6 - Automated enrolment planning
+            # Action #6 - Automated enrolment planning (new semester)
             when 6
                 if (session[:semesters].last.include? 0)
                     auto_planning(session[:semesters].length-1)
@@ -263,7 +263,7 @@ class PlannerController < ApplicationController
                     auto_planning(new_sem_index)
                 end
 
-            # Action #6 - Automated enrolment planning
+            # Action #6 - Automated enrolment planning (fill gaps)
             when 7
                 # Determine if starts at semester 1 or semester 2
                 if (session[:semesters][0][0] == -1)
@@ -277,18 +277,51 @@ class PlannerController < ApplicationController
         debug_print_session
     end
 # END enrolment_planner
-    def debug_print_session
+
+	def validate
+		unless params[:semesters].nil?
+			# update session with posted data
+			session[:semesters] = JSON.parse(params[:semesters])
+			session[:plan_units] = session[:semesters].flatten
+			session[:remain_units] = JSON.parse(params[:remain_units])
+			#validate_all
+			@invalid_units = []
+			plan_units_so_far = []
+			session[:semesters].each_with_index do |semester, semId|
+				sem = (semId%2)+1
+				semester.each do |uid|
+					unless (uid == -1)
+						unless view_context.has_done_prereq(plan_units_so_far, session[:done_units], uid.to_i) and is_avail_for_sem(sem, uid)
+							@invalid_units.push(uid)
+						end
+					end
+				end
+				plan_units_so_far.concat semester
+			end
+			@valid = true
+			if not @invalid_units.empty?
+				@valid = false
+			end
+			# Print out session variables to console.
+			debug_print_session
+			print "    invalid_units: "
+			puts "[" + @invalid_units.join(',') + "]"
+		end
+	end
+	
+	def debug_print_session
+		# Print out session variables to console.
         puts "Session variables:"
         print "    selected_stream: "
-            puts session[:selected_stream]
+		puts session[:selected_stream]
         print "    enrol_planner_flag: "
-            puts session[:enrol_planner_flag]
+		puts session[:enrol_planner_flag]
         print "    done_units: "
-            puts "[" + session[:done_units].join(',') + "]"
+		puts "[" + session[:done_units].join(',') + "]"
         print "    remain_units: "
-            puts "[" + session[:remain_units].join(',') + "]"
+		puts "[" + session[:remain_units].join(',') + "]"
         print "    plan_units: "
-            puts "[" + session[:plan_units].join(',') + "]"
+		puts "[" + session[:plan_units].join(',') + "]"
         print "    semesters: "
             session[:semesters].each do |sem|
                 print "[" + sem.join(',') + "],"

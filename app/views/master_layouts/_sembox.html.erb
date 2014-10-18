@@ -11,22 +11,20 @@ numUnits = session[:semesters][count].length
 
 		<div class="caption">
 			<!-- display units of current semester. This need to be modify to "semester compatible". -->
-			<table class="table table-condensed">
-			<% if (semester < session[:semesters].length) %>
+			<table class="table table-condensed table-hover unitsList semtable" semtable-id="<%=semester-1%>" sem="<%=sem%>">
+			<tbody>
 				<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
 					<% if (session[:semesters][count][i].to_i > 0) %>
-						<tr>
-							<td style="font-size:11px"><%= get_unit_code(uid) %></td>
-							<td style="font-size:11px"><%=get_unit_name(uid)%></td>
+						<tr class="unitRow" credit-points="<%=get_unit_creditpoints(uid)%>" sem-avail="<%=get_unit_semavailable(uid)%>" uid="<%=uid%>" >
+							<td style="font-size:11px; text-align:center;"><%= get_unit_code(uid) %></td>
+							<td style="font-size:11px;"><%=get_unit_name(uid)%></td>
+							<td style="font-size:11px; text-align:center;"><%=get_unit_semavailable(uid)%></td>
 						</tr>
 					<% end %>
 				<% end %>
-			<% else %>
-				<% if session[:semesters][count][0] != 0 %>
-					<%= select_tag "current_sem", options_from_collection_for_select(Unit.find(session[:semesters][count]), :id, :unit_to_s), multiple: true, class: "form-control", style: "font-size:11px;", size: 6 %>
-				<% end %>
-			<% end %>
-				<tr>
+			</tbody>
+			<tfoot>
+				<tr class="creditsRow">
 					<td colspan="2"><div style="font-size:11px; text-align:right;">Credit points: 
 					<% if (session[:semesters][count][0] != 0) %>
 						<%= calc_sem_credits(count.to_i) %>
@@ -36,17 +34,8 @@ numUnits = session[:semesters][count].length
 					</div>
 					</td>
 				</tr>
+			</tfoot>
 			</table>
-			<!-- buttons -->
-			<p><center>
-				<% if (semester == session[:semesters].length) %>
-					<%= submit_tag "Add", class: "btn btn-default btn-sm", onclick: "changeFlag(2)" %>
-					<%= submit_tag "Remove", class: "btn btn-default btn-sm", onclick: "changeFlag(3)" %>
-					<%= submit_tag "Done", class: "btn btn-primary btn-sm", onclick: "changeFlag(4)" %>
-				<% else %>
-					<%= submit_tag "Modify", class: "btn btn-default btn-sm", data: { confirm: "You sure want to modify? Any later semesters will be erased."}, id: count, onclick: "setSemID(this.id, 5)" %>
-				<% end %>
-			</center></p>
 		</div>
 	</div>
 </div>

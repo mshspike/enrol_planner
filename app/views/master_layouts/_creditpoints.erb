@@ -2,17 +2,17 @@
 	<center>
 	<div class="col-md-4">
 		<label><center>Completed</center></label>
-		<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("completed"), style: "width: 80px; text-align: center" %>	
+		<%= text_field_tag "disabledInput", nil, class: "form-control", id: "done-pts", disabled: true, placeholder: calc_credits("completed"), style: "width: 80px; text-align: center" %>	
 	</div>
 	
 	<div class="col-md-4">
 		<label><center>Planned</center></label>
-		<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("planned"), style: "width: 80px; text-align: center" %>
+		<%= text_field_tag "disabledInput", nil, class: "form-control", id: "plan-pts", disabled: true, placeholder: calc_credits("planned"), style: "width: 80px; text-align: center" %>
 	</div>
 
 	<div class="col-md-4">
 		<label><center>Remaining</center></label>
-		<%= text_field_tag "disabledInput", nil, class: "form-control", disabled: true, placeholder: calc_credits("remaining"), style: "width: 80px; text-align: center" %>
+		<%= text_field_tag "disabledInput", nil, class: "form-control", id: "rem-pts", disabled: true, placeholder: calc_credits("remaining"), style: "width: 80px; text-align: center" %>
 	</div>
 	</center>
 	<br>
