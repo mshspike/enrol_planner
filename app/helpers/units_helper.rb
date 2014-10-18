@@ -47,39 +47,72 @@ module UnitsHelper
         return Unit.where(:unitCode => ucode).first.id
     end
 
-    def has_done_prereq plan_units, done_units, uid
-        # Get all pre-req groups with given uid
-        prereq_groups_id = PreReqGroup.where(:unit_id => uid.to_i)
-        
-        # If has group
-        unless prereq_groups_id.empty?
+    def has_done_prereq done_units, semesters, sem_index, uid
+        has_done = false
+
+        if (Unit.where(:id => uid.to_i).first.preUnit == "true")
+            prereq_groups_id = PreReqGroup.where(:unit_id => uid.to_i)
+
+            puts "Checking pre-req for uid=" + uid.to_s + ":"
             prereq_groups_id.each do |prgroup_id|
-                if has_done_prereq_by_group(plan_units, done_units, prgroup_id.id)
+                if has_done_prereq_by_group(done_units, semesters, sem_index, prgroup_id.id)
                     return true
+                else
+                    has_done = false
                 end
             end
-            return false
         else
             return true
         end
+        return has_done
     end
 
-    def has_done_prereq_by_group plan_units, done_units, gid
+    def has_done_prereq_by_group done_units, semesters, sem_index, gid
         prereqs = PreReq.where(:pre_req_group_id => gid.to_i)
+        puts "Checking group..."
         prereqs.each do |pr|
-            unless has_done_by_code(plan_units, done_units, pr.preUnit_code)
+            unless has_done_by_code(done_units, semesters, sem_index, pr.preUnit_code)
+                print pr.preUnit_code + "... Not done."
                 return false
             end
         end
         return true
     end
 
-    def has_done_by_code plan_units, done_units, ucode
-        u = Unit.where(:unitCode => ucode)
-        if (plan_units.include? u.first.id) || (done_units.include? u.first.id)
+    def has_done_by_code done_units, semesters, sem_index, ucode
+        # Grab the UID with UnitCode
+        uid = Unit.where(:unitCode => ucode).first.id.to_i
+        has_done = false
+
+        # Copy the semesters array, and delete current semester (sem_index)
+        semArray = Array.new(semesters)
+        semArray.delete_at(sem_index)
+
+        # Printing console message.
+        puts "done_units = [" + done_units.join(',') + "]"
+        print "semester = "
+        semArray.each do |sem|
+            print "[" + sem.join(',') + "],"
+        end
+        puts ""
+        print "\tuid = " + uid.to_s + " , uCode = " + ucode.to_s + ": "
+
+        # Check if unit is in done_units
+        if (done_units.include? uid)
             return true
         else
-            return false
+            has_done = false
         end
+
+        # Check if unit is in any of the semesters, except current semester.
+        semArray.each_with_index do |semester, i|
+            if (semester.include? uid)
+                return true
+            else
+                has_done = false
+            end
+        end
+
+        return has_done
     end
 end

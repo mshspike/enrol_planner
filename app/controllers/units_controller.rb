@@ -76,7 +76,7 @@
     unless params[:file].nil?
 		# if it is imported successfully, the import method will return 1
 		@valid = Unit.import(params[:file])
-		if @valid = 1
+		if @valid == 1
 		redirect_to units_path, notice: 'Unit imported Successfully'
 		else
 		redirect_to units_path, notice: 'Unit imported Failed'

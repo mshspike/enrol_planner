@@ -2,13 +2,10 @@
 	label {font-weight: normal !important};
 </style>
 
-<div class = "container">			<!--select completed units begins-->
-
+<div class = "container-full">			<!--select completed units begins-->
 	<center>
-		
-		<div class = "jumbotron" style="width:75%">
-
-		<h3><b><%= get_stream_name(session[:selected_stream]) %></b><br /><br /></h3>
+		<div class="jumbotron" style="width:75%">
+		<h3><b><%= get_stream_code(session[:selected_stream]) %> - <%= get_stream_name(session[:selected_stream]) %></b><br /><br /></h3>
 		<h5 align="left">Here is the default course structure, you can choose the units that you have completed, and proceed for further planning.</h5>
 			<%= form_tag :action => "enrolment_planner" do %>
 			<% unless @stream_units.nil? %>

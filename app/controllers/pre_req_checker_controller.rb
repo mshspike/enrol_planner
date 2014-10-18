@@ -10,7 +10,7 @@ class PreReqCheckerController < ApplicationController
 
         # has_done_prereq() returns true if all pre-requisite units are done.
         # The method is located at helpers/units_helper.rb
-        @has_done = view_context.has_done_prereq(session[:plan_units], session[:done_units], params['id'].to_i)
+        @has_done = view_context.has_done_prereq(session[:done_units], session[:semesters], session[:semesters].length-1, params['id'].to_i)
     end
 
     

@@ -79,4 +79,5 @@ function checkPrereq(uid) {
             return false;
         }
     });
+    return false;
 }
