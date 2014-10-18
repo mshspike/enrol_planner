@@ -291,7 +291,7 @@ class PlannerController < ApplicationController
 				sem = (semId%2)+1
 				semester.each do |uid|
 					unless (uid == -1)
-						unless view_context.has_done_prereq(plan_units_so_far, session[:done_units], uid.to_i) and is_avail_for_sem(sem, uid)
+						unless view_context.has_done_prereq(session[:done_units], session[:semesters], semId, uid.to_i) and is_avail_for_sem(semId, uid)
 							@invalid_units.push(uid)
 						end
 					end
