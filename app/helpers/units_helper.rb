@@ -100,7 +100,7 @@ module UnitsHelper
         end
 
         # Check if unit is in any of the semesters, except current semester.
-        semesters[0..sem_index].each do |semester|
+        semesters[0..sem_index-1].each do |semester|
             if (semester.include? uid.to_i)
                 puts "Done."
                 return true
