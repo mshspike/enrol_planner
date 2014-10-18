@@ -69,10 +69,8 @@ module UnitsHelper
 
     def has_done_prereq_by_group done_units, semesters, sem_index, gid
         prereqs = PreReq.where(:pre_req_group_id => gid.to_i)
-        puts "Checking group..."
         prereqs.each do |pr|
             unless has_done_by_code(done_units, semesters, sem_index, pr.preUnit_code)
-                print pr.preUnit_code + "... Not done."
                 return false
             end
         end
@@ -84,14 +82,10 @@ module UnitsHelper
         uid = Unit.where(:unitCode => ucode).first.id.to_i
         has_done = false
 
-        # Copy the semesters array, and delete current semester (sem_index)
-        semArray = Array.new(semesters)
-        semArray.delete_at(sem_index)
-
         # Printing console message.
         puts "done_units = [" + done_units.join(',') + "]"
         print "semester = "
-        semArray.each do |sem|
+        semesters.each do |sem|
             print "[" + sem.join(',') + "],"
         end
         puts ""
@@ -99,20 +93,23 @@ module UnitsHelper
 
         # Check if unit is in done_units
         if (done_units.include? uid)
+            puts "Done."
             return true
         else
             has_done = false
         end
 
         # Check if unit is in any of the semesters, except current semester.
-        semArray.each_with_index do |semester, i|
-            if (semester.include? uid)
+        semesters[0..sem_index].each do |semester|
+            if (semester.include? uid.to_i)
+                puts "Done."
                 return true
             else
                 has_done = false
             end
         end
 
+        puts "Not done."
         return has_done
     end
 end
