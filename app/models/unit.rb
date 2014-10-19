@@ -4,7 +4,7 @@ class Unit < ActiveRecord::Base
 	validates :creditPoints, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
 	validates :semAvailable, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
 	validates_length_of :unitCode, :within => 3..10, :too_long => "Invalid Unit Code", :too_short => "Invalid Unit Code"
-	validates_length_of :unitName, :within => 5..50, :too_long => "Invalid Unit Name", :too_short => "Invalid Unit Name"
+	validates_length_of :unitName, :within => 5..100, :too_long => "Invalid Unit Name", :too_short => "Invalid Unit Name"
 	validates_numericality_of :creditPoints,  :less_than_or_equal_to => 50
 	validates_numericality_of :semAvailable,  :less_than_or_equal_to => 2	
 	validates :unitCode, uniqueness: { strict: true, message: 'not unique' }

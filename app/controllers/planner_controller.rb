@@ -52,8 +52,7 @@ class PlannerController < ApplicationController
         end
 
         # Get the full list of units of selected stream
-        sid = Stream.where(:id => session[:selected_stream]).first.id
-        @stream_units = StreamUnit.where(:stream_id => sid.to_i)
+        @stream_units = StreamUnit.where(:stream_id => session[:selected_stream].to_i)
 
         # Put the list into array of StreamUnits, seperated by planned year and semester
         @su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
@@ -72,6 +71,7 @@ class PlannerController < ApplicationController
         # this will erase everything when the page is refreshed.
         session[:done_units] ||= []
         session[:plan_units] ||= []
+        @remain_units ||= []
         @proceed = true
 
         if request.get?()
@@ -81,6 +81,7 @@ class PlannerController < ApplicationController
         if params[:modflag].to_i != 0
             session[:enrol_planner_flag] = params[:modflag].to_i
         end
+
 
         # Deciding actions with given control flag. There are five defined actions:
         # 1. Default action
@@ -116,7 +117,8 @@ class PlannerController < ApplicationController
                 # END initialising
                 
                 # Get list of remaining units with done units object
-                session[:remain_units] = get_remaining_units(session[:done_units])
+                @remain_units = get_remaining_units(session[:done_units])
+                session[:remain_units] = @remain_units.pluck(:id)
 
             # Action #2 - Add units action
             when 2
@@ -422,18 +424,19 @@ class PlannerController < ApplicationController
         return new_sem_index
     end
 
-    # Return a list of remaining units' ID based on done units. The returning array
+    # Return remaining units' ActiveRecord array based on done units. The returning array
     # will be sorted by plannedYear and plannedSemester.
     # Params:
     # +done+:: Array of done units. Note that the array may be empty,
     #          make sure to empty-check first before accessing.
     def get_remaining_units done
-        remain_streamunits = StreamUnit.where(:stream_id => session[:selected_stream]) \
+        su = StreamUnit.where(:stream_id => session[:selected_stream]) \
                                        .order(:plannedYear, :plannedSemester).pluck(:unit_id)
         done.each do |duid|
-            remain_streamunits.slice!(remain_streamunits.index(duid))
+            su.slice!(su.index(duid))
         end
-        return remain_streamunits
+
+        return Unit.where(:id => su)
     end
 
     def sem_is_not_full sem_index, uid

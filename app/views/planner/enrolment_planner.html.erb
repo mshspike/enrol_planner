@@ -16,7 +16,7 @@
 				/* validate the change */
 				var unitSem = ui.item.attr('sem-avail');
 				var thisSem = $(this).parent().attr('sem');
-				if ((unitSem=="Both") || (thisSem == unitSem) || ($(this).parent().is('#remainUnits'))) {
+				if ((unitSem==0) || (thisSem == unitSem) || ($(this).parent().is('#remainUnits'))) {
 					$(".unitsList tbody").each(validateUnitsList);
 					$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody .unitRow").length);
 					updateCreditPointsBox();
@@ -220,16 +220,20 @@
                             <th style="font-size:11px; text-align:center;">Sem</th>
                         </tr></thead>
 						<tbody>
-						<% session[:remain_units].each do |sru| %>
-                            <tr uid="<%=sru%>" credit-points="<%=get_unit_creditpoints(sru)%>" sem-avail="<%=get_unit_semavailable(sru)%>" class="unitRow">
+						<% @remain_units.each do |ru| %>
+                            <tr uid="<%=ru.id%>" credit-points="<%=ru.creditPoints%>" sem-avail="<%=ru.semAvailable%>" class="unitRow">
                                 <td style="font-size:11px; text-align:center;"> <!-- unit code -->
-                                    <%= get_unit_code(sru) %>
+                                    <%= ru.unitCode %>
                                 </td>
                                 <td style="font-size:11px"> <!-- unit name -->
-                                    <%= get_unit_name(sru) %>
+                                    <%= ru.unitName %>
                                 </td>
                                 <td style="font-size:11px; text-align:center;"> <!-- semester -->
-                                    <%= get_unit_semavailable(sru) %>
+                                    <% if (ru.semAvailable == 0) %>
+                                        Both
+                                    <% else %>
+                                        <%= ru.semAvailable %>
+                                    <% end %>
                                 </td>
                             </tr>
                         <% end %>
