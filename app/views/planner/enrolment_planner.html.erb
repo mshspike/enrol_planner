@@ -16,7 +16,7 @@
 				/* validate the change */
 				var unitSem = ui.item.attr('sem-avail');
 				var thisSem = $(this).parent().attr('sem');
-				if ((unitSem==0) || (thisSem == unitSem) || ($(this).parent().is('#remainUnits'))) {
+				if ((unitSem == "Both") || (unitSem == thisSem) || ($(this).parent().is('#remainUnits'))) {
 					$(".unitsList tbody").each(validateUnitsList);
 					$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody .unitRow").length);
 					updateCreditPointsBox();
@@ -220,20 +220,17 @@
                             <th style="font-size:11px; text-align:center;">Sem</th>
                         </tr></thead>
 						<tbody>
-						<% @remain_units.each do |ru| %>
-                            <tr uid="<%=ru.id%>" credit-points="<%=ru.creditPoints%>" sem-avail="<%=ru.semAvailable%>" class="unitRow">
+						<% session[:remain_units].each do |uid| %>
+                            <% unit = @units.where(:id => uid).first %>
+                            <tr uid="<%=unit.id%>" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" class="unitRow">
                                 <td style="font-size:11px; text-align:center;"> <!-- unit code -->
-                                    <%= ru.unitCode %>
+                                    <%= unit.unitCode %>
                                 </td>
                                 <td style="font-size:11px"> <!-- unit name -->
-                                    <%= ru.unitName %>
+                                    <%= unit.unitName %>
                                 </td>
                                 <td style="font-size:11px; text-align:center;"> <!-- semester -->
-                                    <% if (ru.semAvailable == 0) %>
-                                        Both
-                                    <% else %>
-                                        <%= ru.semAvailable %>
-                                    <% end %>
+                                    <%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>
                                 </td>
                             </tr>
                         <% end %>

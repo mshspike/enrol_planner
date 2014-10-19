@@ -69,9 +69,12 @@ class PlannerController < ApplicationController
     def enrolment_planner
         # don't use "Array.new" to initialize here.
         # this will erase everything when the page is refreshed.
-        session[:done_units] ||= []
-        session[:plan_units] ||= []
-        @remain_units ||= []
+        session[:done_units]   ||= []
+        session[:remain_units] ||= []
+        session[:plan_units]   ||= []
+        suid = StreamUnit.where(:stream_id => session[:selected_stream]).pluck(:unit_id)
+        @units = Unit.where(:id => suid)
+
         @proceed = true
 
         if request.get?()
@@ -101,10 +104,6 @@ class PlannerController < ApplicationController
                     end
                 end
 
-                # START initialization remain_units session variable
-                session.delete(:remain_units)
-                session[:remain_units] ||= []
-
                 # START initialising session[:semesters]
                 session[:semesters]=[]
                 session[:semesters][0] = []
@@ -117,8 +116,7 @@ class PlannerController < ApplicationController
                 # END initialising
                 
                 # Get list of remaining units with done units object
-                @remain_units = get_remaining_units(session[:done_units])
-                session[:remain_units] = @remain_units.pluck(:id)
+                session[:remain_units] = get_remaining_units(session[:done_units])
 
             # Action #2 - Add units action
             when 2
@@ -431,12 +429,13 @@ class PlannerController < ApplicationController
     #          make sure to empty-check first before accessing.
     def get_remaining_units done
         su = StreamUnit.where(:stream_id => session[:selected_stream]) \
-                                       .order(:plannedYear, :plannedSemester).pluck(:unit_id)
+                       .order(:plannedYear, :plannedSemester).pluck(:unit_id)
+
         done.each do |duid|
             su.slice!(su.index(duid))
         end
 
-        return Unit.where(:id => su)
+        return su
     end
 
     def sem_is_not_full sem_index, uid

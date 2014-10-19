@@ -10,15 +10,15 @@ numUnits = session[:semesters][count].length
 		<h5><center>Year <%=year%> Semester <%=sem%></center></h5>
 
 		<div class="caption">
-			<!-- display units of current semester. This need to be modify to "semester compatible". -->
 			<table class="table table-condensed table-hover unitsList semtable" semtable-id="<%=semester-1%>" sem="<%=sem%>">
 			<tbody>
 				<% session[:semesters][count.to_i].each_with_index do |uid, i| %>
+					<% unit = Unit.where(:id => uid).first %>
 					<% if (session[:semesters][count][i].to_i > 0) %>
-						<tr class="unitRow" credit-points="<%=get_unit_creditpoints(uid)%>" sem-avail="<%=get_unit_semavailable(uid)%>" uid="<%=uid%>" >
-							<td style="font-size:11px; text-align:center;"><%= get_unit_code(uid) %></td>
-							<td style="font-size:11px;"><%=get_unit_name(uid)%></td>
-							<td style="font-size:11px; text-align:center;"><%=get_unit_semavailable(uid)%></td>
+						<tr class="unitRow" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" uid="<%=unit.id%>" >
+							<td style="font-size:11px; text-align:center;"><%= unit.unitCode %></td>
+							<td style="font-size:11px;"><%= unit.unitName %></td>
+							<td style="font-size:11px; text-align:center;"><%= unit.semAvailable==0 ? "Both" : unit.semAvailable %></td>
 						</tr>
 					<% end %>
 				<% end %>
