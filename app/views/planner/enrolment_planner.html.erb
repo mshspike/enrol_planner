@@ -38,6 +38,11 @@
 		/* validate immediately */
 		$(".unitsList tbody").each(validateUnitsList);
 		requestPreReqValidation();
+		
+		/* lock the horizontal scrolling to 0 */
+		$("#planner-body").scroll(function() {
+			$("#planner-body").scrollLeft(0);
+		});
 	});
 	
 	function validateUnitsList() {
