@@ -67,11 +67,13 @@ class PlannerController < ApplicationController
 
 # START enrolment_planner
     def enrolment_planner
-        # don't use "Array.new" to initialize here.
-        # this will erase everything when the page is refreshed.
+        # Initialising session variables. Don't use "Array.new" to initialize here, 
+        # as it will erase everything when the page is refreshed.
         session[:done_units]   ||= []
         session[:remain_units] ||= []
         session[:plan_units]   ||= []
+
+        # Caching units ActiveRecord object for rendering purpose.
         suid = StreamUnit.where(:stream_id => session[:selected_stream]).pluck(:unit_id)
         @units = Unit.where(:id => suid)
 
@@ -256,21 +258,20 @@ class PlannerController < ApplicationController
 
             # Action #6 - Automated enrolment planning (new semester)
             when 6
-                if (session[:semesters].last.include? 0)
-                    auto_planning(session[:semesters].length-1)
-                else
-                    new_sem_index = new_sem(session[:semesters].length-1)
-                    auto_planning(new_sem_index)
-                end
-
-            # Action #6 - Automated enrolment planning (fill gaps)
-            when 7
-                # Determine if starts at semester 1 or semester 2
-                if (session[:semesters][0][0] == -1)
-                    auto_planning(1)
-                else
-                    auto_planning(0)
-                end
+                if (params[:include_planned].nil?)    # New semester
+                    if (session[:semesters].last.empty?)
+                        auto_planning(session[:semesters].length-1)
+                    else
+                        new_sem_index = new_sem(session[:semesters].length-1)
+                        auto_planning(new_sem_index)
+                    end
+                else    # Include planned semester
+                    if (session[:semesters][0][0] == -1)
+                        auto_planning(1)
+                    else
+                        auto_planning(0)
+                    end
+                end                
         end
 
         # Print out session variables to console.

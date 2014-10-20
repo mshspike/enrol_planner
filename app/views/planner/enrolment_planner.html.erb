@@ -1,3 +1,6 @@
+<style type="text/css">
+    label {font-weight: normal !important};
+</style>
 <script type="text/javascript">
     function changeFlag(flag) {
         document.getElementById("modflag").value = flag;
@@ -197,9 +200,9 @@
                     <% end %>
                 </div>
                 <div class="panel-footer" style="text-align:center;">
-                    <%= submit_tag "Auto plan! (New semester)", class: "btn btn-default btn-sm", onclick: "changeFlag(6)" %>
-                    <%= submit_tag "Auto plan! (Filling gaps)", class: "btn btn-default btn-sm", onclick: "changeFlag(7)" %>
-					<button class="btn btn-default btn-sm" onclick="addSemBox();" type="button"><i class="glyphicon glyphicon-plus"></i></input>
+                    <button type="button" class="btn btn-default btn-sm" onclick="addSemBox();"><i class="glyphicon glyphicon-plus"></i></button>
+                    <button type="submit" class="btn btn-default btn-sm" onclick="changeFlag(6);">Auto Plan!</button>
+                    <label><input type="checkbox" name="include_planned"> Include planned semesters</label>
 				</div>            
             </div>
         </div>  <!-- end of enrolment planner -->
