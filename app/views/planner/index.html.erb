@@ -15,7 +15,13 @@
             <div class="panel-body">
                 <h4 align="left">Please select your stream</h4>
 
-                <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
+                <% if (@streams.empty?) %>
+                    <select name="streamSelect" class="form-control imput-lg">
+                        <option value="0">No stream available.</option>
+                    </select>
+                <% else %>
+                    <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
+                <% end %>
                 <br />
 
                 <hr style="border-color:#CCC">
@@ -26,8 +32,11 @@
                     <div><label><input type="checkbox" name="maths[]" value="3ab"> Mathematics 3A/B</label></div>
                     <div><label><input type="checkbox" name="maths[]" value="3cd"> Mathematics 3C/D</label></div>
                 </div>
-
-                <%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
+                <% if @proceed %>
+                    <%= submit_tag "Proceed", class: "btn btn-success pull-right", style: "width:150px" %>
+                <% else %>
+                    <%= submit_tag "Proceed", class: "btn btn-success pull-right disabled", style: "width:150px" %>
+                <% end %>
             <% end %>
             </div>
 

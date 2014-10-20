@@ -26,7 +26,7 @@ class Stream < ActiveRecord::Base
 					unless arr[a].empty?
 						arr2.push(arr[a])
 					end
-					}			
+					}
 					#Import data to stream_units table
 					(0..arr2.length-1).step(3).each do |c|
 					# Create a new row in stream_units table
@@ -47,9 +47,23 @@ class Stream < ActiveRecord::Base
 
 	def self.to_csv
 		file = CSV.generate do |csv|
-			csv << ["id", "streamCode", "streamName"]
+			csv << ["id", "streamCode", "streamName", "units"]
 			all.each do |stream|
-				csv << stream.attributes.values_at(*["id", "streamCode", "streamName"])
+				stream_units = StreamUnit.where(:stream_id => stream.id)
+				units 		 = Unit.where(:id => stream_units.pluck(:unit_id))
+
+				unit_list_string = Array.new
+
+				stream_units.each do |su|
+					ucode = units.where(:id => su.unit_id).first.unitCode
+
+					unit_string = "{" + ucode.to_s + "," + su.plannedYear.to_s + "," + su.plannedSemester.to_s + "}"
+					unit_list_string.push(unit_string)
+				end
+
+				row = stream.attributes.values_at(*["id", "streamCode", "streamName"]).push(unit_list_string.join(';'))
+
+				csv << row
 			end
 		end
 	end

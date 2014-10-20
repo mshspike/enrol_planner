@@ -62,9 +62,29 @@ class Unit < ActiveRecord::Base
 
 	def self.to_csv
 		CSV.generate do |csv|
-			csv << ["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
+			csv << ["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
+
+			# Foreach unit
 			all.each do |unit|
-				csv << unit.attributes.values_at(*["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
+				prereq_groups = PreReqGroup.where(:unit_id => unit.id)
+				prereq_groups_string = Array.new
+
+				# Foreach pre-req group
+				prereq_groups.each do |prg|
+					prereqs = PreReq.where(:pre_req_group_id => prg.id)
+					prereqs_string = Array.new
+
+					# Foreach pre-req in group
+					prereqs.each do |pr|
+						prereqs_string.push(pr.preUnit_code)
+					end
+
+					prereq_groups_string.push("{"+prereqs_string.join(',')+"}")
+				end
+
+				row = unit.attributes.values_at(*["unitCode", "unitName", "creditPoints", "semAvailable"])
+				row.insert(2, prereq_groups_string.join(','))
+				csv << row
 			end
 		end
 	end

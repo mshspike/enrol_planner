@@ -5,52 +5,62 @@
 <div class = "container-full">			<!--select completed units begins-->
 	<center>
 		<div class="jumbotron" style="width:75%">
-		<h3><b><%= get_stream_code(session[:selected_stream]) %> - <%= get_stream_name(session[:selected_stream]) %></b><br /><br /></h3>
-		<h5 align="left">Here is the default course structure, you can choose the units that you have completed, and proceed for further planning.</h5>
+
+		<% if (session[:selected_stream] > 0) %>
+			<h3><b><%= get_stream_code(session[:selected_stream]) %> - <%= get_stream_name(session[:selected_stream]) %></b><br /><br /></h3>
+			<h5 align="left">Here is the default course structure, you can choose the units that you have completed, and proceed for further planning.</h5>
+		<% else %>
+			<h3><b>No stream available.</b></h3>
+		<% end %>
+
 			<%= form_tag :action => "enrolment_planner" do %>
-			<% unless @stream_units.nil? %>
-				<div class="panel panel-default">
-					<table class="table table-bordered">
-						<tr>
-							<th style="text-align:center;">Year 1 Semester 1</th>
-							<th style="text-align:center;">Year 2 Semester 2</th>
-						</tr>
-						<tr>
-							<td id="11"><%@su_y1s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-							<td id="12"><%@su_y1s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-						</tr>
-						<tr>
-							<th style="text-align:center;">Year 2 Semester 1</th>
-							<th style="text-align:center;">Year 2 Semester 2</th>
-						</tr>
-						<tr>
-							<td id="21"><%@su_y2s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-							<td id="22"><%@su_y2s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-						</tr>
-						<tr>
-							<th style="text-align:center;">Year 3 Semester 1</th>
-							<th style="text-align:center;">Year 3 Semester 2</th>
-						</tr>
-						<tr>
-							<td id="31"><%@su_y3s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-							<td id="32"><%@su_y3s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-						</tr>
-					</table>
+				<% unless @stream_units.nil? %>
+					<div class="panel panel-default">
+						<table class="table table-bordered">
+							<tr>
+								<th style="text-align:center;">Year 1 Semester 1</th>
+								<th style="text-align:center;">Year 2 Semester 2</th>
+							</tr>
+							<tr>
+								<td id="11"><%@su_y1s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+								<td id="12"><%@su_y1s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+							</tr>
+							<tr>
+								<th style="text-align:center;">Year 2 Semester 1</th>
+								<th style="text-align:center;">Year 2 Semester 2</th>
+							</tr>
+							<tr>
+								<td id="21"><%@su_y2s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+								<td id="22"><%@su_y2s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+							</tr>
+							<tr>
+								<th style="text-align:center;">Year 3 Semester 1</th>
+								<th style="text-align:center;">Year 3 Semester 2</th>
+							</tr>
+							<tr>
+								<td id="31"><%@su_y3s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+								<td id="32"><%@su_y3s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+							</tr>
+						</table>
+					</div>
+				<% else %>
+					<p>Cannot find any unit for stream!</p>
+				<% end %>
+				
+				<h4 align="left">Select starting semester</h4>
+				<div class="col-md-5"> 
+					<label><input type="radio" name="sem" value="1" checked="checked"> Semester 1</label>
 				</div>
-			<% else %>
-				<p>Cannot find any unit for stream!</p>
-			<% end %>
-			
-			<h4 align="left">Select starting semester</h4>
-			<div class="col-md-5"> 
-				<label><input type="radio" name="sem" value="1" checked="checked"> Semester 1</label>
-			</div>
-			<div class="col-md-3"> 
-				<label><input type="radio" name="sem" value="2"> Semester 2</label>
-			</div>
-			
-			<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
-			<% end %>
+				<div class="col-md-3"> 
+					<label><input type="radio" name="sem" value="2"> Semester 2</label>
+				</div>
+				
+				<% if (@proceed) %>
+					<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
+				<% else %>
+					<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right disabled" %>
+				<% end %>
+			<% end %> <!-- End form -->
 
 		</div>
 

@@ -24,6 +24,12 @@ class PlannerController < ApplicationController
     def index
         @streams = Stream.all
 
+        if @streams.empty?
+            @proceed = false
+        else
+            @proceed = true
+        end
+
         # Clear all session variables to avoid messing with previous data
         clear_enrolment_planner_session
     end
@@ -33,8 +39,12 @@ class PlannerController < ApplicationController
 
 # START unit_chooser
     def unit_chooser
-        unless params["streamSelect"].nil?
-            session[:selected_stream] = params["streamSelect"].to_i
+        if params[:streamSelect].nil? || params[:streamSelect] == 0
+            session[:selected_stream] = 0
+            @proceed = false
+        else
+            session[:selected_stream] = params[:streamSelect].to_i
+            @proceed = true
         end
 
         # Pass the selected maths subject to session variable
@@ -51,16 +61,21 @@ class PlannerController < ApplicationController
             session[:maths] = false
         end
 
-        # Get the full list of units of selected stream
-        @stream_units = StreamUnit.where(:stream_id => session[:selected_stream].to_i)
+        if (@proceed)
+            # Get the full list of units of selected stream
+            @stream_units = StreamUnit.where(:stream_id => session[:selected_stream].to_i)
+            if (@stream_units.empty?)
+                @proceed = false
+            end
 
-        # Put the list into array of StreamUnits, seperated by planned year and semester
-        @su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
-        @su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
-        @su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
-        @su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
-        @su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
-        @su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+            # Put the list into array of StreamUnits, seperated by planned year and semester
+            @su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+            @su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+            @su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+            @su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+            @su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+            @su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+        end
     end
 # END unit_chooser
 
