@@ -8,32 +8,36 @@ class PlannerController < ApplicationController
 	def show
 		@pdfArrPerSem = Array.new
 		@pdfArrPerUnit = Array.new
-		@pdf3dArr = Array.new
-		@perU = Array.new
 		@sembox = session[:semesters]
+		@Enrol_semStart = session[:semesters][0][0]
 		@year = 1
-		@a = session[:semesters][0][0]
-
+		
 		@sembox.each_with_index {|sem,index|
-		# Start from Semester 1
-			if (@a > -1)
+		# Enrolment that start from Semester 1
+
+			if (@Enrol_semStart > -1)# Enrolment started from semester 1 has first array value > -1.
 			
-				if  (@j == 2)
-					@pdfArrPerUnit.push(["Year" + @year.to_s, "Semester"+ @j.to_s])
+				# Semester 2
+				if  (@sem_start_at == 2)
+					@pdfArrPerUnit.push(["Year" + @year.to_s, "Semester"+ @sem_start_at.to_s])
 					sem.each_with_index  do |unit,index|
-			
+						#Get Unit Name and Unit ID
 						@uName = view_context.get_unit_name(unit.to_i)
 						@uCode = view_context.get_unit_code(unit.to_i)
+						#Insert into the array
 						@pdfArrPerUnit.push([@uCode,@uName])
 				
 					end
 					@pdfArrPerUnit.push([" " , " "])
-					@j -= 1
+					#Set Semester to 1 for the next Semester 1
+					@sem_start_at -= 1
+					#After Semester 2, Year is incremented
 					@year += 1
 					
 				else
-					@j = 1
-					@pdfArrPerUnit.push(["Year" + @year.to_s, "Semester"+ @j.to_s])
+					# Semester 1
+					@sem_start_at = 1
+					@pdfArrPerUnit.push(["Year" + @year.to_s, "Semester"+ @sem_start_at.to_s])
 					sem.each_with_index  do |unit,index|
 			
 						@uName = view_context.get_unit_name(unit.to_i)
@@ -42,11 +46,13 @@ class PlannerController < ApplicationController
 				
 					end
 					@pdfArrPerUnit.push([" " , " "])
-					@j += 1
+					#Set Semester to 2 for the next Semester 2
+					@sem_start_at += 1
 				end
-		# Start from Semester 2	
-			else
-			#This is to get rid of the first -1 in the array
+		
+			else # Enrolment that start from Semester 2
+			#Enrolment started from semester 2 has first array value == -1.
+			#Get rid of the -1 in the array
 				sem.each_with_index  do |unit,index|
 			
 						unless (unit < 0)
@@ -56,15 +62,15 @@ class PlannerController < ApplicationController
 						end
 				
 				end
-			##### UNTIL HERE
-			@a = 0
-			@j = 2
+			#Next Array value will have @Enrol_semStart > -1
+			@Enrol_semStart = 0
+			#Set Semester to 2 
+			@sem_start_at = 2
 		end
 
 		}
 
 		@pdfArrPerSem.push(@pdfArrPerUnit)
-		@pdf3dArr.push(@pdfArrPerSem)
 		
 		
 		time = Time.now.strftime('%Y%m%d%H%M%S')
@@ -72,7 +78,7 @@ class PlannerController < ApplicationController
 		respond_to do |format|
 			format.html
 			format.pdf do
-			pdf = SemboxPdf.new(@pdf3dArr)
+			pdf = SemboxPdf.new(@pdfArrPerSem)
         send_data pdf.render, :disposition => "attachment; filename=#{filename}.pdf", type: 'application/pdf', :page_size => "A4"
 
 			end

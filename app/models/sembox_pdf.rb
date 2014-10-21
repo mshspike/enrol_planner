@@ -1,7 +1,7 @@
 class SemboxPdf < Prawn::Document  
-  def initialize pdf3dArr
+  def initialize pdfArrPerSem
     super()
-	@pdf3dArr = pdf3dArr
+	@pdfArrPerSem = pdfArrPerSem
     header
     text_content
     table_content
@@ -28,18 +28,16 @@ class SemboxPdf < Prawn::Document
     # I then included some styling to include a header and make its text bold. I made the row background colors alternate between grey and white
     # Then I set the table column widths
 
-	@pdf3dArr.each do |sem|
-		sem.each do |unit|
+	@pdfArrPerSem.each do |unit|
 			@perUnit = unit
+			table sembox_rows(@perUnit) do
+			row(0).font_style = :bold
+			self.header = false
+			self.row_colors = ['FFFFFF', 'FFFFFF']
+			self.column_widths = [150, 250]
+			end
+	end
 
-	table sembox_rows(@perUnit) do
-      row(0).font_style = :bold
-      self.header = false
-      self.row_colors = ['FFFFFF', 'FFFFFF']
-      self.column_widths = [150, 250]
-    end
-	end
-	end
   end
  
 
