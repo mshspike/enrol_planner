@@ -16,11 +16,11 @@
                 <h4 align="left">Please select your stream</h4>
 
                 <% if (@streams.empty?) %>
-                    <select name="streamSelect" class="form-control imput-lg">
+                    <select name="streamSelect" class="form-control">
                         <option value="0">No stream available.</option>
                     </select>
                 <% else %>
-                    <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control input-lg' %>
+                    <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control' %>
                 <% end %>
                 <br />
 

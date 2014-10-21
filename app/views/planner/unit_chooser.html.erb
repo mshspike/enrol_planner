@@ -18,8 +18,8 @@
 					<div class="panel panel-default">
 						<table class="table table-bordered">
 							<tr>
-								<th style="text-align:center;">Year 1 Semester 1</th>
-								<th style="text-align:center;">Year 2 Semester 2</th>
+								<th style="text-align:center; width:50%;">Year 1 Semester 1</th>
+								<th style="text-align:center; width:50%;">Year 2 Semester 2</th>
 							</tr>
 							<tr>
 								<td id="11"><%@su_y1s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
