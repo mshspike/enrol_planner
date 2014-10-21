@@ -24,64 +24,48 @@ class Unit < ActiveRecord::Base
             #Header of the spreadsheet is the name of the attributes
             header = spreadsheet.row(1)
             
-            #Import the data line by line
+            # Foreach => unit (grap each row from spreadsheet)
             (2..spreadsheet.last_row).each do |i|
                 row = Hash[[header, spreadsheet.row(i)].transpose]
-                    puts "hash row = " + row["id"].to_s + ": " + row.inspect
                 unit = Unit.new
-                    puts "new unit = " + unit.inspect
                 unit.attributes = row.to_hash.slice(*["id", "unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"])
-                    puts "after unit = " + unit.inspect
 
                 # Validates the data of the spreadsheet, save the data into the database if it is valid data.
                 if unit.valid?
-                    pre_req_string = unit.preUnit
-                    puts "pre_req_String = " + pre_req_string
+                    pr_string = unit.preUnit
+                    # Assign T/F to preUnit column
                     if unit.preUnit.blank?
                         unit.preUnit = "false"
                     else
                         unit.preUnit = "true"
                     end
-
-                    # Save record to database table
                     unit.save!
                     
                     # Check if the unit has pre-requisite
-                    unless pre_req_string.blank?
-                        # Chopping preUnit string into groups
-                        # pre_req_string = "{COMP1000,COMP1002},{COMP1000,COMP1004}"
-                        groups = Array.new(pre_req_string.count("}"))
+                    unless pr_string.blank?
+                        # Splitting preUnit string into groups
+                        groups = Array.new(pr_string.count("}"))
                         groups.length.times do |i|
-
-                            groups[i] = pre_req_string[(pre_req_string.index("{")+1)..(pre_req_string.index("}")-1)]
-                            
-                            puts "before pre_req_string slice = " + pre_req_string
-                            pre_req_string.slice!(0, pre_req_string.index("}")+1)
-                            puts "after pre_req_string slice = " + pre_req_string
+                            groups[i] = pr_string[(pr_string.index("{")+1)..(pr_string.index("}")-1)]
+                            pr_string.slice!(0, pr_string.index("}")+1)
                         end
 
-                        # Foreach pre-requisite group
+                        # Foreach => pre-requisite group
                         groups.each do |grp|
-                            # grp = "COMP1000,COMP1002"
-                            puts "grp = " + grp
-                            pre_req_codes = grp.split(',')
-
+                            pr_codes = grp.split(',')
                             pr_group = PreReqGroup.new(:unit_id => unit.id)
                             pr_group.save!
 
-                            # Foreach pre-requisite code
-                            pre_req_codes.each do |prcode|
-                                # prcode = "COMP1000"
-                                puts "prcode = " + prcode
+                            # Foreach => pre-requisite code
+                            pr_codes.each do |prcode|
                                 pre_req = PreReq.new(:pre_req_group_id => pr_group.id, :unit_id => unit.id, :preUnit_code => prcode)
                                 pre_req.save!
                             end
                         end
                     end
-
                 end # End IF (unit.valid?)
-            end # End FOREACH row
-        return true    # if imported successfully , return true
+            end # End FOREACH unit
+        return true    # if imported successfully, return true
     end
 
     def self.to_csv
