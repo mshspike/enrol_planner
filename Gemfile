@@ -34,6 +34,8 @@ end
 
 
 gem 'prawn'
+gem 'prawn-table', '~> 0.1.0'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.1.2'
 

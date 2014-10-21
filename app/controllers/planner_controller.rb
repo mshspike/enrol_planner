@@ -5,21 +5,79 @@ class PlannerController < ApplicationController
 
     require "unit_module.rb"
 
-    def show
+	def show
+		@pdfArrPerSem = Array.new
+		@pdfArrPerUnit = Array.new
+		@pdf3dArr = Array.new
+		@perU = Array.new
 		@sembox = session[:semesters]
+		@year = 1
+		@a = session[:semesters][0][0]
 
+		@sembox.each_with_index {|sem,index|
+		# Start from Semester 1
+			if (@a > -1)
+			
+				if  (@j == 2)
+					@pdfArrPerUnit.push(["Year" + @year.to_s, "Semester"+ @j.to_s])
+					sem.each_with_index  do |unit,index|
+			
+						@uName = view_context.get_unit_name(unit.to_i)
+						@uCode = view_context.get_unit_code(unit.to_i)
+						@pdfArrPerUnit.push([@uCode,@uName])
+				
+					end
+					@pdfArrPerUnit.push([" " , " "])
+					@j -= 1
+					@year += 1
+					
+				else
+					@j = 1
+					@pdfArrPerUnit.push(["Year" + @year.to_s, "Semester"+ @j.to_s])
+					sem.each_with_index  do |unit,index|
+			
+						@uName = view_context.get_unit_name(unit.to_i)
+						@uCode = view_context.get_unit_code(unit.to_i)
+						@pdfArrPerUnit.push([@uCode,@uName])
+				
+					end
+					@pdfArrPerUnit.push([" " , " "])
+					@j += 1
+				end
+		# Start from Semester 2	
+			else
+			#This is to get rid of the first -1 in the array
+				sem.each_with_index  do |unit,index|
+			
+						unless (unit < 0)
+							@uName = view_context.get_unit_name(unit.to_i)
+							@uCode = view_context.get_unit_code(unit.to_i)
+							@pdfArrPerUnit.push([@uCode,@uName])
+						end
+				
+				end
+			##### UNTIL HERE
+			@a = 0
+			@j = 2
+		end
+
+		}
+
+		@pdfArrPerSem.push(@pdfArrPerUnit)
+		@pdf3dArr.push(@pdfArrPerSem)
+		
+		
 		time = Time.now.strftime('%Y%m%d%H%M%S')
 		filename = "CoursePlan_" + time
 		respond_to do |format|
 			format.html
 			format.pdf do
-			pdf = SemboxPdf.new(@sembox)
+			pdf = SemboxPdf.new(@pdf3dArr)
         send_data pdf.render, :disposition => "attachment; filename=#{filename}.pdf", type: 'application/pdf', :page_size => "A4"
 
 			end
 		end        
     end
-
 # START stream_chooser
     def index
         @streams = Stream.all
