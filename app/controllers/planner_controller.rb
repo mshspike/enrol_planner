@@ -365,19 +365,26 @@ class PlannerController < ApplicationController
 			session[:plan_units] = session[:semesters].flatten
 			session[:remain_units] = JSON.parse(params[:remain_units])
 			#validate_all
-			@invalid_units = []
+			@invalid_units	= []
+			@cannot_do		= []
 			plan_units_so_far = []
 			plan_units_so_far.concat session[:done_units]
 			session[:semesters].each_with_index do |semester, semId|
 				sem = (semId%2)+1
 				semester.each do |uid|
 					unless (uid == -1)
-						unless view_context.has_done_prereq(plan_units_so_far, [], semId, uid.to_i) and is_avail_for_sem(semId, uid)
+						unless view_context.has_done_prereq(session[:done_units], session[:semesters], semId, uid.to_i) and is_avail_for_sem(semId, uid)
 							@invalid_units.push(uid)
 						end
 					end
 				end
 				plan_units_so_far.concat semester
+			end
+			semId = session[:semester].length-1
+			session[:remain_units].each do |uid|
+				unless view_context.has_done_prereq(session[:done_units], session[:semesters], semId, uid.to_i) and is_avail_for_sem(semId, uid)
+					@cannot_do.push(uid)
+				end
 			end
 			@valid = true
 			if not @invalid_units.empty?

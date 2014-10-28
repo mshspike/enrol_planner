@@ -55,7 +55,7 @@
 		$(this).children().remove(".sort-disabled");
 		$(this).parent().parent().parent().parent().children().remove(".close");
 		if ($(this).parent().is('#remainUnits') && (credits==0)) {
-			$(this).append('<tr class="sort-disabled"><td>No units remaining!</td><td></td></tr>');
+			$(this).append('<tr class="sort-disabled"><td>No units remaining!</td><td></td><td></td></tr>');
 			return;
 		}
 		if (credits>100) {
@@ -116,7 +116,7 @@
 				},
 	        success: function(data) {
 				// clear invalid highligting
-				$(".semtable tbody .unitRow").css('color', '');
+				$(".unitsList tbody .unitRow").css('color', '');
 				// highlight invalid units
 	            if (data.valid === false) {
 					$(".semtable tbody .unitRow").each(function() {
@@ -126,6 +126,12 @@
 						}
 					});
 	            }
+				$(".semtable tbody .unitRow").each(function() {
+					var uid = parseInt($(this).attr('uid'));
+					if (-1!=$.inArray(uid, data.cannot_do)) {
+						$(this).css('color', '#FFA500');
+					}
+				});
 	            return false;
 	        }
 	    });
