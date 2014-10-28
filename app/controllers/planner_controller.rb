@@ -430,7 +430,7 @@ class PlannerController < ApplicationController
                                  .where(:plannedSemester => 2).order(:plannedYear).pluck(:unit_id)
 
         # Delete extra elective units to match remaining units list.
-        while (sem_units[0].count(1) > session[:remain_units].count(1))
+        while (sem_units[0].count(1) > session[:remain_units].count(1)) 
             sem_units[0].delete_at(sem_units[0].index(1))
             if (sem_units[1].include? 1)
                 sem_units[1].delete_at(sem_units[1].index(1))
@@ -455,6 +455,24 @@ class PlannerController < ApplicationController
             end
             sem_index = new_sem(sem_index)
         end
+    end
+
+    def last_three_sem_is_empty
+        if session[:semesters].length >= 3
+            third_last_index = session[:semesters].length-3
+            is_empty = false
+
+            third_last_index.times do |i|
+                is_empty = session[:semesters][i].include? 0
+                if is_empty = false
+                    return false
+                end
+            end
+        else
+            return false
+        end
+
+        return is_empty
     end
 
     def scan_sem_stack sem_units, sem, sem_index
