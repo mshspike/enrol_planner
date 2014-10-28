@@ -380,9 +380,9 @@ class PlannerController < ApplicationController
 				end
 				plan_units_so_far.concat semester
 			end
-			semId = session[:semester].length-1
+			semId = session[:semesters].length-1
 			session[:remain_units].each do |uid|
-				unless view_context.has_done_prereq(session[:done_units], session[:semesters], semId, uid.to_i) and is_avail_for_sem(semId, uid)
+				unless view_context.has_done_prereq(session[:done_units], session[:semesters], semId, uid.to_i)
 					@cannot_do.push(uid)
 				end
 			end

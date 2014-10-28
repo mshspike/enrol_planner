@@ -126,10 +126,10 @@
 						}
 					});
 	            }
-				$(".semtable tbody .unitRow").each(function() {
+				$("#remainUnits tbody .unitRow").each(function() {
 					var uid = parseInt($(this).attr('uid'));
 					if (-1!=$.inArray(uid, data.cannot_do)) {
-						$(this).css('color', '#FFA500');
+						$(this).css('color', '#cc0000');
 					}
 				});
 	            return false;
