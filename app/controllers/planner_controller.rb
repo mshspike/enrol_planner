@@ -367,11 +367,12 @@ class PlannerController < ApplicationController
 			#validate_all
 			@invalid_units = []
 			plan_units_so_far = []
+			plan_units_so_far.concat session[:done_units]
 			session[:semesters].each_with_index do |semester, semId|
 				sem = (semId%2)+1
 				semester.each do |uid|
 					unless (uid == -1)
-						unless view_context.has_done_prereq(session[:done_units], session[:semesters], semId, uid.to_i) and is_avail_for_sem(semId, uid)
+						unless view_context.has_done_prereq(plan_units_so_far, [], semId, uid.to_i) and is_avail_for_sem(semId, uid)
 							@invalid_units.push(uid)
 						end
 					end
