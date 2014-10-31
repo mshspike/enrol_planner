@@ -12,10 +12,9 @@
 				<div class = "panel-body">
 					<div class = "col-md-6">
 						<%= form_tag import_units_path, multipart: true do %>
-							<%= file_field_tag :file %>
+							<%= file_field_tag :file, accept: 'text/csv' %>
 							<br><%= submit_tag "Update Units", class: 'btn btn-success btn-sm' %>
 							<%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-      						<%= link_to "Download PDF", units_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
 					<div class = "col-md-6">
@@ -31,10 +30,9 @@
 				<div class = "panel-body">
 					<div class = "col-md-6">
 						<%= form_tag import_streams_path, multipart: true do %>
-							<%= file_field_tag :file %>
+							<%= file_field_tag :file, accept: 'text/csv'%>
 							<br><%= submit_tag "Update Stream", class: 'btn btn-success btn-sm' %>
 							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-      						<%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
 						<% end %>
 					</div>
 					<div class = "col-md-6">
@@ -46,51 +44,6 @@
 
 		<!-- </div> -->
 		<!-- END course management -->
-
-		<!-- START user management -->
-		<!-- <div class = "col-xs-6 col-md-4">
-			<div class = "panel panel-default">
-				<div class = "panel-heading" style = 'font-weight:bold'>Change your password</div>
-				<div class = "panel-body">
-					<div style = "padding: 8px">
-						<div style="margin-bottom: 25px" class="input-group">
-				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				            <input id="current-password" type="password" class="form-control" name="current-password" placeholder="Current Password" required />
-				        </div>
-				        <div style="margin-bottom: 25px" class="input-group">
-				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				            <input id="new-password" type="password" class="form-control" name="new-password" placeholder="New Password" required />
-				        </div>
-				        <div style="margin-bottom: 25px" class="input-group">
-				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				            <input id="new-password-retype" type="password" class="form-control" name="new-password-retype" placeholder="Retype New Password" required />
-				        </div>
-				        <button type="submit" class="btn btn-info pull-right">Create User</button><br><br>
-			    	</div>
-				</div>
-			</div>
-			<div class = "panel panel-default">
-				<div class = "panel-heading" style = 'font-weight:bold'>Access Control</div>
-				<div class = "panel-body">
-					<div style = "padding: 8px">
-						<div style="margin-bottom: 25px" class="input-group">
-				            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-				            <input id="new-username" type="text" class="form-control" name="new-username" placeholder="Staff ID" required />
-				        </div>
-				        <div style="margin-bottom: 25px" class="input-group">
-				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				            <input id="new-password" type="password" class="form-control" name="new-password" placeholder="Password" required />
-				        </div>
-				        <div style="margin-bottom: 25px" class="input-group">
-				            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				            <input id="new-password-retype" type="password" class="form-control" name="new-password-retype" placeholder="Retype Password" required/>
-				        </div>
-				        <button type="submit" class="btn btn-info pull-right">Create User</button><br><br>
-			    	</div>
-				</div>
-			</div>
-		</div> -->
-		<!-- END user management -->
 
 	</div>
 </div>

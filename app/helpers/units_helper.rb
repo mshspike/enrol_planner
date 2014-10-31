@@ -50,6 +50,10 @@ module UnitsHelper
     def has_done_prereq done_units, semesters, sem_index, uid
         has_done = false
 
+################ START OF TASK EPW-210 - OPTIMISATIONS ################
+# Added T/F checking in database to avoid excessive code
+# even the unit has no pre-requisite.
+
         if (Unit.where(:id => uid.to_i).first.preUnit == "true")
             prereq_groups_id = PreReqGroup.where(:unit_id => uid.to_i)
 
@@ -64,6 +68,9 @@ module UnitsHelper
         else
             return true
         end
+
+################ END OF TASK EPW-210 - OPTIMISATIONS ################
+
         return has_done
     end
 
@@ -100,15 +107,10 @@ module UnitsHelper
         end
 
         # Check if unit is in any of the semesters, except current semester.
-        len = semesters.length
-        semesters.each_with_index do |semester, i|
-            if (i != sem_index)
-                if (semester.include? uid.to_i)
-                    puts "Done."
-                    return true
-                else
-                    has_done = false
-                end
+        (sem_index+1).times do |i|
+            if (semesters[i].include? uid.to_i)
+                puts "Done."
+                return true
             else
                 has_done = false
             end

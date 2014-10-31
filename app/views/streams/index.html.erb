@@ -32,7 +32,7 @@
       <h5 style = 'font-weight:bold'>Resubmit your CSV</h5>
       <br>
       <%= form_tag import_streams_path, multipart: true do %>
-        <%= file_field_tag :file %>
+        <%= file_field_tag :file, accept: 'text/csv' %>
         <br>
         <%= submit_tag "Upload Streams", class: 'btn btn-primary btn-sm' %>
       <% end %>
@@ -43,7 +43,6 @@
       <h5 style = 'font-weight:bold'>Download & Print</h5>
       <br>
       <%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm' %>
-      <%= link_to "Download PDF", streams_path(format: "pdf"), class: 'btn btn-warning btn-sm' %>
       <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-info btn-sm' %>
     </div>
   </div>

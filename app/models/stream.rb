@@ -1,6 +1,6 @@
 class Stream < ActiveRecord::Base		
-	validates :streamCode, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
-	validates :streamName, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
+	validates :streamCode, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
+	validates :streamName, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
 	validates :streamCode, uniqueness: { strict: true, message: 'not unique' }
 	
 	def self.import(file)
@@ -45,6 +45,9 @@ class Stream < ActiveRecord::Base
 
 	end
 
+
+################ START OF TASK EPW-29 ################
+
 	def self.to_csv
 		file = CSV.generate do |csv|
 			csv << ["id", "streamCode", "streamName", "units"]
@@ -67,6 +70,8 @@ class Stream < ActiveRecord::Base
 			end
 		end
 	end
+
+################ END OF TASK EPW-29 ################
 
 	def self.open_spreadsheet(file)
 		case File.extname(file.original_filename)

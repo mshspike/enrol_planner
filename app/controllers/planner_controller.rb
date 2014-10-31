@@ -335,6 +335,8 @@ class PlannerController < ApplicationController
                 end
                 session[:remain_units].sort!
 
+################ START OF TASK EPW-21 ################
+
             # Action #6 - Automated enrolment planning (new semester)
             when 6
                 if (params[:include_planned].nil?)    # New semester
@@ -350,7 +352,10 @@ class PlannerController < ApplicationController
                     else
                         auto_planning(0)
                     end
-                end                
+                end
+
+################ END OF TASK EPW-21 ################
+
         end
 
         # Print out session variables to console.
@@ -417,9 +422,12 @@ class PlannerController < ApplicationController
             puts ""
     end
 
+
+################ START OF TASK EPW-21 ################
+    
     # Auto-planning method triggered by auto-plan sub-action (control flag = 6).
     # Params:
-    # +sem_index+:: Latest semester's index in session variable
+    # +sem_index+:: Current semester's index in session variable. Indicates which semester to start auto planning.
     def auto_planning sem_index
 
         # Preparing units tacks
@@ -451,7 +459,7 @@ class PlannerController < ApplicationController
         puts "sem_units[2] = [" + sem_units[2].join(',') + "]"
         
         # Stops when remaining units list is empty
-        while (!session[:remain_units].blank?)
+        while ((!session[:remain_units].blank?) && (!last_two_sem_is_empty(sem_index)))
             # Determining Semester 1 or Semester 2
             if (sem_index % 2 == 0)    # Semester 1
                 scan_sem_stack(sem_units, 1, sem_index)
@@ -464,22 +472,8 @@ class PlannerController < ApplicationController
         end
     end
 
-    def last_three_sem_is_empty
-        if session[:semesters].length >= 3
-            third_last_index = session[:semesters].length-3
-            is_empty = false
-
-            third_last_index.times do |i|
-                is_empty = session[:semesters][i].include? 0
-                if is_empty = false
-                    return false
-                end
-            end
-        else
-            return false
-        end
-
-        return is_empty
+    def last_two_sem_is_empty sem_index
+        return ((session[:semesters][sem_index-1].include? 0) && (session[:semesters][sem_index-2].include? 0))
     end
 
     def scan_sem_stack sem_units, sem, sem_index
@@ -528,6 +522,9 @@ class PlannerController < ApplicationController
         return new_sem_index
     end
 
+################ END OF TASK EPW-21 ################
+
+
     # Return remaining units' ActiveRecord array based on done units. The returning array
     # will be sorted by plannedYear and plannedSemester.
     # Params:
@@ -564,8 +561,10 @@ class PlannerController < ApplicationController
         end
 
         unless list.nil?
-            list.each do |u|
-                sum += view_context.get_unit_creditpoints(u.to_i)
+            list.each do |uid|
+                if (uid.to_i > 0)
+                    sum += view_context.get_unit_creditpoints(uid.to_i)
+                end
             end
         else
             sum = 0

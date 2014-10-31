@@ -302,7 +302,7 @@
                 <div class="panel-body" style="height: 110px; margin-top: 5px">
                     <%= form_tag download_csv_path, multipart: true do %>
                     <div class="form-group">
-                        <%= file_field_tag :file %><br>
+                        <%= file_field_tag :file, accept: 'text/csv' %><br>
                         <%= submit_tag "Upload", class: 'btn btn-default' %>
                     </div>
                     <% end %>

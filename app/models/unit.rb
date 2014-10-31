@@ -1,12 +1,13 @@
 class Unit < ActiveRecord::Base 
-    validates :unitCode, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
-    validates :unitName, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
-    validates :creditPoints, presence:{ strict: true, message: 'is forgotten, click go back to import again.'  }
-    validates :semAvailable, presence:{ strict: true, message: 'is forgotten, click go back to import again.' }
-    validates_length_of :unitCode, :within => 3..10, :too_long => "Invalid Unit Code", :too_short => "Invalid Unit Code"
-    validates_length_of :unitName, :within => 5..100, :too_long => "Invalid Unit Name", :too_short => "Invalid Unit Name"
-    validates_numericality_of :creditPoints,  :less_than_or_equal_to => 50
-    validates_numericality_of :semAvailable,  :less_than_or_equal_to => 2   
+    validates :unitCode, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
+    validates :unitName, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
+    validates :creditPoints, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
+    validates :semAvailable, presence: { strict: true, message: 'is forgotten, click go back to import again.' },
+                             numericality: { only_integer: true },
+                             inclusion: { :in => [0,1,2] }
+    validates_length_of :unitName, :within => 5..100, :too_long => "Unit name is too long", :too_short => "Unit name is too short"
+    validates_format_of :unitCode, :with => /\A[a-zA-Z]{4}[0-9]{4}\z/i
+    validates_numericality_of :creditPoints, :greater_than_or_equal_to => 12.5, :less_than_or_equal_to => 50 
     validates :unitCode, uniqueness: { strict: true, message: 'not unique' }
     
 
@@ -68,6 +69,7 @@ class Unit < ActiveRecord::Base
         return true    # if imported successfully, return true
     end
 
+################ START OF TASK EPW-29 ################
     def self.to_csv
         CSV.generate do |csv|
             csv << ["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
@@ -96,6 +98,8 @@ class Unit < ActiveRecord::Base
             end
         end
     end
+
+################ END OF TASK EPW-29 ################
     
     def self.open_spreadsheet(file)
         #check the file extension to verity if it is a valid import file type.

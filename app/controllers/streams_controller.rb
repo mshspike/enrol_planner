@@ -1,5 +1,6 @@
 class StreamsController < ApplicationController
   before_action :set_stream, only: [:show, :edit, :update, :destroy]
+  before_filter :require_login
 
   # GET /streams
   # GET /streams.json
