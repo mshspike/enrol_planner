@@ -22,7 +22,8 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-	@users = User.all
+    @users = User.all
+    puts "Edit ended"
   end
 
   # POST /users
@@ -49,7 +50,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         format.html { render action: 'edit' }
-		flash[:notice] = "You have successfully Updated."
+		    flash[:notice] = "Unit information have successfully Updated."
         format.json { head :no_content }
 		
       else
@@ -62,10 +63,11 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    puts "destroying account... uid = " + params[:id]
     @user.destroy
-	logout
+    logout
     respond_to do |format|
-      format.html { redirect_to planner_index_path }
+      format.html { redirect_to planner_index_path, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
 	
     end

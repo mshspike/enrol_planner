@@ -1,51 +1,62 @@
-<div class = "container" style = "padding-bottom: 70px">
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+  <li><%= link_to 'Admin Portal', admin_index_path %></li>
+  <li class="active"><b><%= 'Streams List' %></b></li>
+</ol>
 
-  <div class="media">
-    <div class="media-body">
+
+<center>
+<div class="panel panel-success" style="width:80%;">
+  <div class="panel panel-heading"><div class="panel-title" style="text-align:center;">Streams</div></div>
+  <div class="panel-body">
+    <div class="panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
-          <th>Stream Code</th>
-          <th>Stream Name</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @streams.each do |stream| %>
-          <tr>
-            <td><%= stream.streamCode %></td>
-            <td><%= stream.streamName %></td>
-            <td><%= link_to 'Edit', edit_stream_path(stream) %></td>
-            <td><%= link_to 'Delete', stream, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <th>Stream Code</th>
+            <th>Stream Name</th>
+            <th></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
+        </thead>
 
-<div class = 'row'>
-    <div class = 'col-md-6'>
-      <hr>
-      <h5 style = 'font-weight:bold'>Resubmit your CSV</h5>
-      <br>
-      <%= form_tag import_streams_path, multipart: true do %>
-        <%= file_field_tag :file, accept: 'text/csv' %>
-        <br>
-        <%= submit_tag "Upload Streams", class: 'btn btn-primary btn-sm' %>
-      <% end %>
-    </div>
-
-    <div class = 'col-md-6'>
-      <hr>
-      <h5 style = 'font-weight:bold'>Download & Print</h5>
-      <br>
-      <%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm' %>
-      <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-info btn-sm' %>
+        <tbody>
+          <% @streams.each do |stream| %>
+            <tr>
+              <td onclick="document.location = 'streams/<%=stream.id%>'" style="cursor: pointer;"><%= stream.streamCode %></td>
+              <td onclick="document.location = 'streams/<%=stream.id%>'" style="cursor: pointer;"><%= stream.streamName %></td>
+              <td><%= link_to raw("<span class='glyphicon glyphicon-pencil'></span>"), edit_stream_path(stream), title: 'Edit' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
+
+  <div class="row" style="width:80%;">
+    <div class="col-md-6">
+      <div class="panel panel-success">
+        <div class="panel-heading" style="font-weight:bold; font-size:15px;">Resubmit your CSV</div>
+        <div class="panel-body" style="text-align:left;">
+          <%= form_tag import_streams_path, multipart: true do %>
+            <%= file_field_tag :file, accept: 'text/csv' %>
+            <br>
+            <%= submit_tag "Upload Streams", class: 'btn btn-success btn-sm' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-success">
+        <div class="panel-heading" style="font-weight:bold; font-size:15px;">Download & Print</div>
+        <div class="panel-body">
+          <%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
+          <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-success btn-sm' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</center>
 
 <%= render partial: "master_layouts/footer" %>

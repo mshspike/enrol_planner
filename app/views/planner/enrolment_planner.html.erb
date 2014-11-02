@@ -3,7 +3,7 @@
 </style>
 <script type="text/javascript">
     function changeFlag(flag) {
-        document.getElementById("modflag").value = flag;
+        $("#modflag").val(flag);
     }
 
     function setSemID(semID, flag) {
@@ -21,7 +21,7 @@
 				var thisSem = $(this).parent().attr('sem');
 				if ((unitSem == "Both") || (unitSem == thisSem) || ($(this).parent().is('#remainUnits'))) {
 					$(".unitsList tbody").each(validateUnitsList);
-					$('#remainUnits .remainCountRow p').html("Total remaining units: "+$("#remainUnits tbody .unitRow").length);
+					$('div.remainCount').html("Total remaining units: "+$("#remainUnits tbody .unitRow").length);
 					updateCreditPointsBox();
 					requestPreReqValidation();
 				} else {
@@ -198,10 +198,10 @@
     <div class="row">
         
         <div class="col-md-7"> <!-- enrolment planner -->
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
-                    <h3 class="panel-title"><center>Enrolment Planner</center></h3>
+                    <div class="panel-title" style="text-align:center;">Study Plan</div>
                 </div>
                 <div class="panel-body" id="planner-body" style="height:500px; overflow:auto;overflow-x;hidden;" >
                     <% session[:semesters].length.times do |i| %>
@@ -210,19 +210,19 @@
                         <% if ((i%2 == 1)||(i==session[:semesters].length-1)) %></div><%end%>
                     <% end %>
                 </div>
-                <div class="panel-footer" style="text-align:center;">
-                    <button type="button" class="btn btn-default btn-sm" onclick="addSemBox();"><i class="glyphicon glyphicon-plus"></i></button>
-                    <button type="submit" class="btn btn-default btn-sm" onclick="changeFlag(6);">Auto Plan!</button>
+                <div class="panel-footer" style="text-align:center; background-color:#EDF7FC;">
+                    <button type="button" class="btn btn-default btn-sm" onclick="addSemBox();"><small><i class="glyphicon glyphicon-plus"></i></small></button>
+                    <button type="submit" class="btn btn-default btn-sm" onclick="changeFlag(6);"><small>Auto Plan!</small></button>
                     <label><input type="checkbox" name="include_planned"> Include planned semesters</label>
 				</div>            
             </div>
         </div>  <!-- end of enrolment planner -->
         
         <div class="col-md-5"> <!-- Remaining Units -->
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
-                    <h3 class="panel-title"><center>Remaining Units</center></h3>
+                    <div class="panel-title" style="text-align:center;">Remaining Units</div>
                 </div>
                 
                 <div class="panel-body" style="height:500px; overflow:auto;">
@@ -249,13 +249,13 @@
                             </tr>
                         <% end %>
 						</tbody>
-						<tfoot>
-						<tr class="remainCountRow">
-							<td colspan="3"><p align="right">Total remaining units: <%= session[:remain_units].length %></p></td>
-						</tr>
                     </table>
                     <% end %>
-                </div>              
+                </div>
+
+                <div class="panel-footer" style="text-align:right; background-color:#EDF7FC;">
+                    <div class="remainCount">Total remaining units: <%= session[:remain_units].length %></div>
+                </div>
             </div>
         </div>      <!-- end of Remaining Units -->
     <% end %> <!--END enrolment_planner form-->
@@ -264,7 +264,7 @@
 
     <div class="row">
         <div class="col-md-4">  <!-- download and email -->
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
                     <h3 class="panel-title"><center>Download & Email</center></h3>
@@ -272,8 +272,8 @@
                 
                 <div class="panel-body" style="height: 115px">
                     <div align="center">
-                        <%= link_to 'Download PDF', planner_sembox_path(format: "pdf"), class: "btn btn-success" %>
-                        <%= link_to 'Download CSV', download_csv_path, class: "btn btn-warning" %>
+                        <%= link_to 'Download PDF', planner_sembox_path(format: "pdf"), class: "btn btn-info" %>
+                        <%= link_to 'Download CSV', download_csv_path, class: "btn btn-info" %>
                     </div>
                     
                     <br>
@@ -293,7 +293,7 @@
         </div>      <!-- end of download and email -->
 
         <div class="col-md-4"> <!-- upload your CSV -->
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
                     <h3 class="panel-title"><center>Upload your CSV</center></h3>
@@ -303,7 +303,7 @@
                     <%= form_tag download_csv_path, multipart: true do %>
                     <div class="form-group">
                         <%= file_field_tag :file, accept: 'text/csv' %><br>
-                        <%= submit_tag "Upload", class: 'btn btn-default' %>
+                        <center><%= submit_tag "Upload", class: 'btn btn-info' %></center>
                     </div>
                     <% end %>
                 </div>
@@ -312,7 +312,7 @@
         </div>      <!-- end of upload your CSV -->
 
         <div class="col-md-4"> <!-- credit points -->
-            <div class="panel panel-default">               
+            <div class="panel panel-info">               
                 <div class="panel-heading">
                     <h3 class="panel-title"><center>Credit Points</center></h3>
                 </div>

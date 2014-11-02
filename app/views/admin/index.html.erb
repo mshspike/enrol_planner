@@ -1,52 +1,42 @@
-<div class = "container">
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+  <li class="active"><b>Admin Portal</b></li>
+</ol>
 
-	<!--<div class="alert alert-success">Success</div> -->
-
-	<div class = "row">
-
-		<!-- START course management -->
-		<!-- <div class = "col-xs-12 col-md-8"> -->
-			<!-- START update units -->
-			<div class = "panel panel-default">
-				<div class = "panel-heading" style = 'font-weight:bold'>Update Units</div>
-				<div class = "panel-body">
-					<div class = "col-md-6">
-						<%= form_tag import_units_path, multipart: true do %>
-							<%= file_field_tag :file, accept: 'text/csv' %>
-							<br><%= submit_tag "Update Units", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-						<% end %>
-					</div>
-					<div class = "col-md-6">
-						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
-					</div>
-				</div>
+<!-- START course management -->
+	<!-- START update units -->
+	<div class = "panel panel-success">
+		<div class = "panel-heading" style = 'font-weight:bold'>Update Units</div>
+		<div class = "panel-body">
+			<div class = "col-md-6">
+				<%= form_tag import_units_path, multipart: true do %>
+					<%= file_field_tag :file, accept: 'text/csv' %>
+					<br><%= submit_tag "Update Units", class: 'btn btn-success btn-sm' %>
+					<%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
+				<% end %>
 			</div>
-			<!-- END update units -->
-
-			<!-- START update streams -->
-			<div class = "panel panel-default">
-				<div class = "panel-heading" style = 'font-weight:bold'>Update Streams</div>
-				<div class = "panel-body">
-					<div class = "col-md-6">
-						<%= form_tag import_streams_path, multipart: true do %>
-							<%= file_field_tag :file, accept: 'text/csv'%>
-							<br><%= submit_tag "Update Stream", class: 'btn btn-success btn-sm' %>
-							<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-info btn-sm' %>
-						<% end %>
-					</div>
-					<div class = "col-md-6">
-						<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
-					</div>
-				</div>
+			<div class = "col-md-6">
+				<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
 			</div>
-			<!-- END update streams -->
-
-		<!-- </div> -->
-		<!-- END course management -->
-
+		</div>
 	</div>
-</div>
+	<!-- END update units -->
 
-
-<%= render partial: "master_layouts/footer" %>
+	<!-- START update streams -->
+	<div class = "panel panel-success">
+		<div class = "panel-heading" style = 'font-weight:bold'>Update Streams</div>
+		<div class = "panel-body">
+			<div class = "col-md-6">
+				<%= form_tag import_streams_path, multipart: true do %>
+					<%= file_field_tag :file, accept: 'text/csv'%>
+					<br><%= submit_tag "Update Streams", class: 'btn btn-success btn-sm' %>
+					<%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
+				<% end %>
+			</div>
+			<div class = "col-md-6">
+				<p class="text-danger"><small><span class="glyphicon glyphicon-exclamation-sign"></span> Its always recomended to create a backup before you try any CSV update attempts, as this action can not be undone.</small></p>
+			</div>
+		</div>
+	</div>
+	<!-- END update streams -->
+<!-- END course management -->

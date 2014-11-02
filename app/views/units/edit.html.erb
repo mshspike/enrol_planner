@@ -1,6 +1,8 @@
-<h1>Editing unit</h1>
-
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+<li><%= link_to 'Admin Portal', admin_index_path %></li>
+<li><%= link_to 'Units List', units_path %></li>
+<li><%= link_to @unit.unitName, @unit %></li>
+<li class="active"><b>Edit</b></li>
+</ol>
 <%= render 'form' %>
-
-<%= link_to 'Show', @unit %> |
-<%= link_to 'Back', units_path %>

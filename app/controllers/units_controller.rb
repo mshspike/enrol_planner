@@ -73,20 +73,24 @@
 
   # START importing units from CSV
   def import
-	# check if the user attach empty file 
-    unless params[:file].nil?
-		# if it is imported successfully, the import method will return 1
-		@valid = Unit.import(params[:file])
-		if @valid
-		redirect_to units_path, notice: 'Unit imported Successfully'
-		else
-		redirect_to units_path, notice: 'Unit imported Failed'
-		end
-	else
-		redirect_to units_path, notice: 'NO file attached'
-	end
+  	# check if the user attach empty file 
+      unless params[:file].nil?
+  		# if it is imported successfully, the import method will return 1
+  		@valid = Unit.import(params[:file])
+    		if @valid
+    		  redirect_to units_path, notice: 'Unit imported Successfully'
+    		else
+    		  redirect_to units_path, notice: 'Unit imported Failed'
+    		end
+    	else
+    		redirect_to units_path, notice: 'No file attached'
+    	end
   end
   # END importing units from CSV
+  
+  def not_authenticated
+    redirect_to login_path, alert: "Please login first"
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

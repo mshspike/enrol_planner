@@ -82,10 +82,14 @@ class StreamsController < ApplicationController
 		redirect_to streams_path, notice: 'Unit imported Failed'
 		end
 	else
-		redirect_to streams_path, notice: 'NO file attached'
+		redirect_to streams_path, notice: 'No file attached'
 	end
   end
   # END importing streams from CSV
+  
+  def not_authenticated
+    redirect_to login_path, alert: "Please login first"
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

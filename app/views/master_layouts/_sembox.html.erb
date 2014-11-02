@@ -7,7 +7,7 @@ numUnits = session[:semesters][count].length
 <% if (session[:semesters][count][0].to_i >= 0) %>
 <div class="col-md-6">
 	<div class="thumbnail">
-		<h5><center>Year <%=year%> Semester <%=sem%></center></h5>
+		<div style="text-align: center; font-size: 14px;">Year <%=year%> Semester <%=sem%></div>
 
 		<div class="caption">
 			<table class="table table-condensed table-hover unitsList semtable" semtable-id="<%=semester-1%>" sem="<%=sem%>">

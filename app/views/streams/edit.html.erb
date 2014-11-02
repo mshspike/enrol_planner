@@ -1,6 +1,8 @@
-<h1>Editing stream</h1>
-
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+<li><%= link_to 'Admin Portal', admin_index_path %></li>
+<li><%= link_to 'Streams List', streams_path %></li>
+<li><%= link_to @stream.streamName, @stream %></li>
+<li class="active"><b>Edit</b></li>
+</ol>
 <%= render 'form' %>
-
-<%= link_to 'Show', @stream %> |
-<%= link_to 'Back', streams_path %>

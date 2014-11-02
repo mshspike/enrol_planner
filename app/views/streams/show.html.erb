@@ -1,14 +1,28 @@
-<p id="notice"><%= notice %></p>
+<div id="notice"></div>
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+  <li><%= link_to 'Admin Portal', admin_index_path %></li>
+  <li><%= link_to 'Streams List', streams_path %></li>
+  <li class="active"><b><%= @stream.streamName %></b></li>
+</ol>
 
-<p>
-  <strong>streamName:</strong>
-  <%= @stream.streamName %>
-</p>
-
-<p>
-  <strong>Streamcode:</strong>
-  <%= @stream.streamCode %>
-</p>
-
-<%= link_to 'Edit', edit_stream_path(@stream) %> |
-<%= link_to 'Back', streams_path %>
+<center>
+<div class="panel panel-success" style="width:50%">
+  <div class="panel-heading">
+    <%= @stream.streamCode + " - " + @stream.streamName %>
+    <%= link_to raw("<span class='glyphicon glyphicon-pencil'></span>"), edit_stream_path(@stream), class: 'btn btn-default btn-xs pull-right' %>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr>
+        <td style="border-top: none; font-weight: bold; width: 30%;">Stream Code:</td>
+        <td style="border-top: none;"><%= @stream.streamCode %></td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">Stream Name:</td>
+        <td><%= @stream.streamName %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</center>

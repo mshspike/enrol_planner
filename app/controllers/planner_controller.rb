@@ -146,6 +146,8 @@ class PlannerController < ApplicationController
 
 # START enrolment_planner
     def enrolment_planner
+
+        puts "num Elec = " + params[:num_elec].to_s
         # Initialising session variables. Don't use "Array.new" to initialize here, 
         # as it will erase everything when the page is refreshed.
         session[:done_units]   ||= []
@@ -197,7 +199,7 @@ class PlannerController < ApplicationController
                 # END initialising
                 
                 # Get list of remaining units with done units object
-                session[:remain_units] = get_remaining_units(session[:done_units])
+                session[:remain_units] = get_remaining_units(session[:done_units], params[:num_elec])
 
             # Action #2 - Add units action
             when 2
@@ -468,7 +470,9 @@ class PlannerController < ApplicationController
                 scan_sem_stack(sem_units, 2, sem_index)
                 scan_sem_stack(sem_units, 0, sem_index)
             end
-            sem_index = new_sem(sem_index)
+            unless (session[:remain_units].blank?)
+                sem_index = new_sem(sem_index)
+            end
         end
     end
 
@@ -530,12 +534,15 @@ class PlannerController < ApplicationController
     # Params:
     # +done+:: Array of done units. Note that the array may be empty,
     #          make sure to empty-check first before accessing.
-    def get_remaining_units done
+    def get_remaining_units done, num_elec
         su = StreamUnit.where(:stream_id => session[:selected_stream]) \
                        .order(:plannedYear, :plannedSemester).pluck(:unit_id)
 
-        done.each do |duid|
-            su.slice!(su.index(duid))
+        puts "Getting remaining units...\n\tsu = " + su.join(',')
+        puts "\tdone = " + done.join(',')
+
+        num_elec.to_i.times do |i|
+            su.delete_at(su.index(1))
         end
 
         return su

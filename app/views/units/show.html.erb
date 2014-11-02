@@ -1,44 +1,40 @@
-<p id="notice"><%= notice %></p>
+<div id="notice"></div>
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+  <li><%= link_to 'Admin Portal', admin_index_path %></li>
+  <li><%= link_to 'Units List', units_path %></li>
+  <li class="active"><b><%= @unit.unitName %></b></li>
+</ol>
 
-<p>
-  <strong>Unitcode:</strong>
-  <%= @unit.unitCode %>
-</p>
-
-<p>
-  <strong>Unitname:</strong>
-  <%= @unit.unitName %>
-</p>
-
-<p>
-  <strong>Preunit:</strong>
-  <%= @unit.preUnit %>
-</p>
-
-    <% @unit.pre_req_groups.each_with_index do |pre_req_group, i| %>
-      <ul>
-		<% pre_req_group.preUnits.each_with_index do |preUnit, i| %>
-			<li><%= preUnit.unitCode %> - <%= preUnit.unitName %></li>
-			<% if i != pre_req_group.preUnits.size - 1 %>
-				AND
-			<% end %>
-		<% end %>
-      </ul>
-	  <% if i != @unit.pre_req_groups.size - 1 %>
-	    OR
-	  <% end %>
-    <% end %>
-
-<p>
-  <strong>Creditpoints:</strong>
-  <%= @unit.creditPoints %>
-</p>
-
-<p>
-  <strong>Semavailable:</strong>
-  <%= @unit.semAvailable %>
-</p>
-
-
-<%= link_to 'Edit', edit_unit_path(@unit) %> |
-<%= link_to 'Back', units_path %>
+<center>
+<div class="panel panel-success" style="width:50%">
+  <div class="panel-heading">
+    <%= @unit.unitCode + " - " + @unit.unitName %>
+    <%= link_to raw("<span class='glyphicon glyphicon-pencil'></span>"), edit_unit_path(@unit), class: 'btn btn-default btn-xs pull-right' %>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr>
+        <td style="border-top: none; font-weight: bold; width: 30%;">Unit Code:</td>
+        <td style="border-top: none;"><%= @unit.unitCode %></td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">Unit Name:</td>
+        <td><%= @unit.unitName %></td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">Pre-requisite(s):</td>
+        <td><%= @unit.preUnit %></td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">Credit points:</td>
+        <td><%= @unit.creditPoints %></td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">Semester Available:</td>
+        <td><%= @unit.semAvailable == 0? "Both" : @unit.semAvailable %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</center>

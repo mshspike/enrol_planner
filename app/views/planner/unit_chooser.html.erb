@@ -1,72 +1,99 @@
 <style type="text/css">
-	label {font-weight: normal !important};
+	label { font-weight: normal !important }
+	th { background-color: #F4FAFD; }
 </style>
+<script type="text/javascript">
+	function countElec() {
+		var elecCount = 0;
+		$("#unit_ids_:checked").map(function() {
+			if ($(this).val() == 1) { elecCount++; }
+		});
+		$("#num_elec").val(elecCount);
+	};
+</script>
 
-<div class = "container-full">			<!--select completed units begins-->
-	<center>
-		<div class="jumbotron" style="width:75%">
-
-		<% if (session[:selected_stream] > 0) %>
-			<h3><b><%= get_stream_code(session[:selected_stream]) %> - <%= get_stream_name(session[:selected_stream]) %></b><br /><br /></h3>
-			<h5 align="left">Here is the default course structure, you can choose the units that you have completed, and proceed for further planning.</h5>
-		<% else %>
-			<h3><b>No stream available.</b></h3>
-		<% end %>
-
+<center>
+<!-- START Panel -->
+	<div class="panel panel-info" style="width:80%">
+	<!-- START Panel heading -->
+		<div class="panel panel-heading">
+			<div class="panel-title" style="text-align:center; font-weight:bold;">
+				<% if (session[:selected_stream] > 0) %>
+					<%= get_stream_code(session[:selected_stream]) %> - <%= get_stream_name(session[:selected_stream]) %>
+				<% else %>
+					No stream available
+				<% end %>
+			</div>
+		</div>
+	<!-- END Panel heading -->
+	<!-- START Panel body -->
+		<div class="panel panel-body" style="text-align:left;">
+			<p style="text-align:center; font-size:14px;">Here is the default course structure, you can choose the units that you have completed, and proceed for further planning.</p><br />
 			<%= form_tag :action => "enrolment_planner" do %>
+				<%= hidden_field_tag 'num_elec', 0 %>
 				<% unless @stream_units.nil? %>
-					<div class="panel panel-default">
-						<table class="table table-bordered">
+					<center>
+						<table class="table table-bordered" style="width:80%">
 							<tr>
 								<th style="text-align:center; width:50%;">Year 1 Semester 1</th>
 								<th style="text-align:center; width:50%;">Year 2 Semester 2</th>
 							</tr>
 							<tr>
-								<td id="11"><%@su_y1s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-								<td id="12"><%@su_y1s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+								<td id="11" style="padding-left:15px;">
+									<%@su_y1s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%>
+								</td>
+								<td id="12" style="padding-left:15px;">
+									<%@su_y1s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%>
+								</td>
 							</tr>
 							<tr>
 								<th style="text-align:center;">Year 2 Semester 1</th>
 								<th style="text-align:center;">Year 2 Semester 2</th>
 							</tr>
 							<tr>
-								<td id="21"><%@su_y2s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-								<td id="22"><%@su_y2s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+								<td id="21" style="padding-left:15px;">
+									<%@su_y2s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%>
+								</td>
+								<td id="22" style="padding-left:15px;">
+									<%@su_y2s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%>
+								</td>
 							</tr>
 							<tr>
 								<th style="text-align:center;">Year 3 Semester 1</th>
 								<th style="text-align:center;">Year 3 Semester 2</th>
 							</tr>
 							<tr>
-								<td id="31"><%@su_y3s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
-								<td id="32"><%@su_y3s2.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%></td>
+								<td id="31" style="padding-left:15px;">
+									<%@su_y3s1.each do |u|%><label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%>
+								</td>
+								<td id="32" style="padding-left:15px;"><%@su_y3s2.each do |u|%>
+									<label><%= check_box_tag 'unit_ids[]', u.unit_id, false %> <%= get_unit_name(u.unit_id) %></label><br /><%end%>
+								</td>
 							</tr>
 						</table>
-					</div>
+					</center>
 				<% else %>
 					<p>Cannot find any unit for stream!</p>
 				<% end %>
 				
 				<h4 align="left">Select starting semester</h4>
-				<div class="col-md-5"> 
-					<label><input type="radio" name="sem" value="1" checked="checked"> Semester 1</label>
-				</div>
-				<div class="col-md-3"> 
-					<label><input type="radio" name="sem" value="2"> Semester 2</label>
-				</div>
+				<table style="width:100%">
+					<tr>
+						<td style="text-align:center;"><label><input type="radio" name="sem" value="1" checked="checked"> Semester 1</label></td>
+						<td><label><input type="radio" name="sem" value="2"> Semester 2</label></td>
+					</tr>
+				</table>
 				
 				<% if (@proceed) %>
-					<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right" %>
+					<%= submit_tag "Proceed to planning", onclick: "countElec();", class: "btn btn-info pull-right" %>
 				<% else %>
-					<%= submit_tag "Proceed to planning", class: "btn btn-success pull-right disabled" %>
+					<%= submit_tag "Proceed to planning", class: "btn btn-info pull-right disabled" %>
 				<% end %>
 			<% end %> <!-- End form -->
-
 		</div>
+	<!-- END Panel body -->
+	</div>
+<!-- END Panel -->
+</center>
 
-	</center>
-
-</div>					<!--select completed units ends-->
-
-<%= render partial: "master_layouts/footer" %>
 <% session[:enrol_planner_flag] = 1 %>

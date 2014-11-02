@@ -1,5 +1,5 @@
 <div id="newusebox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-    <div class="panel panel-info" >
+    <div class="panel panel-success" >
             <div class="panel-heading">
                 <div class="panel-title">New User</div>
             </div>     
@@ -37,7 +37,7 @@
 		      <!-- Button -->
 		      <div class="col-sm-12 controls">
 			    <%= f.submit class: "btn btn-success pull-right" %>
-				<%= button_tag "Back", class: 'btn pull-right', href: admin_index_path, style: 'margin-right:5px;'%>
+				<%= link_to "Back", admin_index_path, class: 'btn btn-default pull-right', style: 'margin-right:5px;' %>
 				<% end %>
 
 			  </div>

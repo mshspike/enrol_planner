@@ -107,7 +107,7 @@ module UnitsHelper
         end
 
         # Check if unit is in any of the semesters, except current semester.
-        (sem_index+1).times do |i|
+        (sem_index).times do |i|
             if (semesters[i].include? uid.to_i)
                 puts "Done."
                 return true

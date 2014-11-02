@@ -4,6 +4,9 @@
   <title><%= yield(:title) %></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <style type="text/css">
+    body { padding-bottom: 70px; }
+  </style>
 </head>
 <body>
   <div>
@@ -15,6 +18,6 @@
 	</div>
 	<%= yield %>
 	</div>
-
+<%= render partial: "master_layouts/footer" %>
 </body>
 </html>

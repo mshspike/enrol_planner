@@ -10,30 +10,22 @@
       </ul>
     </div>
   <% end %>
-  
-	
-  <div class="field">
-	<%=label_tag :unitCode, ('Unit Code')%><br>
-    <%= f.number_field :unitCode %>
-  </div>
-  <div class="field">
-	<%=label_tag :unitName, ('Unit Name')%><br>
-    <%= f.text_field :unitName %>
-  </div>
-  <div class="field">
-	<%=label_tag :preUnit, ('Has prerequisites?')%><br>
-    <%= f.text_field :preUnit %>
-  </div>
-  <div class="field">
-	<%=label_tag :creditPoints, ('Credit Points')%><br>
-    <%= f.number_field :creditPoints %>
-  </div>
-  <div class="field">
-	<%=label_tag :semAvailable, ('Semester Available')%><br>
-    <%= f.number_field :semAvailable %>
-  </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <center>
+  <div class="panel panel-success" style="width:50%">
+    <div class="panel-heading">
+      <%= "Editing unit: " + @unit.unitCode + " - " + @unit.unitName %>
+    </div>
+    <div class="panel-body" style="text-size: 15px">
+          <div class="input-group"><div class="input-group-addon">Unit Code</div><%= f.text_field :unitCode, class: "form-control input-small", style: "width:100%" %></div><br />
+
+          <div class="input-group"><div class="input-group-addon">Unit Name</div><%= f.text_field :unitName, class: "form-control input-small", style: "width:100%" %></div><br />
+
+          <div class="input-group"><div class="input-group-addon">Credit Points</div><%= f.number_field :creditPoints, class: "form-control input-small", style: "width:100%" %></div><br />
+
+          <div class="input-group"><div class="input-group-addon">Semester Available</div><%= f.number_field :semAvailable, class: "form-control input-small", style: "width:100%" %></div><br />
+      <%= f.submit class: "btn btn-sm btn-success pull-right" %>
+    </div>
   </div>
+  </center>
 <% end %>

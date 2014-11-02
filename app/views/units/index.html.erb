@@ -1,16 +1,37 @@
-<div class = "container" style = "padding-bottom: 70px">
+<style type="text/css">
+  td { text-align: center; }
+  th { text-align: center; }
+</style>
 
-  <div class="media">
-    <div class="media-body">
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("td[name=semAvail]").map(function() {
+      console.log($(this).text());
+      if ($(this).text() == 0) {
+        $(this).text("Both");
+      }
+    });
+  });
+</script>
+
+<!-- Navigation bar -->
+<ol class="breadcrumb">
+  <li><%= link_to 'Admin Portal', admin_index_path %></li>
+  <li class="active"><b><%= 'Units List' %></b></li>
+</ol>
+
+<div class="panel panel-success">
+  <div class="panel panel-heading"><div class="panel-title" style="text-align:center;">Units</div></div>
+  <div class="panel-body">
+    <div class="panel panel-default">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>Unit Code</th>
             <th>Unit Name</th>
-            <th>Pre Unit</th>
+            <th>Pre-requisite</th>
             <th>Credit Points</th>
             <th>Semster Available</th>
-            <th></th>
             <th></th>
           </tr>
         </thead>
@@ -18,40 +39,57 @@
         <tbody>
           <% @units.each do |unit| %>
             <tr>
-              <td><%= unit.unitCode %></td>
-              <td><%= unit.unitName %></td>
-              <td><%= unit.preUnit %></td>
-              <td><%= unit.creditPoints %></td>
-              <td><%= unit.semAvailable %></td>
-              <td><%= link_to 'Edit', edit_unit_path(unit) %></td>
-              <td><%= link_to 'Delete', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td class="unitRow" onclick="document.location = 'units/<%=unit.id%>'">
+                <%= unit.unitCode %>
+              </td>
+              <td class="unitRow" onclick="document.location = 'units/<%=unit.id%>'" style="text-align: left;">
+                <%= unit.unitName %>
+              </td>
+              <td class="unitRow" onclick="document.location = 'units/<%=unit.id%>'">
+                <%= unit.preUnit %>
+              </td>
+              <td class="unitRow" onclick="document.location = 'units/<%=unit.id%>'">
+                <%= unit.creditPoints %>
+              </td>
+              <td class="unitRow" name="semAvail" onclick="document.location = 'units/<%=unit.id%>'">
+                <%= unit.semAvailable == 0 ? "Both" : unit.semAvailable %>
+              </td>
+              <td>
+                <%= link_to raw("<span class='glyphicon glyphicon-pencil'></span>"), edit_unit_path(unit), title: 'Edit' %>
+              </td>
             </tr>
           <% end %>
         </tbody>
       </table>
     </div>
   </div>
+</div>
 
-  <div class = 'row'>
-    <div class = 'col-md-6'>
-      <hr>
-      <h5 style = 'font-weight:bold'>Resubmit your CSV</h5>
-      <br>
-      <%= form_tag import_units_path, multipart: true do %>
-        <%= file_field_tag :file, accept: 'text/csv' %>
-        <br>
-        <%= submit_tag "Upload Units", class: 'btn btn-primary btn-sm' %>
-      <% end %>
+<center>
+  <div class="row" style="width:80%;">
+    <div class="col-md-6">
+      <div class="panel panel-success">
+        <div class="panel-heading" style="font-weight:bold; font-size:15px;">Resubmit your CSV</div>
+        <div class="panel-body" style="text-align:left;">
+          <%= form_tag import_units_path, multipart: true do %>
+            <%= file_field_tag :file, accept: 'text/csv' %>
+            <br>
+            <%= submit_tag "Upload Streams", class: 'btn btn-success btn-sm' %>
+          <% end %>
+        </div>
+      </div>
     </div>
 
-    <div class = 'col-md-6'>
-      <hr>
-      <h5 style = 'font-weight:bold'>Download & Print</h5>
-      <br>
-      <%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-success btn-sm' %>
-      <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-info btn-sm' %>
+    <div class="col-md-6">
+      <div class="panel panel-success">
+        <div class="panel-heading" style="font-weight:bold; font-size:15px;">Download & Print</div>
+        <div class="panel-body">
+          <%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
+          <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-success btn-sm' %>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</center>
 
 <%= render partial: "master_layouts/footer" %>

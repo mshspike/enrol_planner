@@ -1,38 +1,30 @@
-<div class = "navbar navbar-inverse navbar-static-top">			<!--nav bar begins-->
-
+<% admin_controller = ["admin","users","units","streams"] %>
+<div class = "navbar navbar-default navbar-static-top">
 	<div class = "container">
-
 		<div class = ".navbar-header">
-			
 			<%= link_to "Enrolment Planner", planner_index_path, class: "navbar-brand" %>
-
-			<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
-				<span class = "icon-bar"></span>
-				<span class = "icon-bar"></span>
-				<span class = "icon-bar"></span>
-			</button>
 		</div>
 
-		<div class = "collapse navbar-collapse navHeaderCollapse">
-
-			<ul class = "nav navbar-nav navbar-right">
-				
-				<% if current_user %>
+		<ul class = "nav navbar-nav navbar-right">
+			
+			<% if current_user %>
+				<% if params[:controller] == "planner" %>
+					<li class="active"><%= link_to 'Planner', planner_index_path %></li>
+					<li><%= link_to 'Admin Portal', admin_index_path %></li>
+				<% elsif admin_controller.include? params[:controller] %>
 					<li><%= link_to 'Planner', planner_index_path %></li>
-					<li><%= link_to 'Admin', admin_index_path %></li>
-					<li class="small"><%= link_to "Register", new_user_path %></li>
-					<li class="small"><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
-					<li class="small"><%= link_to "Logout", logout_path %></li>
-					<!--This can be deleted after first user has been created-->
-				<%else%>
-				<li><%= link_to 'Planner', '../planner' %></li>
-				<li><%= link_to 'Admin', '../admin' %></li>
+					<li class="active"><%= link_to 'Admin Portal', admin_index_path %></li>
+				<% else %>
+					<li><%= link_to 'Planner', planner_index_path %></li>
+					<li><%= link_to 'Admin Portal', admin_index_path %></li>
 				<% end %>
-
-			</ul>
-
-		</div>
-
+				<li class="small"><%= link_to "Register", new_user_path %></li>
+				<li class="small"><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
+				<li class="small"><%= link_to "Logout", logout_path %></li>
+			<% else %>
+				<li><%= link_to 'Planner', planner_index_path %></li>
+				<li><%= link_to 'Admin Portal', admin_index_path %></li>
+			<% end %>
+		</ul>
 	</div>
-
-</div>			<!--nav bar ends-->
+</div>
