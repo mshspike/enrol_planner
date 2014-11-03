@@ -226,32 +226,83 @@
                 </div>
                 
                 <div class="panel-body" style="height:500px; overflow:auto;">
-                    <% unless session[:remain_units].nil? %> 
+					<% unless session[:remain_units].nil? %> 
                     <table class="table table-condensed table-hover unitsList" id="remainUnits">
                         <thead><tr class="showinforow">
                             <th style="font-size:11px; text-align:center;">Code</th>
                             <th style="font-size:11px;">Unit Name</th>
                             <th style="font-size:11px; text-align:center;">Sem</th>
+							
                         </tr></thead>
 						<tbody>
 						<% session[:remain_units].each do |uid| %>
-                            <% unit = @units.where(:id => uid).first %>
-                            <tr uid="<%=unit.id%>" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" class="unitRow">
-                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
-                                    <%= unit.unitCode %>
-                                </td>
-                                <td style="font-size:11px"> <!-- unit name -->
-                                    <%= unit.unitName %>
-                                </td>
-                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
-                                    <%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>
-                                </td>
-                            </tr>
-                        <% end %>
+							<% if ((session[:u_elecAvailableflag] == 1 ) && uid == 1)%>
+								<% unit = @units.find_by_id(1) %>
+								<tr uid="<%=unit.id%>" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" class="unitRow">
+									<td style="font-size:11px; text-align:center;"> <!-- unit code -->
+										<%= @u_elec1Code %>
+									</td>
+									<td style="font-size:11px"> <!-- unit name -->
+										<%= @u_elec1Name %>
+									</td>
+									<td style="font-size:11px; text-align:center;"> <!-- semester -->
+										<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>
+									</td>
+								<%session[:u_elecAvailableflag] = 0%>
+								</tr>
+							<% elsif ((session[:u_elec2Availableflag] == 1 ) && uid ==1)%>
+									<% unit = @units.find_by_id(1) %>
+								<tr uid="<%=unit.id%>" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" class="unitRow">
+									<td style="font-size:11px; text-align:center;"> <!-- unit code -->
+										<%= @u_elec2Code %>
+									</td>
+									<td style="font-size:11px"> <!-- unit name -->
+										<%= @u_elec2Name %>
+									</td>
+									<td style="font-size:11px; text-align:center;"> <!-- semester -->
+										<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>
+									</td>
+								<%session[:u_elec2Availableflag] = 0%>
+								</tr>
+							<% elsif ((session[:u_elec3Availableflag] == 1 ) && uid ==1)%>
+									<% unit = @units.find_by_id(1) %>
+								<tr uid="<%=unit.id%>" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" class="unitRow">
+									<td style="font-size:11px; text-align:center;"> <!-- unit code -->
+										<%= @u_elec3Code %>
+									</td>
+									<td style="font-size:11px"> <!-- unit name -->
+										<%= @u_elec3Name %>
+									</td>
+									<td style="font-size:11px; text-align:center;"> <!-- semester -->
+										<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>
+									</td>
+								<%session[:u_elec3Availableflag] = 0%>
+								</tr>
+							<%else%>
+								<% unit = @units.find_by_id(uid) %>
+								<tr uid="<%=unit.id%>" credit-points="<%=unit.creditPoints%>" sem-avail="<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>" class="unitRow">
+									<td style="font-size:11px; text-align:center;"> <!-- unit code -->
+										<%= unit.unitCode %>
+									</td>
+									<td style="font-size:11px"> <!-- unit name -->
+										<%= unit.unitName %>
+									</td>
+									<td style="font-size:11px; text-align:center;"> <!-- semester -->
+										<%=unit.semAvailable==0 ? "Both" : unit.semAvailable %>
+									</td>
+								</tr>
+							<% end %>
+							
+							<% end %>
 						</tbody>
+						<tfoot>
+						<tr class="remainCountRow">
+							<td colspan="3"><p align="right">Total remaining units: <%= session[:remain_units].length %></p></td>
+						</tr>
                     </table>
                     <% end %>
-                </div>
+                    
+                </div> 
 
                 <div class="panel-footer" style="text-align:right; background-color:#EDF7FC;">
                     <div class="remainCount">Total remaining units: <%= session[:remain_units].length %></div>

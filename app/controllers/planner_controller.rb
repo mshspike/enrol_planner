@@ -103,6 +103,7 @@ class PlannerController < ApplicationController
 
 # START unit_chooser
     def unit_chooser
+		@units = Unit.all
         if params[:streamSelect].nil? || params[:streamSelect] == 0
             session[:selected_stream] = 0
             @proceed = false
@@ -111,34 +112,214 @@ class PlannerController < ApplicationController
             @proceed = true
         end
 
-        # Pass the selected maths subject to session variable
-        unless (params["maths"].nil?)
-            session[:maths] = params["maths"].last
-            if (session[:maths] == "2cd")
-                # Replace 2 electives with MATH135 and MATH136
-            elsif (session[:maths] == "3ab")
-                # Replace 1 elective with MATH135
-            elsif (session[:maths] == "3cd")
-                # Remain the same (MATH103)
-            end
-        else
-            session[:maths] = false
-        end
-
-        if (@proceed)
+       if (@proceed)
             # Get the full list of units of selected stream
             @stream_units = StreamUnit.where(:stream_id => session[:selected_stream].to_i)
+			session[:customUnitList]  = Array.new
             if (@stream_units.empty?)
                 @proceed = false
             end
 
-            # Put the list into array of StreamUnits, seperated by planned year and semester
-            @su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
-            @su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
-            @su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
-            @su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
-            @su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
-            @su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+			unless (params["maths"].nil?)
+            session[:maths] = params["maths"].last
+            if ((session[:maths] == "2cd") && ((session[:selected_stream] != 4)&&(session[:selected_stream] != 2)))
+				# Put the list into array of StreamUnits, seperated by planned year and semester
+				#Change one elective to m136
+				#change another one to m135
+				
+				@totalElec = 0
+				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+					@su_y1s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y1s2 =  @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+					@su_y1s2.each_with_index do |u, i|
+						if (u.unit_id == 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end	
+						session[:customUnitList].push(u.unit_id)
+					end	
+				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+					@su_y2s1.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec == 1 )
+							@totalElec +=1
+							u.unit_id = 42
+						elsif (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+						session[:customUnitList].push(u.unit_id)
+					end
+					
+				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+					@su_y2s2.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec == 1 )
+							@totalElec +=1
+							u.unit_id = 42
+						elsif (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end	
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+					@su_y3s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+					@su_y3s2.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec == 1 )
+							@totalElec +=1
+							u.unit_id = 42
+						elsif (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+						session[:customUnitList].push(u.unit_id)
+					end
+				
+				
+            elsif (((session[:maths] == "3ab") && (session[:selected_stream] != 4 && session[:selected_stream] != 2)) || 
+				((session[:maths] == "2cd")&&(session[:selected_stream] == 4||session[:selected_stream] == 2)))
+                # Replace 2 elective (only one elective for this)
+				# Put the list into array of StreamUnits, seperated by planned year and semester
+				
+				@totalElec = 0
+				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+					@su_y1s2.each_with_index do |u, i|
+						if (u.unit_id == 1 )
+							@totalElec +=1
+							u.unit_id = 41							
+						end
+						session[:customUnitList].push(u.unit_id)
+					end	
+				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+					@su_y2s1.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+						session[:customUnitList].push(u.unit_id)
+					end		
+				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+					@su_y2s2.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+						session[:customUnitList].push(u.unit_id)
+					end	
+				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+					@su_y3s1.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+						session[:customUnitList].push(u.unit_id)
+					end		
+				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+					@su_y3s2.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+						session[:customUnitList].push(u.unit_id)
+					end		
+				
+			elsif (((session[:maths] == "3cd")&&(session[:selected_stream] == 4 || session[:selected_stream] == 2)) || 
+				((session[:maths] != "3ab")&& (session[:selected_stream] == 4 || session[:selected_stream] == 2)))
+				# Replace 1 elective ( 3 elective left for this) (ONLY for IT)
+				# Put the list into array of StreamUnits, seperated by planned year and semester
+				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+				
+            else
+                # Replace 1 elective ( 2 elective left for this) (for others besides IT)
+				# Put the list into array of StreamUnits, seperated by planned year and semester
+				
+				
+				if (session[:selected_stream] == 4 || session[:selected_stream] == 2)
+				@totalElec = 0
+				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+					@su_y1s2.each_with_index do |u, i|
+						if (u.unit_id == 1 )
+							@totalElec +=1
+							u.unit_id = 41							
+						end
+					end	
+				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+					@su_y2s1.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+					end		
+				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+					@su_y2s2.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+					end	
+				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+					@su_y3s1.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+					end		
+				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+					@su_y3s2.each_with_index do |u, i|
+						if (u.unit_id == 1 && @totalElec < 1 )
+							@totalElec +=1
+							u.unit_id = 41
+						end
+					end
+				else
+				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+				end
+            end
+        else
+            session[:maths] = false
+				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+					@su_y1s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+					@su_y1s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+					@su_y2s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+					@su_y2s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+					@su_y3s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+					@su_y3s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
+        end
+
+		
         end
     end
 # END unit_chooser
@@ -155,8 +336,7 @@ class PlannerController < ApplicationController
         session[:plan_units]   ||= []
 
         # Caching units ActiveRecord object for rendering purpose.
-        suid = StreamUnit.where(:stream_id => session[:selected_stream]).pluck(:unit_id)
-        @units = Unit.where(:id => suid)
+        @units = Unit.all
 
         @proceed = true
 
@@ -535,17 +715,132 @@ class PlannerController < ApplicationController
     # +done+:: Array of done units. Note that the array may be empty,
     #          make sure to empty-check first before accessing.
     def get_remaining_units done, num_elec
-        su = StreamUnit.where(:stream_id => session[:selected_stream]) \
-                       .order(:plannedYear, :plannedSemester).pluck(:unit_id)
+        #su = StreamUnit.where(:stream_id => session[:selected_stream]) \
+        #               .order(:plannedYear, :plannedSemester).pluck(:unit_id)
+		@arr = Array.new
 
-        puts "Getting remaining units...\n\tsu = " + su.join(',')
+		if (params[:doneElec1].to_i  == 2)
+			@donelecvalue = " here 2"
+			unless params[:elective_unitID1].nil?
+				changeElec = 1
+				session[:customUnitList].each do |e_unit|
+					if ((e_unit == 1)&&(changeElec == 1))
+						e_unit = params[:elective_unitID1].to_i
+						changeElec -= 1
+					end
+					@arr.push(e_unit)
+				end
+			else
+				changeElec = 1
+				session[:customUnitList].each do |e_unit|
+					if ((e_unit == 1)&&(changeElec == 1) )
+						session[:u_elecAvailableflag] = 1
+						@u_elec1Name = params[:elecUnitName1]
+						@u_elec1Code = params[:elecUnitCode1]
+						changeElec -= 1
+					end
+					@arr.push(e_unit)
+				end
+
+			end
+		elsif (params[:doneElec1].to_i  == 1)
+			@donelecvalue = " here 1"
+			deleteElec = 1
+			session[:customUnitList].each do |d_unit|
+				if ((d_unit == 1)&&(deleteElec == 1))
+					done.push(d_unit)
+					deleteElec -= 1
+				end
+				@arr.push(d_unit)
+			end
+		
+		else
+		
+			@donelecvalue = " ahah you have no way to go"
+			@arr = session[:customUnitList]
+		end
+		
+##########################2222222222222222222222222222222222222
+		@arr2 = Array.new
+		if (params[:doneElec2].to_i  == 2)
+			unless params[:elective_unitID2].nil?
+				changeElec = 1
+				@arr.each do |e_unit|
+					if ((e_unit == 1)&&(changeElec == 1))
+						@donelecvalue = " here 2 elec 2"
+						e_unit = params[:elective_unitID2].to_i
+						changeElec -= 1
+					end
+				@arr2.push(e_unit)
+				end
+				@arr = @arr2
+			else
+				changeElec = 1
+				@arr.each do |e_unit|
+					if ((e_unit == 1)&&(changeElec == 1))
+						session[:u_elec2Availableflag] = 1
+						@u_elec2Name = params[:elecUnitName2]
+						@u_elec2Code = params[:elecUnitCode2]
+						changeElec -= 1
+						session[:totalelec] += 1
+					end
+				end
+			end
+		elsif (params[:doneElec2].to_i  == 1)
+			@donelecvalue = " here 1"
+			deleteElec = 1
+			@arr.each do |d_unit|
+				if ((d_unit == 1)&&(deleteElec == 1))
+					done.push(d_unit)
+					deleteElec -= 1
+				end
+			end
+		end
+
+################################33333333333333333333333333333333
+		@arr3 = Array.new
+		if (params[:doneElec3].to_i  == 2)
+			unless params[:elective_unitID3].nil?
+				changeElec = 1
+				@arr.each do |e_unit|
+					if ((e_unit == 1)&&(changeElec == 1))
+						@donelecvalue = " here 3 elec 3"
+						e_unit = params[:elective_unitID3].to_i
+						changeElec -= 1
+					end
+				@arr3.push(e_unit)
+				end
+				@arr = @arr3
+			else
+				changeElec = 1
+				@arr.each do |e_unit|
+					if ((e_unit == 1)&&(changeElec == 1))
+						session[:u_elec3Availableflag] = 1
+						@u_elec3Name = params[:elecUnitName3]
+						@u_elec3Code = params[:elecUnitCode3]
+						changeElec -= 1
+					end
+				end
+			end
+		elsif (params[:doneElec3].to_i  == 1)
+			@donelecvalue = " here 1"
+			deleteElec = 1
+			@arr.each do |d_unit|
+				if ((d_unit == 1)&&(deleteElec == 1))
+					done.push(d_unit)
+					deleteElec -= 1
+				end
+			end
+		end
+		
+        puts "Getting remaining units...\n\tsu = " + @arr.join(',')
         puts "\tdone = " + done.join(',')
 
         num_elec.to_i.times do |i|
-            su.delete_at(su.index(1))
+            @arr.delete_at(@arr.index(1))
         end
 
-        return su
+        return @arr
     end
 
     def sem_is_not_full sem_index, uid

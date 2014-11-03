@@ -10,6 +10,51 @@
 		});
 		$("#num_elec").val(elecCount);
 	};
+	
+$(function (){
+
+$(".elective1checkbox").click(function(){
+	var checkbox = this;
+	$(".elective1checkbox").each(function(){
+		if(this !=checkbox){
+			$(this).prop('checked', false);
+		}
+	});
+});
+});
+
+$(function (){
+
+$(".elective2checkbox").click(function(){
+	var checkbox = this;
+	$(".elective2checkbox").each(function(){
+		if(this !=checkbox){
+			$(this).prop('checked', false);
+		}
+	});
+});
+});
+
+$(function (){
+
+$(".elective3checkbox").click(function(){
+	var checkbox = this;
+	$(".elective3checkbox").each(function(){
+		if(this !=checkbox){
+			$(this).prop('checked', false);
+		}
+	});
+});
+});
+
+$(function (){
+var count = 0;
+$(".countElec").click(function(){
+	if(u.unit_id == 1){
+		count ++;
+	}
+	});
+});	
 </script>
 
 <center>
@@ -84,16 +129,380 @@
 					</tr>
 				</table>
 				
+			<!--if choose 2cd and the STREAM is not SE and not IT-->
+			<% if (session[:maths] == "2cd") && ((session[:selected_stream] != 4)&&(session[:selected_stream] != 2)) %>
+				<h4 align="left">Select Elective Unit</h4>
+				<h5 align="left" >Your Elective Units have been replaced with:</h5>
+				<h6 align="left" >Calculus and Linear Algebra - MATH1008</h6>
+				<h6 align="left" >Pre and Introductory Calculus - MATH1011</h6>
+
+			<!--if choose 3ab and the STREAM is not SE and not IT-->
+			<!--or-->
+			<!--if choose 2cd and the STREAM is SE or IT-->
+			<%elsif ((session[:maths] == "3ab") && (session[:selected_stream] != 4 && session[:selected_stream] != 2)) || 
+				((session[:maths] == "2cd")&&(session[:selected_stream] == 4||session[:selected_stream] == 2))%>
+			
+				<h4 align="left">Select Elective Unit</h4>
+				<h5 align="left" >Your Elective Units have been replaced with:</h5>
+				<h6 align="left" >Calculus and Linear Algebra - MATH1008</h6>
+				<div class="btn-group-vertical">
+			
+					<div class="btn btn-default pull-left">
+					<link_to data-toggle="modal" data-target="#myElec1"> + First Elective Unit</button><br />
+					</div>
+			
+				</div>
+			<!--if choose 3cd and the STREAM is SE and IT-->
+			<!--or-->
+			<!--SE or IT that does not have Maths selected (and make sure the Maths is not 3ab) -->			
+			<%elsif((session[:maths] == "3cd")&&(session[:selected_stream] == 4 || session[:selected_stream] == 2)) || 
+				((session[:maths] != "3ab")&& (session[:selected_stream] == 4 || session[:selected_stream] == 2))%>
+
+				<h4 align="left">Select Elective Unit</h4>
+				<div class="btn-group-vertical">	
+			
+					<div class="btn btn-default pull-left">
+					<link_to data-toggle="modal" data-target="#myElec1"> + First Elective Unit</button><br />
+					</div>
+
+					<div class="btn btn-default pull-left">
+					<link_to data-toggle="modal" data-target="#myElec2">+ Second Elective Unit</button>
+					</div>
+			
+					<div class="btn btn-default pull-left">
+					<link_to data-toggle="modal" data-target="#myElec3">+ Third Elective Unit</button>
+					</div>
+			
+				</div>			
+			
+			<%else%>
+				<% if (session[:selected_stream] == 4 || session[:selected_stream] == 2)%>
+					<h4 align="left">Select Elective Unit</h4>
+					<h5 align="left" >Your Elective Units have been replaced with:</h5>
+					<h6 align="left" >Calculus and Linear Algebra - MATH1008</h6>
+					<div class="btn-group-vertical">	
+			
+						<div class="btn btn-default pull-left">
+						<link_to data-toggle="modal" data-target="#myElec1"> + First Elective Unit</button><br />
+						</div>
+
+						<div class="btn btn-default pull-left">
+						<link_to data-toggle="modal" data-target="#myElec2">+ Second Elective Unit</button>
+						</div>
+					</div>
+				<% else %>
+					<h4 align="left">Select Elective Unit</h4>
+					<h5 align="left" >Your Elective Units have been replaced with:</h5>
+					<div class="btn-group-vertical">	
+			
+						<div class="btn btn-default pull-left">
+						<link_to data-toggle="modal" data-target="#myElec1"> + First Elective Unit</button><br />
+						</div>
+
+						<div class="btn btn-default pull-left">
+						<link_to data-toggle="modal" data-target="#myElec2">+ Second Elective Unit</button>
+						</div>
+					</div>
+				<% end %>
+			<% end %>
+					
+			<br />
+			<br />
+				
+				
 				<% if (@proceed) %>
 					<%= submit_tag "Proceed to planning", onclick: "countElec();", class: "btn btn-info pull-right" %>
 				<% else %>
 					<%= submit_tag "Proceed to planning", class: "btn btn-info pull-right disabled" %>
 				<% end %>
-			<% end %> <!-- End form -->
+
 		</div>
 	<!-- END Panel body -->
 	</div>
 <!-- END Panel -->
 </center>
+<!-- Modal 1-->
+
+<div class="modal fade" id="myElec1" tabindex="-1" role="dialog" aria-labelledby="myElec1Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myElec1Label">Elective Unit Properties</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Optional Units -->
+		<div class="col-md-15"> 
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center> Optional-Units </center></h3>
+                </div>
+                
+                <div class="panel-body" style="height:250px; overflow:auto;">
+                    <table class="table table-condensed table-hover unitsList" id="optionUnits">
+                        <thead><tr class="showinforow">
+							<th> </th>
+                            <th style="font-size:11px; text-align:center;">Code</th>
+                            <th style="font-size:11px;">Unit Name</th>
+                            <th style="font-size:11px; text-align:center;">Sem</th>
+                        </tr></thead>
+						<tbody>
+						<div class="btn-group" data-toggle="buttons">
+						
+						<% @units.each do |unit| %>
+						
+							<tr>
+								<td><%= check_box_tag 'elective_unitID1', unit.id, false, {class:'elective1checkbox'}%>
+                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
+                                    <%= get_unit_code(unit.id) %>
+                                </td>
+                                <td style="font-size:11px"> <!-- unit name -->
+                                    <%= get_unit_name(unit.id) %>
+                                </td>
+                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                    <%= get_unit_semavailable(unit.id) %>
+                                </td>
+                            </tr>
+						
+                        <% end %>
+						
+						</div>
+						</tbody>
+						<tfoot>
+                    </table>
+                </div>              
+            </div>
+        </div> 
+		<!-- end of Optional Units -->
+		<h4 align="center">     OR     </h4>
+		<!-- User input Units -->
+		<br />
+		
+					<div class="row">
+					<div class="col-lg-9">
+					<div class="input-group">
+						<div class="input-group-addon">
+						<%= text_field_tag :elecUnitName1, nil, {placeholder:'Unit Name', class:'form-control'}%>
+						</div>
+					</div>
+					</div>
+					</div>
+					<br />
+					<div class="row">
+					<div class="col-lg-9">
+					<div class="input-group">
+						<div class="input-group-addon">
+						<%= text_field_tag :elecUnitCode1, nil, {placeholder:'Unit Code', class:'form-control'}%>
+						</div>
+					</div>
+					</div>
+					</div>
+					<br />
+	    <!-- End of User input Unit -->
+		<div class="modal-footer">
+		<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default">
+							<input type="radio" name="doneElec1" value="1"> Done
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="doneElec1" value="2"> Not Yet Done
+						</label>
+		</div>
+		<br><br/>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+		</div>
+      </div>
+  </div>
+</div>
+</div>
+<!--END of Modal 1-->
+
+<!-- Modal 2 -->
+
+<div class="modal fade" id="myElec2" tabindex="-1" role="dialog" aria-labelledby="myElec2Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myElec2Label">Elective Unit Properties</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Optional Units -->
+		<div class="col-md-15"> 
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center> Optional-Units </center></h3>
+                </div>
+                
+                <div class="panel-body" style="height:250px; overflow:auto;">
+                    <table class="table table-condensed table-hover unitsList" id="optionUnits">
+                        <thead><tr class="showinforow">
+							<th> </th>
+                            <th style="font-size:11px; text-align:center;">Code</th>
+                            <th style="font-size:11px;">Unit Name</th>
+                            <th style="font-size:11px; text-align:center;">Sem</th>
+                        </tr></thead>
+						<tbody>
+						<div class="btn-group" data-toggle="buttons">
+						
+						<% @units.each do |unit| %>
+						
+							<tr>
+								<td><%= check_box_tag 'elective_unitID2', unit.id, false, {class:'elective2checkbox'}%>
+                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
+                                    <%= get_unit_code(unit.id) %>
+                                </td>
+                                <td style="font-size:11px"> <!-- unit name -->
+                                    <%= get_unit_name(unit.id) %>
+                                </td>
+                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                    <%= get_unit_semavailable(unit.id) %>
+                                </td>
+                            </tr>
+						
+                        <% end %>
+						
+						</div>
+						</tbody>
+						<tfoot>
+                    </table>
+                </div>              
+            </div>
+        </div> 
+		<!-- end of Optional Units -->
+		<h4 align="center">     OR     </h4>
+		<!-- User input Units -->
+		<br />
+					<div class="row">
+					<div class="col-lg-9">
+						<div class="input-group-addon">
+							<%= text_field_tag :elecUnitName2, nil, {placeholder:'Unit Name', class:'form-control'}%>
+						</div>
+					</div>
+					</div>
+					<br />
+					<div class="row">
+					<div class="col-lg-9">
+						<div class="input-group-addon">
+							<%= text_field_tag :elecUnitCode2, nil, {placeholder:'Unit Code', class:'form-control'}%>
+						</div>
+					</div>
+					</div>
+					<br />
+	    <!-- End of User input Unit -->
+		<div class="modal-footer">
+		<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default">
+							<input type="radio" name="doneElec2" value="1"> Done
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="doneElec2" value="2"> Not Yet Done
+						</label>
+		</div>
+		<br><br/>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+		</div>
+      </div>
+  </div>
+</div>
+</div>
+<!--END of Modal 2 -->
+
+<!-- Modal 3 -->
+<div class="modal fade" id="myElec3" tabindex="-1" role="dialog" aria-labelledby="myElec3Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myElec3Label">Elective Unit Properties</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Optional Units -->
+		<div class="col-md-15"> 
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    <h3 class="panel-title"><center> Optional-Units </center></h3>
+                </div>
+                
+                <div class="panel-body" style="height:250px; overflow:auto;">
+                    <table class="table table-condensed table-hover unitsList" id="optionUnits">
+                        <thead><tr class="showinforow">
+							<th> </th>
+                            <th style="font-size:11px; text-align:center;">Code</th>
+                            <th style="font-size:11px;">Unit Name</th>
+                            <th style="font-size:11px; text-align:center;">Sem</th>
+                        </tr></thead>
+						<tbody>
+						<div class="btn-group" data-toggle="buttons">
+						
+						<% @units.each do |unit| %>
+						
+							<tr>
+								<td><%= check_box_tag 'elective_unitID3', unit.id, false, {class:'elective3checkbox'}%>
+                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
+                                    <%= get_unit_code(unit.id) %>
+                                </td>
+                                <td style="font-size:11px"> <!-- unit name -->
+                                    <%= get_unit_name(unit.id) %>
+                                </td>
+                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                    <%= get_unit_semavailable(unit.id) %>
+                                </td>
+                            </tr>
+						
+                        <% end %>
+						
+						</div>
+						</tbody>
+						<tfoot>
+                    </table>
+                </div>              
+            </div>
+        </div> 
+		<!-- end of Optional Units -->
+		<h4 align="center">     OR     </h4>
+		<!-- User input Units -->
+		<br />
+					<div class="row">
+					<div class="col-lg-9">
+						<div class="input-group-addon">
+							<%= text_field_tag :elecUnitName3, nil, {placeholder:'Unit Name', class:'form-control'}%>
+						</div>
+					</div>
+					</div>
+					<br />
+					<div class="row">
+					<div class="col-lg-9">
+						<div class="input-group-addon">
+							<%= text_field_tag :elecUnitCode3, nil, {placeholder:'Unit Code', class:'form-control'}%>
+						</div>
+					</div>
+					</div>
+					<br />
+	    <!-- End of User input Unit -->
+		<div class="modal-footer">
+		<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default">
+							<input type="radio" name="doneElec3" value="1"> Done
+						</label>
+						<label class="btn btn-default">
+							<input type="radio" name="doneElec3" value="2"> Not Yet Done
+						</label>
+		</div>
+		<br><br/>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+		</div>
+      </div>
+  </div>
+</div>
+</div>
+<!--END of Modal 3 -->
+<% end %> <!-- End form -->
 
 <% session[:enrol_planner_flag] = 1 %>
