@@ -839,7 +839,11 @@ class PlannerController < ApplicationController
         num_elec.to_i.times do |i|
             @arr.delete_at(@arr.index(1))
         end
-
+		
+		done.each do |duid|
+            @arr.slice!(@arr.index(duid))			
+        end	
+		
         return @arr
     end
 
