@@ -71,17 +71,22 @@
     end
   end
 
+################ START OF TASK EPW-214 & EPW-215 ################
   # START importing units from CSV
   def import
   	# check if the user attach empty file 
       unless params[:file].nil?
   		# if it is imported successfully, the import method will return 1
-  		@valid = Unit.import(params[:file])
-    		if @valid
-    		  redirect_to units_path, notice: 'Unit imported Successfully.'
-    		else
-          flash[:type] = "danger"
-    		  redirect_to units_path, notice: "Unit import Failed. Database remain unchanged."
+  		@message = Unit.import(params[:file])
+    		case @message
+          when 1
+            redirect_to units_path, notice: 'Units Updated Successfully.'
+          when 2
+            flash[:type] = "danger"
+            redirect_to units_path, notice: 'Units import Failed. Incorrect number of columns!'
+          when 3
+            flash[:type] = "danger"
+            redirect_to units_path, notice: 'Units import Failed. Incorrect pre-requisite string format!'
     		end
     	else
         flash[:type] = "warning"
@@ -90,6 +95,7 @@
     	end
   end
   # END importing units from CSV
+################ END OF TASK EPW-214 & EPW-215 ################
   
   def not_authenticated
     flash[:type] = "warning"

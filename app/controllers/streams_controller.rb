@@ -72,22 +72,38 @@ class StreamsController < ApplicationController
     end
   end
 
+################ START OF TASK EPW-214 & EPW-215 ################
   # START importing streams from CSV
   def import
     unless params[:file].nil?
-  		@valid = Stream.import(params[:file])
-  		if @valid
-  		  redirect_to streams_path, notice: 'Streams Updated Successfully.'
-  		else
-        flash[:type] = "danger"
-  		  redirect_to streams_path, notice: 'Stream import Failed. Database remain unchanged.'
-  		end
-  	else
+  		@message = Stream.import(params[:file])
+
+      case @message
+        when 1
+          redirect_to streams_path, notice: 'Streams Updated Successfully.'
+        when 2
+          flash[:type] = "danger"
+          redirect_to streams_path, notice: 'Stream import Failed. Incorrect number of columns!'
+        when 3
+          flash[:type] = "danger"
+          redirect_to streams_path, notice: 'Stream import Failed. Duplicate ID of stream!'
+        when 4
+          flash[:type] = "danger"
+          redirect_to streams_path, notice: 'Stream import Failed. The data you have imported is invalid!'
+        when 5
+          flash[:type] = "danger"
+          redirect_to streams_path, notice: 'Stream import Failed. The units list format is incorrect!'
+        when 6
+          flash[:type] = "danger"
+          redirect_to streams_path, notice: 'Stream import Failed, cannot find matching unit code in database!'
+      end
+    else
       flash[:type] = "warning"
-  		redirect_to streams_path, notice: 'No file attached!'
-  	end
+      redirect_to streams_path, notice: 'No file attached!'
+    end
   end
   # END importing streams from CSV
+################ END OF TASK EPW-214 & EPW-215 ################
   
   def not_authenticated
     flash[:type] = "warning"

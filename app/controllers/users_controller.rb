@@ -65,7 +65,7 @@ class UsersController < ApplicationController
     @user.destroy
     logout
     respond_to do |format|
-      format.html { redirect_to planner_index_path, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to login_path, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
 	
     end

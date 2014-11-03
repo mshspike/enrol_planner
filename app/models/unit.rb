@@ -1,16 +1,17 @@
 class Unit < ActiveRecord::Base 
-    validates :unitCode, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
-    validates :unitName, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
-    validates :creditPoints, presence: { strict: true, message: 'is forgotten, click go back to import again.' }
-    validates :semAvailable, presence: { strict: true, message: 'is forgotten, click go back to import again.' },
-                             numericality: { only_integer: true },
-                             inclusion: { :in => [0,1,2] }
-    validates_length_of :unitName, :within => 5..100, :too_long => "Unit name is too long", :too_short => "Unit name is too short"
-    validates_format_of :unitCode, :with => /\A[a-zA-Z]{4}[0-9]{4}\z/i
-    validates_numericality_of :creditPoints, :greater_than_or_equal_to => 12.5, :less_than_or_equal_to => 50 
-    validates :unitCode, uniqueness: { strict: true, message: 'not unique' }
+    validates :unitCode, presence: { strict: true, message: " cannot be empty!" },
+                         uniqueness: { strict: true, message: " is duplicated!" },
+                         format: { :with => /\A[a-zA-Z]{4}\d{4}\z/i, message: " is in incorrect format!" }
+    validates :unitName, presence: { strict: true, message: " cannot be empty!" },
+                         length: { :within => 5..100, :too_long => " is too long!", :too_short => " is too short!" }
+    validates :creditPoints, presence: { strict: true, message: " cannot be empty!" },
+                             numericality: { :greater_than_or_equal_to => 12.5, :less_than_or_equal_to => 50 }
+    validates :semAvailable, presence: { strict: true, message: " cannot be empty!" },
+                             numericality: { only_integer: true, message: " can only be interger!" },
+                             inclusion: { :in => [0,1,2], message: " can only be either 0, 1 or 2!" }
     
 
+################ START OF TASK EPW-214 ################
     def self.import(file)
         @proceed = false
     
@@ -22,7 +23,7 @@ class Unit < ActiveRecord::Base
         if header.eql? ["unitCode","unitName","preUnit","creditPoints","semAvailable"]
             @proceed = true
         else
-            return false
+            return 2
         end
         
         if @proceed
@@ -40,6 +41,7 @@ class Unit < ActiveRecord::Base
                 # Validates the data of the spreadsheet, save the data into the database if it is valid data.
                 if unit.valid?
                     pr_string = unit.preUnit
+
                     # Assign T/F to preUnit column
                     if unit.preUnit.blank?
                         unit.preUnit = "false"
@@ -50,6 +52,9 @@ class Unit < ActiveRecord::Base
                     
                     # Check if the unit has pre-requisite
                     unless pr_string.blank?
+                        unless pr_string =~ /((\A|;)\{(\D{4}\d{4}){1}(,\D{4}\d{4})*})*\z/
+                            return 3
+                        end
                         # Splitting preUnit string into groups
                         groups = Array.new(pr_string.count("}"))
                         groups.length.times do |i|
@@ -73,8 +78,10 @@ class Unit < ActiveRecord::Base
                 end # End IF (unit.valid?)
             end # End FOREACH unit
         end
-        return true    # if imported successfully, return true
+        return 1    # if imported successfully, return true
     end
+################ END OF TASK EPW-214 ################
+
 
 ################ START OF TASK EPW-29 ################
     def self.to_csv
