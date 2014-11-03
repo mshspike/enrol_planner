@@ -1,4 +1,3 @@
-<div id="notice"></div>
 <!-- Navigation bar -->
 <ol class="breadcrumb">
   <li><%= link_to 'Admin Portal', admin_index_path %></li>
@@ -24,7 +23,7 @@
       </tr>
       <tr>
         <td style="font-weight: bold;">Pre-requisite(s):</td>
-        <td><%= @unit.preUnit %></td>
+        <td><%= @unit.preUnit == "true" ? @unit.get_prereq_string : "-" %></td>
       </tr>
       <tr>
         <td style="font-weight: bold;">Credit points:</td>

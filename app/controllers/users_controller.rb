@@ -23,7 +23,6 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @users = User.all
-    puts "Edit ended"
   end
 
   # POST /users
@@ -63,7 +62,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    puts "destroying account... uid = " + params[:id]
     @user.destroy
     logout
     respond_to do |format|
@@ -85,6 +83,7 @@ class UsersController < ApplicationController
     end
 	
   def not_authenticated
-      redirect_to login_path, alert: "Please login first"
+      flash[:type] = "warning"
+      redirect_to login_path, notice: "Please login first"
   end
 end

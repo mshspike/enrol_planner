@@ -75,20 +75,23 @@ class StreamsController < ApplicationController
   # START importing streams from CSV
   def import
     unless params[:file].nil?
-		@valid = Stream.import(params[:file])
-		if @valid = 1
-		redirect_to streams_path, notice: 'Streams Updated Successfully'
-		else
-		redirect_to streams_path, notice: 'Unit imported Failed'
-		end
-	else
-		redirect_to streams_path, notice: 'No file attached'
-	end
+  		@valid = Stream.import(params[:file])
+  		if @valid
+  		  redirect_to streams_path, notice: 'Streams Updated Successfully.'
+  		else
+        flash[:type] = "danger"
+  		  redirect_to streams_path, notice: 'Stream import Failed. Database remain unchanged.'
+  		end
+  	else
+      flash[:type] = "warning"
+  		redirect_to streams_path, notice: 'No file attached!'
+  	end
   end
   # END importing streams from CSV
   
   def not_authenticated
-    redirect_to login_path, alert: "Please login first"
+    flash[:type] = "warning"
+    redirect_to login_path, notice: "Please login first"
   end
 
   private

@@ -1,3 +1,7 @@
+<style type="text/css">
+  a:hover { background-color: transparent; }
+</style>
+
 <!-- Navigation bar -->
 <ol class="breadcrumb">
   <li><%= link_to 'Admin Portal', admin_index_path %></li>
@@ -22,9 +26,15 @@
         <tbody>
           <% @streams.each do |stream| %>
             <tr>
-              <td onclick="document.location = 'streams/<%=stream.id%>'" style="cursor: pointer;"><%= stream.streamCode %></td>
-              <td onclick="document.location = 'streams/<%=stream.id%>'" style="cursor: pointer;"><%= stream.streamName %></td>
-              <td><%= link_to raw("<span class='glyphicon glyphicon-pencil'></span>"), edit_stream_path(stream), title: 'Edit' %></td>
+              <td onclick="document.location='streams/<%=stream.id%>'" style="cursor: pointer;">
+                <%= stream.streamCode %>
+              </td>
+              <td onclick="document.location='streams/<%=stream.id%>'" style="cursor: pointer;">
+                <%= stream.streamName %>
+              </td>
+              <td style="text-align:right;">
+                <%= link_to raw("<span class='glyphicon glyphicon-pencil'></span>"), edit_stream_path(stream), title: 'Edit', style: "color:#666" %>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -36,7 +46,7 @@
   <div class="row" style="width:80%;">
     <div class="col-md-6">
       <div class="panel panel-success">
-        <div class="panel-heading" style="font-weight:bold; font-size:15px;">Resubmit your CSV</div>
+        <div class="panel-heading" style="font-size:15px;">Resubmit your CSV</div>
         <div class="panel-body" style="text-align:left;">
           <%= form_tag import_streams_path, multipart: true do %>
             <%= file_field_tag :file, accept: 'text/csv' %>
@@ -49,7 +59,7 @@
 
     <div class="col-md-6">
       <div class="panel panel-success">
-        <div class="panel-heading" style="font-weight:bold; font-size:15px;">Download & Print</div>
+        <div class="panel-heading" style="font-size:15px;">Download & Print</div>
         <div class="panel-body">
           <%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
           <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-success btn-sm' %>
@@ -58,5 +68,3 @@
     </div>
   </div>
 </center>
-
-<%= render partial: "master_layouts/footer" %>

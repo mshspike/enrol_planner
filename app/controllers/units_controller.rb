@@ -78,18 +78,22 @@
   		# if it is imported successfully, the import method will return 1
   		@valid = Unit.import(params[:file])
     		if @valid
-    		  redirect_to units_path, notice: 'Unit imported Successfully'
+    		  redirect_to units_path, notice: 'Unit imported Successfully.'
     		else
-    		  redirect_to units_path, notice: 'Unit imported Failed'
+          flash[:type] = "danger"
+    		  redirect_to units_path, notice: "Unit import Failed. Database remain unchanged."
     		end
     	else
-    		redirect_to units_path, notice: 'No file attached'
+        flash[:type] = "warning"
+        flash[:notice] = "No file attached!"
+    		redirect_to units_path
     	end
   end
   # END importing units from CSV
   
   def not_authenticated
-    redirect_to login_path, alert: "Please login first"
+    flash[:type] = "warning"
+    redirect_to login_path, notice: "Please login first"
   end
 
   private

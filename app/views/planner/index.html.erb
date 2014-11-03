@@ -11,24 +11,24 @@
             <br>
             <%= form_tag :action => "unit_chooser" do %>
             <div class="panel-body">
-                <h4 align="left">Please select your stream</h4>
+                <p class="subheading">Please select your stream:</p>
 
                 <!-- Select stream -->
                 <% if (@streams.empty?) %>
-                    <select name="streamSelect" class="form-control">
+                    <select name="streamSelect" class="form-control" style="margin:15px;">
                         <option value="0">No stream available.</option>
                     </select>
                 <% else %>
-                    <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control' %>
+                    <%= select_tag "streamSelect", options_from_collection_for_select(@streams, "id", "streamName"), multiple: false, class: 'form-control',  style: "margin-left:15px; width:90%;" %>
                 <% end %>
 
                 <br />
 
                 <!-- Select math units -->
                 <hr style="border-color:#CCC">
-                    <div style="font-size:15px; margin-bottom:10px;">Please select one of the maths subjects that you have done:</div>
+                    <p class="subheading">Please select the maths subjects that you have done:</p>
 
-                    <div style="margin-left:15px;">
+                    <div style="margin-left:15px; margin-top:10px;">
                         <label><input type="checkbox" name="maths[]" value="2cd"> Mathematics 2C/D</label><br />
                         <label><input type="checkbox" name="maths[]" value="3ab"> Mathematics 3A/B</label><br />
                         <label><input type="checkbox" name="maths[]" value="3cd"> Mathematics 3C/D</label><br />

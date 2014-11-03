@@ -12,19 +12,25 @@ class Unit < ActiveRecord::Base
     
 
     def self.import(file)
+        @proceed = false
     
         #Validates the file type
         spreadsheet = open_spreadsheet(file)
-
-            arr = Array.new
+    
+        #Header of the spreadsheet is the name of the attributes
+        header = spreadsheet.row(1)
+        if header.eql? ["unitCode","unitName","preUnit","creditPoints","semAvailable"]
+            @proceed = true
+        else
+            return false
+        end
+        
+        if @proceed
             # Resetting the model to avoid duplication 
             ActiveRecord::Base.connection.execute("TRUNCATE units") 
             ActiveRecord::Base.connection.execute("TRUNCATE pre_req_groups") 
             ActiveRecord::Base.connection.execute("TRUNCATE pre_reqs")
-        
-            #Header of the spreadsheet is the name of the attributes
-            header = spreadsheet.row(1)
-            
+
             # Foreach => unit (grap each row from spreadsheet)
             (2..spreadsheet.last_row).each do |i|
                 row = Hash[[header, spreadsheet.row(i)].transpose]
@@ -66,6 +72,7 @@ class Unit < ActiveRecord::Base
                     end
                 end # End IF (unit.valid?)
             end # End FOREACH unit
+        end
         return true    # if imported successfully, return true
     end
 
@@ -115,6 +122,25 @@ class Unit < ActiveRecord::Base
 
     def unit_to_s
         "#{unitCode} #{unitName}"
+    end
+
+    def get_prereq_string
+        prereq_groups = PreReqGroup.where(:unit_id => self.id)
+        prereq_groups_string = Array.new
+
+        # Foreach pre-req group
+        prereq_groups.each do |prg|
+            prereqs = PreReq.where(:pre_req_group_id => prg.id)
+            prereqs_string = Array.new
+
+            # Foreach pre-req in group
+            prereqs.each do |pr|
+                prereqs_string.push(pr.preUnit_code)
+            end
+
+            prereq_groups_string.push("{"+prereqs_string.join(',')+"}")
+        end
+        return prereq_groups_string.join(',')
     end
 
     has_many :stream_units, :foreign_key=> :unit_id

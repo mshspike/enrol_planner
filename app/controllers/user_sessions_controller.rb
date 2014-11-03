@@ -6,18 +6,23 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    if @user = login(params[:email], params[:password])
-      redirect_back_or_to(:users, notice: 'Login successful')
+    unless current_user
+      if @user = login(params[:email], params[:password])
+        redirect_back_or_to(:users, notice: 'Login successful')
+      else
+        flash[:type] = "danger"
+        flash[:notice] = 'Login failed'
+        render action: 'new'
+      end
     else
-      flash.now[:alert] = 'Login failed'
-      render action: 'new'
+      redirect_to admin_index_path, notice: "You have already logged in!"
     end
   end
 
   def destroy
     logout
   	respond_to do |format|
-      format.html{redirect_to(planner_index_path, notice: 'Logged out!')}
+      format.html { redirect_to(planner_index_path, notice: 'Logged out!') }
       format.json { head :no_content }
   	end
 	end

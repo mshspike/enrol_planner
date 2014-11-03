@@ -17,7 +17,7 @@
 	<div class="panel panel-info" style="width:80%">
 	<!-- START Panel heading -->
 		<div class="panel panel-heading">
-			<div class="panel-title" style="text-align:center; font-weight:bold;">
+			<div class="panel-title" style="text-align:center;">
 				<% if (session[:selected_stream] > 0) %>
 					<%= get_stream_code(session[:selected_stream]) %> - <%= get_stream_name(session[:selected_stream]) %>
 				<% else %>
@@ -76,8 +76,8 @@
 					<p>Cannot find any unit for stream!</p>
 				<% end %>
 				
-				<h4 align="left">Select starting semester</h4>
-				<table style="width:100%">
+				<p class="subheading">Select starting semester</p>
+				<table style="width:80%">
 					<tr>
 						<td style="text-align:center;"><label><input type="radio" name="sem" value="1" checked="checked"> Semester 1</label></td>
 						<td><label><input type="radio" name="sem" value="2"> Semester 2</label></td>

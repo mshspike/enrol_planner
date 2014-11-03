@@ -21,6 +21,7 @@ before_filter :require_login
 	end
 	
 	def not_authenticated
-      redirect_to login_path, alert: "Please login first"
+        flash[:type] = "warning"
+        redirect_to login_path, notice: "Please login first"
   end
 end

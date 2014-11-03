@@ -1,29 +1,24 @@
-<% admin_controller = ["admin","users","units","streams"] %>
+<% admin_controller = ["admin","users","units","streams","user_sessions"] %>
 <div class = "navbar navbar-default navbar-static-top">
 	<div class = "container">
 		<div class = ".navbar-header">
 			<%= link_to "Enrolment Planner", planner_index_path, class: "navbar-brand" %>
 		</div>
-
 		<ul class = "nav navbar-nav navbar-right">
-			
-			<% if current_user %>
-				<% if params[:controller] == "planner" %>
-					<li class="active"><%= link_to 'Planner', planner_index_path %></li>
-					<li><%= link_to 'Admin Portal', admin_index_path %></li>
-				<% elsif admin_controller.include? params[:controller] %>
-					<li><%= link_to 'Planner', planner_index_path %></li>
-					<li class="active"><%= link_to 'Admin Portal', admin_index_path %></li>
-				<% else %>
-					<li><%= link_to 'Planner', planner_index_path %></li>
-					<li><%= link_to 'Admin Portal', admin_index_path %></li>
-				<% end %>
-				<li class="small"><%= link_to "Register", new_user_path %></li>
-				<li class="small"><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
-				<li class="small"><%= link_to "Logout", logout_path %></li>
+			<% if params[:controller] == "planner" %>
+				<li class="active"><%= link_to 'Planner', planner_index_path %></li>
+				<li><%= link_to 'Admin Portal', admin_index_path %></li>
+			<% elsif admin_controller.include? params[:controller] %>
+				<li><%= link_to 'Planner', planner_index_path %></li>
+				<li class="active"><%= link_to 'Admin Portal', admin_index_path %></li>
 			<% else %>
 				<li><%= link_to 'Planner', planner_index_path %></li>
 				<li><%= link_to 'Admin Portal', admin_index_path %></li>
+			<% end %>
+			<% if current_user %>
+				<li class="small"><%= link_to "Register", new_user_path %></li>
+				<li class="small"><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
+				<li class="small"><%= link_to "Logout", logout_path %></li>
 			<% end %>
 		</ul>
 	</div>
