@@ -680,6 +680,14 @@ class PlannerController < ApplicationController
                                  .where(:plannedSemester => 1).order(:plannedYear).pluck(:unit_id)
         sem_units[2] = StreamUnit.where(:stream_id => session[:selected_stream]).where(:unit_id => session[:remain_units]) \
                                  .where(:plannedSemester => 2).order(:plannedYear).pluck(:unit_id)
+								 
+		units_not_in_stream = (session[:remain_units] - sem_units.flatten)
+		puts "units_not_in_stream [" + units_not_in_stream.join(',') + "]"
+		
+		units_not_in_stream.each do |uid|
+			sem_units[Unit.where(:id => uid).first.semAvailable].unshift(uid)
+			puts "unit" + uid.to_s + " available in sem" + Unit.where(:id => uid).first.semAvailable.to_s
+		end
 
         # Delete extra elective units to match remaining units list.
         while (sem_units[0].count(1) > session[:remain_units].count(1)) 
