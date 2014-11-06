@@ -64,7 +64,7 @@
 			creditsRow.css("color", "#cc0000");creditsRow.css("font-weight", "bold");
 		} else if (credits == 0) {
 			//if last sembox
-			if (($(this).parent().attr('semtable-id') == $(".semtable tbody").length-1) && ($(this).parent().attr('semtable-id')!=0)) {
+			if (($(this).parent().attr('semtable-id') == $(".semtable tbody").last().parent().attr('semtable-id')) && ($(this).parent().attr('semtable-id')!=$(".semtable tbody").first().parent().attr('semtable-id'))) {
 				$(this).parent().parent().parent().parent().prepend('<button class="close" onClick="removeSemBox(this);"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Close</span></button>');	
 			}
 			$(this).append('<tr class="sort-disabled"><td>No units planned</td><td></td></tr>');
