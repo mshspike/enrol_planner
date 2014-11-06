@@ -24,6 +24,7 @@ module EnrolPlanner
     # config.i18n.default_locale = :de
     # 
     I18n.enforce_available_locales = false
+	#config.action_controller.relative_url_root = '/app'
   end
 end
  

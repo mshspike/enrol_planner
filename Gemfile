@@ -50,3 +50,6 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 
 gem 'sorcery'
 gem 'roo'
+
+gem 'bootstrap-sass'
+gem 'autoprefixer-rails'
