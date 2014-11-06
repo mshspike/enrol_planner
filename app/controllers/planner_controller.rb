@@ -104,6 +104,8 @@ class PlannerController < ApplicationController
 # START unit_chooser
     def unit_chooser
 		@units = Unit.all
+		@Elecmath = Unit.where(:unitCode => 'MATH1008').first.id
+		@Elecmath2 = Unit.where(:unitCode => 'MATH1007').first.id
         if params[:streamSelect].nil? || params[:streamSelect] == 0
             session[:selected_stream] = 0
             @proceed = false
@@ -136,7 +138,7 @@ class PlannerController < ApplicationController
 					@su_y1s2.each_with_index do |u, i|
 						if (u.unit_id == 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end	
 						session[:customUnitList].push(u.unit_id)
 					end	
@@ -144,10 +146,10 @@ class PlannerController < ApplicationController
 					@su_y2s1.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec == 1 )
 							@totalElec +=1
-							u.unit_id = 42
+							u.unit_id = @Elecmath2
 						elsif (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end
 						session[:customUnitList].push(u.unit_id)
 					end
@@ -156,10 +158,10 @@ class PlannerController < ApplicationController
 					@su_y2s2.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec == 1 )
 							@totalElec +=1
-							u.unit_id = 42
+							u.unit_id = @Elecmath2
 						elsif (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end	
 						session[:customUnitList].push(u.unit_id)
 					end
@@ -171,10 +173,10 @@ class PlannerController < ApplicationController
 					@su_y3s2.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec == 1 )
 							@totalElec +=1
-							u.unit_id = 42
+							u.unit_id = @Elecmath2
 						elsif (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end
 						session[:customUnitList].push(u.unit_id)
 					end
@@ -194,7 +196,7 @@ class PlannerController < ApplicationController
 						@su_y1s2.each_with_index do |u, i|
 							if (u.unit_id == 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end	
 							session[:customUnitList].push(u.unit_id)
 						end	
@@ -202,10 +204,10 @@ class PlannerController < ApplicationController
 						@su_y2s1.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec == 1 )
 								@totalElec +=1
-								u.unit_id = 42
+								u.unit_id = @Elecmath2
 							elsif (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end
 							session[:customUnitList].push(u.unit_id)
 						end
@@ -214,10 +216,10 @@ class PlannerController < ApplicationController
 						@su_y2s2.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec == 1 )
 								@totalElec +=1
-								u.unit_id = 42
+								u.unit_id = @Elecmath2
 							elsif (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end	
 							session[:customUnitList].push(u.unit_id)
 						end
@@ -229,10 +231,10 @@ class PlannerController < ApplicationController
 						@su_y3s2.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec == 1 )
 								@totalElec +=1
-								u.unit_id = 42
+								u.unit_id = @Elecmath2
 							elsif (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end
 							session[:customUnitList].push(u.unit_id)
 						end
@@ -243,7 +245,7 @@ class PlannerController < ApplicationController
 						@su_y1s2.each_with_index do |u, i|
 							if (u.unit_id == 1 )
 								@totalElec +=1
-								u.unit_id = 41							
+								u.unit_id = @Elecmath							
 							end
 							session[:customUnitList].push(u.unit_id)
 						end	
@@ -251,7 +253,7 @@ class PlannerController < ApplicationController
 						@su_y2s1.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end
 							session[:customUnitList].push(u.unit_id)
 						end		
@@ -259,7 +261,7 @@ class PlannerController < ApplicationController
 						@su_y2s2.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end
 							session[:customUnitList].push(u.unit_id)
 						end	
@@ -267,7 +269,7 @@ class PlannerController < ApplicationController
 						@su_y3s1.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end
 							session[:customUnitList].push(u.unit_id)
 						end		
@@ -275,7 +277,7 @@ class PlannerController < ApplicationController
 						@su_y3s2.each_with_index do |u, i|
 							if (u.unit_id == 1 && @totalElec < 1 )
 								@totalElec +=1
-								u.unit_id = 41
+								u.unit_id = @Elecmath
 							end
 							session[:customUnitList].push(u.unit_id)
 						end		
@@ -304,35 +306,35 @@ class PlannerController < ApplicationController
 					@su_y1s2.each_with_index do |u, i|
 						if (u.unit_id == 1 )
 							@totalElec +=1
-							u.unit_id = 41							
+							u.unit_id = @Elecmath							
 						end
 					end	
 				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
 					@su_y2s1.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end
 					end		
 				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
 					@su_y2s2.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end
 					end	
 				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
 					@su_y3s1.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end
 					end		
 				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
 					@su_y3s2.each_with_index do |u, i|
 						if (u.unit_id == 1 && @totalElec < 1 )
 							@totalElec +=1
-							u.unit_id = 41
+							u.unit_id = @Elecmath
 						end
 					end
 				else
