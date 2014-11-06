@@ -121,17 +121,23 @@ $(".countElec").click(function(){
 					<p>Cannot find any unit for stream!</p>
 				<% end %>
 				
-				<p class="subheading">Select starting semester</p>
-				<table style="width:80%">
+                <hr style="border-color:#CCC">
+				<p class="subheading">Select starting semester:</p>
+				<table style="margin-left:20%; width:60%;">
 					<tr>
-						<td style="text-align:center;"><label><input type="radio" name="sem" value="1" checked="checked"> Semester 1</label></td>
-						<td><label><input type="radio" name="sem" value="2"> Semester 2</label></td>
+						<td style="text-align:center;"><label>
+                            <input type="radio" name="sem" value="1" checked="checked"> Semester 1
+                        </label></td>
+						<td style="text-align:center;"><label>
+                            <input type="radio" name="sem" value="2"> Semester 2
+                        </label></td>
 					</tr>
 				</table>
 				
+                <hr style="border-color:#CCC">
 			<!--if choose 2cd and the STREAM is not SE and not IT-->
 			<% if (session[:maths] == "2cd") && ((session[:selected_stream] != 4)&&(session[:selected_stream] != 2)) %>
-				<h4 align="left">Select Elective Unit</h4>
+				<p class="subheading" align="left">Select Elective Unit:</p>
 				<h5 align="left" >Your Elective Units have been replaced with:</h5>
 				<h6 align="left" >Calculus and Linear Algebra - MATH1008</h6>
 				<h6 align="left" >Pre and Introductory Calculus - MATH1007</h6>
@@ -142,7 +148,7 @@ $(".countElec").click(function(){
 			<%elsif ((session[:maths] == "3ab") && (session[:selected_stream] != 4 && session[:selected_stream] != 2)) || 
 				((session[:maths] == "2cd")&&(session[:selected_stream] == 4||session[:selected_stream] == 2))%>
 			
-				<h4 align="left">Select Elective Unit</h4>
+				<p class="subheading" align="left">Select Elective Unit:</p>
 				<h5 align="left" >Your Elective Units have been replaced with:</h5>
 				<h6 align="left" >Calculus and Linear Algebra - MATH1008</h6>
 				<h6 align="left" >OR</h6>
@@ -161,7 +167,7 @@ $(".countElec").click(function(){
 			<%elsif((session[:maths] == "3cd")&&(session[:selected_stream] == 4 || session[:selected_stream] == 2)) || 
 				((session[:maths] != "3ab")&& (session[:selected_stream] == 4 || session[:selected_stream] == 2))%>
 
-				<h4 align="left">Select Elective Unit</h4>
+				<p class="subheading" align="left">Select Elective Unit:</p>
 				<div class="btn-group-vertical">	
 			
 					<div class="btn btn-default pull-left">
@@ -180,7 +186,7 @@ $(".countElec").click(function(){
 			
 			<%else%>
 				<% if (session[:selected_stream] == 4 || session[:selected_stream] == 2)%>
-					<h4 align="left">Select Elective Unit</h4>
+					<p class="subheading" align="left">Select Elective Unit:</p>
 					<h5 align="left" >Your Elective Units have been replaced with:</h5>
 					<h6 align="left" >Calculus and Linear Algebra - MATH1008</h6>
 					<div class="btn-group-vertical">	
@@ -194,7 +200,7 @@ $(".countElec").click(function(){
 						</div>
 					</div>
 				<% else %>
-					<h4 align="left">Select Elective Unit</h4>
+					<p class="subheading" align="left">Select Elective Unit:</p>
 					<h5 align="left" >Your Elective Units have been replaced with:</h5>
 					<div class="btn-group-vertical">	
 			
