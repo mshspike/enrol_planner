@@ -835,7 +835,6 @@ class PlannerController < ApplicationController
 						@u_elec2Name = params[:elecUnitName2]
 						@u_elec2Code = params[:elecUnitCode2]
 						changeElec -= 1
-						session[:totalelec] += 1
 					end
 				end
 			end
