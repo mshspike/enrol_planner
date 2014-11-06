@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20141009113546) do
   create_table "pre_reqs", force: true do |t|
     t.integer  "pre_req_group_id"
     t.integer  "unit_id"
-    t.string   "preUnit_code"    # Task EPW-28 - Changed to string type
+    t.string   "preUnit_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -41,14 +41,14 @@ ActiveRecord::Schema.define(version: 20141009113546) do
   end
 
   create_table "streams", force: true do |t|
-    t.string   "streamCode"    # Task EPW-28 - Changed to string type
+    t.string   "streamCode"
     t.string   "streamName"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "units", force: true do |t|
-    t.string   "unitCode"    # Task EPW-28 - Changed to string type
+    t.string   "unitCode"
     t.string   "unitName"
     t.string   "preUnit"
     t.integer  "semAvailable"
