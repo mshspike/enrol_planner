@@ -50,7 +50,7 @@ module UnitsHelper
     def has_done_prereq done_units, semesters, sem_index, uid
         has_done = false
 
-################ START OF TASK EPW-210 - OPTIMISATIONS ################
+################ START OF TASK EPW-210 ################
 # Added T/F checking in database to avoid excessive code
 # even the unit has no pre-requisite.
 
@@ -69,7 +69,7 @@ module UnitsHelper
             return true
         end
 
-################ END OF TASK EPW-210 - OPTIMISATIONS ################
+################ END OF TASK EPW-210 ################
 
         return has_done
     end

@@ -376,6 +376,7 @@ class PlannerController < ApplicationController
 
 		
         end
+        debug_print_session
     end
 # END unit_chooser
 
@@ -576,19 +577,24 @@ class PlannerController < ApplicationController
 
             # Action #6 - Automated enrolment planning (new semester)
             when 6
-                if (params[:include_planned].nil?)    # New semester
-                    if (session[:semesters].last.empty?)
-                        auto_planning(session[:semesters].length-1)
-                    else
-                        new_sem_index = new_sem(session[:semesters].length-1)
-                        auto_planning(new_sem_index)
+                unless (session[:remain_units].empty?)
+                    if (params[:include_planned].nil?)    # New semester
+                        if (session[:semesters].last.empty?)
+                            auto_planning(session[:semesters].length-1)
+                        else
+                            new_sem_index = new_sem(session[:semesters].length-1)
+                            auto_planning(new_sem_index)
+                        end
+                    else    # Include planned semester
+                        if (session[:semesters][0][0] == -1)
+                            auto_planning(1)
+                        else
+                            auto_planning(0)
+                        end
                     end
-                else    # Include planned semester
-                    if (session[:semesters][0][0] == -1)
-                        auto_planning(1)
-                    else
-                        auto_planning(0)
-                    end
+                else
+                    flash[:type] = "warning"
+                    flash[:notice] = "No more units remaining!"
                 end
 
 ################ END OF TASK EPW-21 ################
@@ -642,25 +648,29 @@ class PlannerController < ApplicationController
 	def debug_print_session
 		# Print out session variables to console.
         puts "Session variables:"
-        print "    selected_stream: "
-		puts session[:selected_stream]
-        print "    enrol_planner_flag: "
-		puts session[:enrol_planner_flag]
-        print "    done_units: "
-		puts "[" + session[:done_units].join(',') + "]"
-        print "    remain_units: "
-		puts "[" + session[:remain_units].join(',') + "]"
-        print "    plan_units: "
-		puts "[" + session[:plan_units].join(',') + "]"
-        print "    semesters: "
-            session[:semesters].each do |sem|
-                print "[" + sem.join(',') + "],"
-            end
-            puts ""
+        puts "    selected_stream: "    + session[:selected_stream].to_s
+        puts "    enrol_planner_flag: " + session[:enrol_planner_flag].to_s
+        unless session[:done_units].nil?
+            puts "    done_units: ["        + session[:done_units].join(',') + "]"
+        end
+        unless session[:remain_units].nil?
+            puts "    remain_units: ["      + session[:remain_units].join(',') + "]"
+        end
+        unless session[:plan_units].nil?
+            puts "    plan_units: ["        + session[:plan_units].join(',') + "]"
+        end
+        unless session[:semesters].nil?
+            print "    semesters: "
+                session[:semesters].each do |sem|
+                    print "[" + sem.join(',') + "],"
+                end
+                puts ""
+        end
     end
 
 
 ################ START OF TASK EPW-21 ################
+################ START OF TASK EPW-210 ################
     
     # Auto-planning method triggered by auto-plan sub-action (control flag = 6).
     # Params:
@@ -668,9 +678,9 @@ class PlannerController < ApplicationController
     def auto_planning sem_index
 
         # Preparing units tacks
-        #  sem_units[0]:: Stack of units available for semester 1 
-        #  sem_units[1]:: Stack of units available for semester 2
-        #  sem_units[2]:: Stack of units available for all semester and flexible units such as electives and SEP
+        #  sem_units[0]:: Stack of units available for all semester and flexible units such as electives and SEP
+        #  sem_units[1]:: Stack of units available for semester 1
+        #  sem_units[2]:: Stack of units available for semester 2
         sem_units = Array.new(3)
 
         sem0_units = Unit.where(:semAvailable => 0).pluck(:id)
@@ -690,7 +700,7 @@ class PlannerController < ApplicationController
 		end
 
         # Delete extra elective units to match remaining units list.
-        while (sem_units[0].count(1) > session[:remain_units].count(1)) 
+        while (sem_units[0].count(1) > session[:remain_units].count(1))
             sem_units[0].delete_at(sem_units[0].index(1))
             if (sem_units[1].include? 1)
                 sem_units[1].delete_at(sem_units[1].index(1))
@@ -769,6 +779,7 @@ class PlannerController < ApplicationController
         return new_sem_index
     end
 
+################ END OF TASK EPW-210 ################
 ################ END OF TASK EPW-21 ################
 
 
