@@ -8,8 +8,6 @@
   <li class="active"><b><%= 'Streams List' %></b></li>
 </ol>
 
-
-<center>
 <div class="panel panel-success" style="width:80%;">
   <div class="panel panel-heading"><div class="panel-title" style="text-align:center;">Streams</div></div>
   <div class="panel-body">
@@ -43,10 +41,11 @@
   </div>
 </div>
 
+<center>
   <div class="row" style="width:80%;">
     <div class="col-md-6">
       <div class="panel panel-success">
-        <div class="panel-heading" style="font-size:15px;">Resubmit your CSV</div>
+        <div class="panel-heading"><div class="panel-title">Resubmit your CSV</div></div>
         <div class="panel-body" style="text-align:left;">
           <%= form_tag import_streams_path, multipart: true do %>
             <%= file_field_tag :file, accept: 'text/csv' %>
@@ -59,7 +58,7 @@
 
     <div class="col-md-6">
       <div class="panel panel-success">
-        <div class="panel-heading" style="font-size:15px;">Download & Print</div>
+        <div class="panel-heading"><div class="panel-title">Download & Print</div></div>
         <div class="panel-body">
           <%= link_to "Download CSV", streams_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
           <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-success btn-sm' %>

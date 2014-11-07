@@ -2,17 +2,6 @@
   a:hover { background-color: transparent; }
 </style>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("td[name=semAvail]").map(function() {
-      console.log($(this).text());
-      if ($(this).text() == 0) {
-        $(this).text("Both");
-      }
-    });
-  });
-</script>
-
 <!-- Navigation bar -->
 <ol class="breadcrumb">
   <li><%= link_to 'Admin Portal', admin_index_path %></li>
@@ -68,7 +57,7 @@
   <div class="row" style="width:80%;">
     <div class="col-md-6">
       <div class="panel panel-success">
-        <div class="panel-heading" style="font-size:15px;">Resubmit your CSV</div>
+        <div class="panel-heading"><div class="panel-title">Resubmit your CSV</div></div>
         <div class="panel-body" style="text-align:left;">
           <%= form_tag import_units_path, multipart: true do %>
             <%= file_field_tag :file, accept: 'text/csv' %>
@@ -81,7 +70,7 @@
 
     <div class="col-md-6">
       <div class="panel panel-success">
-        <div class="panel-heading" style="font-size:15px;">Download & Print</div>
+        <div class="panel-heading"><div class="panel-title">Download & Print</div></div>
         <div class="panel-body">
           <%= link_to "Download CSV", units_path(format: "csv"), class: 'btn btn-success btn-sm', style: "color:white;" %>
           <%=link_to_function "Print this Page", "javascript:print()", class: 'btn btn-success btn-sm' %>
