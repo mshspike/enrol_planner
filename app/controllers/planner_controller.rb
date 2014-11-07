@@ -104,6 +104,8 @@ class PlannerController < ApplicationController
 # START unit_chooser
     def unit_chooser
 		@units = Unit.all
+		@SE = Stream.where(:streamCode => 'STRU-CMPSC').first.id
+		@IT = Stream.where(:streamCode => 'STRU_INFTC').first.id
 		@Elecmath = Unit.where(:unitCode => 'MATH1008').first.id
 		@Elecmath2 = Unit.where(:unitCode => 'MATH1007').first.id
         if params[:streamSelect].nil? || params[:streamSelect] == 0
@@ -114,7 +116,7 @@ class PlannerController < ApplicationController
             @proceed = true
         end
 
-       if (@proceed)
+        if (@proceed)
             # Get the full list of units of selected stream
             @stream_units = StreamUnit.where(:stream_id => session[:selected_stream].to_i)
 			session[:customUnitList]  = Array.new
@@ -124,7 +126,7 @@ class PlannerController < ApplicationController
 
 			unless (params["maths"].nil?)
             session[:maths] = params["maths"].last
-            if ((session[:maths] == "2cd") && ((session[:selected_stream] != 4)&&(session[:selected_stream] != 2)))
+            if ((session[:maths] == "2cd") && ((session[:selected_stream] != @IT)&&(session[:selected_stream] != @SE)))
 				# Put the list into array of StreamUnits, seperated by planned year and semester
 				#Change one elective to m136
 				#change another one to m135
@@ -136,7 +138,7 @@ class PlannerController < ApplicationController
 					end
 				@su_y1s2 =  @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
 					@su_y1s2.each_with_index do |u, i|
-						if (u.unit_id == 1 )
+						if (u.unit_id == @Elective )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end	
@@ -144,10 +146,10 @@ class PlannerController < ApplicationController
 					end	
 				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
 					@su_y2s1.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec == 1 )
+						if (u.unit_id == @Elective && @totalElec == 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath2
-						elsif (u.unit_id == 1 && @totalElec < 1 )
+						elsif (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end
@@ -156,10 +158,10 @@ class PlannerController < ApplicationController
 					
 				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
 					@su_y2s2.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec == 1 )
+						if (u.unit_id == @Elective && @totalElec == 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath2
-						elsif (u.unit_id == 1 && @totalElec < 1 )
+						elsif (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end	
@@ -171,10 +173,10 @@ class PlannerController < ApplicationController
 					end
 				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
 					@su_y3s2.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec == 1 )
+						if (u.unit_id == @Elective && @totalElec == 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath2
-						elsif (u.unit_id == 1 && @totalElec < 1 )
+						elsif (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end
@@ -182,11 +184,11 @@ class PlannerController < ApplicationController
 					end
 				
 				
-            elsif (((session[:maths] == "3ab") && (session[:selected_stream] != 4 && session[:selected_stream] != 2)) || 
-				((session[:maths] == "2cd")&&(session[:selected_stream] == 4||session[:selected_stream] == 2)))
+            elsif (((session[:maths] == "3ab") && (session[:selected_stream] != @IT && session[:selected_stream] != @SE)) || 
+				((session[:maths] == "2cd")&&(session[:selected_stream] == @IT||session[:selected_stream] == @SE)))
                 # Replace 2 elective (only one elective for this)
 				# Put the list into array of StreamUnits, seperated by planned year and semester
-				if (session[:selected_stream] == 4||session[:selected_stream] == 2)
+				if (session[:selected_stream] == @IT||session[:selected_stream] == @SE)
 					@totalElec = 0
 					@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
 						@su_y1s1.each_with_index do |u, i|
@@ -194,7 +196,7 @@ class PlannerController < ApplicationController
 						end
 					@su_y1s2 =  @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
 						@su_y1s2.each_with_index do |u, i|
-							if (u.unit_id == 1 )
+							if (u.unit_id == @Elective )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end	
@@ -202,10 +204,10 @@ class PlannerController < ApplicationController
 						end	
 					@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
 						@su_y2s1.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec == 1 )
+							if (u.unit_id == @Elective && @totalElec == 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath2
-							elsif (u.unit_id == 1 && @totalElec < 1 )
+							elsif (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end
@@ -214,10 +216,10 @@ class PlannerController < ApplicationController
 					
 					@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
 						@su_y2s2.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec == 1 )
+							if (u.unit_id == @Elective && @totalElec == 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath2
-							elsif (u.unit_id == 1 && @totalElec < 1 )
+							elsif (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end	
@@ -229,10 +231,10 @@ class PlannerController < ApplicationController
 						end
 					@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
 						@su_y3s2.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec == 1 )
+							if (u.unit_id == @Elective && @totalElec == 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath2
-							elsif (u.unit_id == 1 && @totalElec < 1 )
+							elsif (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end
@@ -241,9 +243,12 @@ class PlannerController < ApplicationController
 				else
 					@totalElec = 0
 					@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+						@su_y1s1.each_with_index do |u, i|
+							session[:customUnitList].push(u.unit_id)
+						end
 					@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
 						@su_y1s2.each_with_index do |u, i|
-							if (u.unit_id == 1 )
+							if (u.unit_id == @Elective )
 								@totalElec +=1
 								u.unit_id = @Elecmath							
 							end
@@ -251,7 +256,7 @@ class PlannerController < ApplicationController
 						end	
 					@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
 						@su_y2s1.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec < 1 )
+							if (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end
@@ -259,7 +264,7 @@ class PlannerController < ApplicationController
 						end		
 					@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
 						@su_y2s2.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec < 1 )
+							if (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end
@@ -267,7 +272,7 @@ class PlannerController < ApplicationController
 						end	
 					@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
 						@su_y3s1.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec < 1 )
+							if (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end
@@ -275,7 +280,7 @@ class PlannerController < ApplicationController
 						end		
 					@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
 						@su_y3s2.each_with_index do |u, i|
-							if (u.unit_id == 1 && @totalElec < 1 )
+							if (u.unit_id == @Elective && @totalElec < 1 )
 								@totalElec +=1
 								u.unit_id = @Elecmath
 							end
@@ -283,67 +288,103 @@ class PlannerController < ApplicationController
 						end		
 				end
 				
-			elsif (((session[:maths] == "3cd")&&(session[:selected_stream] == 4 || session[:selected_stream] == 2)) || 
-				((session[:maths] != "3ab")&& (session[:selected_stream] == 4 || session[:selected_stream] == 2)))
+			elsif (((session[:maths] == "3cd")&&(session[:selected_stream] == @IT || session[:selected_stream] == @SE)) || 
+				((session[:maths] != "3ab")&& (session[:selected_stream] == @IT || session[:selected_stream] == @SE)))
 				# Replace 1 elective ( 3 elective left for this) (ONLY for IT)
 				# Put the list into array of StreamUnits, seperated by planned year and semester
 				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+					@su_y1s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+					@su_y1s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+					@su_y2s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+					@su_y2s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+					@su_y3s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+					@su_y3s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				
             else
                 # Replace 1 elective ( 2 elective left for this) (for others besides IT)
 				# Put the list into array of StreamUnits, seperated by planned year and semester
 				
 				
-				if (session[:selected_stream] == 4 || session[:selected_stream] == 2)
+				if (session[:selected_stream] == @IT || session[:selected_stream] == @SE)
 				@totalElec = 0
 				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
 				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
 					@su_y1s2.each_with_index do |u, i|
-						if (u.unit_id == 1 )
+						if (u.unit_id == @Elective )
 							@totalElec +=1
 							u.unit_id = @Elecmath							
 						end
 					end	
 				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
 					@su_y2s1.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec < 1 )
+						if (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end
 					end		
 				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
 					@su_y2s2.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec < 1 )
+						if (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end
 					end	
 				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
 					@su_y3s1.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec < 1 )
+						if (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end
 					end		
 				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
 					@su_y3s2.each_with_index do |u, i|
-						if (u.unit_id == 1 && @totalElec < 1 )
+						if (u.unit_id == @Elective && @totalElec < 1 )
 							@totalElec +=1
 							u.unit_id = @Elecmath
 						end
 					end
 				else
 				@su_y1s1 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>1)
+					@su_y1s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y1s2 = @stream_units.where(:plannedYear => 1).where(:plannedSemester =>2)
+					@su_y1s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y2s1 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>1)
+					@su_y2s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y2s2 = @stream_units.where(:plannedYear => 2).where(:plannedSemester =>2)
+					@su_y2s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y3s1 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>1)
+					@su_y3s1.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				@su_y3s2 = @stream_units.where(:plannedYear => 3).where(:plannedSemester =>2)
+					@su_y3s2.each_with_index do |u, i|
+						session[:customUnitList].push(u.unit_id)
+					end
 				end
             end
         else
