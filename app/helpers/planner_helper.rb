@@ -8,14 +8,16 @@ module PlannerHelper
 		#store the planned units for each semester
 		session[:semesters].each_with_index do |semUnits, semID|
 			semUnits.each do |unitID|
-				if (unitID != 0)
-					rows.push({:type => "P", :unitID => unitID, :semID => semID})
-				end
+				rows.push({:type => "P", :unitID => unitID, :semID => semID})
 			end
 		end
 		#store the units already completed
 		session[:done_units].each do |unitID|
 			rows.push({:type => "D", :unitID => unitID})
+		end
+		#store the remaining units list
+		session[:remain_units].each do |unitID|
+			rows.push({:type => "R", :unitID => unitID})
 		end
 		#generate the csv
 		csv = CSV.generate do |csv|
@@ -33,6 +35,7 @@ module PlannerHelper
 		session[:done_units] = []
         session[:plan_units] = []
 		session[:semesters] = []
+		session[:remain_units] = []
 		
 		#parse csv into session
 		CSV.foreach(csvdata.path) do |row|
@@ -44,7 +47,7 @@ module PlannerHelper
 			if (type == "S")
 				session[:selected_stream] = id
 			elsif (type == "P")
-				if (id > 0)
+				if (id != 0)
 					session[:plan_units].push(id)
 				end
 				if (!session[:semesters][semID])
@@ -53,11 +56,21 @@ module PlannerHelper
 				session[:semesters][semID].push(id)
 			elsif (type == "D")
 				session[:done_units].push(id)
+			elsif (type == "R")
+				session[:remain_units].push(id)
 			end
 		end
 		
+		# handle empty semester (first sem start)
+		if session[:semesters].empty?
+			session[:semesters]=[[]]
+		elsif ((session[:semesters].count == 1) && (session[:semesters][0][0] == -1))
+			# handle empty semester (second sem start)
+			session[:semesters][1] = []
+		end
+		
 		#populate remaining units for given stream
-		populate_remaining_units(session[:plan_units].concat(session[:done_units]))
+		#populate_remaining_units(session[:plan_units].concat(session[:done_units]))
 		
 		redirect_to enrolment_planner_planner_index_path, notice: "Session Restored Successfully"
 		
