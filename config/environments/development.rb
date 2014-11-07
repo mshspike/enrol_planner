@@ -25,8 +25,8 @@ EnrolPlanner::Application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  
-  config.assets.debug = false
+  #smtp configuration
+  config.assets.debug = true
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {

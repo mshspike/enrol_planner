@@ -1,7 +1,7 @@
 class SemboxPdf < Prawn::Document  
-  def initialize pdfArrPerSem
+  def initialize pdfArrPerUnit
     super()
-	@pdfArrPerSem = pdfArrPerSem
+	@pdfArrPerUnit = pdfArrPerUnit
     header
     text_content
     table_content
@@ -28,15 +28,13 @@ class SemboxPdf < Prawn::Document
     # I then included some styling to include a header and make its text bold. I made the row background colors alternate between grey and white
     # Then I set the table column widths
 
-	@pdfArrPerSem.each do |unit|
-			@perUnit = unit
-			table sembox_rows(@perUnit) do
+			table sembox_rows(@pdfArrPerUnit) do
 			row(0).font_style = :bold
 			self.header = false
 			self.row_colors = ['FFFFFF', 'FFFFFF']
 			self.column_widths = [150, 250]
 			end
-	end
+
 
   end
  

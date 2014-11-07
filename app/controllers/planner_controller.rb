@@ -69,16 +69,13 @@ class PlannerController < ApplicationController
 		end
 
 		}
-
-		@pdfArrPerSem.push(@pdfArrPerUnit)
-		
-		
+		session[:pdf] = @pdfArrPerUnit
 		time = Time.now.strftime('%Y%m%d%H%M%S')
 		filename = "CoursePlan_" + time
 		respond_to do |format|
 			format.html
 			format.pdf do
-			pdf = SemboxPdf.new(@pdfArrPerSem)
+			pdf = SemboxPdf.new(@pdfArrPerUnit)
         send_data pdf.render, :disposition => "attachment; filename=#{filename}.pdf", type: 'application/pdf', :page_size => "A4"
 
 			end
@@ -1028,7 +1025,8 @@ class PlannerController < ApplicationController
     end
 	
 	def send_email 
+			@pdf = session[:pdf]
 			@email = params[:RecipientEmail]
-			UserMailer.send_sp(@email).deliver 
+			UserMailer.send_sp(@email, @pdf).deliver 
 	end
 end
