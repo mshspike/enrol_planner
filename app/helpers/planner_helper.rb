@@ -8,17 +8,19 @@ module PlannerHelper
 		#store the planned units for each semester
 		session[:semesters].each_with_index do |semUnits, semID|
 			semUnits.each do |unitID|
-				rows.push({:type => "P", :unitID => unitID, :semID => semID})
+				rows.push({:type => "P", :unitID => unitID, :semID => semID}) # <----- Modified in TASK EPW-314 <-----
 			end
 		end
 		#store the units already completed
 		session[:done_units].each do |unitID|
 			rows.push({:type => "D", :unitID => unitID})
 		end
+		# ========== START TASK EPW-314 ============
 		#store the remaining units list
 		session[:remain_units].each do |unitID|
 			rows.push({:type => "R", :unitID => unitID})
 		end
+		# ========== END TASK EPW-314 ============
 		#generate the csv
 		csv = CSV.generate do |csv|
 			rows.each do |row|
@@ -35,7 +37,7 @@ module PlannerHelper
 		session[:done_units] = []
         session[:plan_units] = []
 		session[:semesters] = []
-		session[:remain_units] = []
+		session[:remain_units] = [] # <----- Added in TASK EPW-314 <-----
 		
 		#parse csv into session
 		CSV.foreach(csvdata.path) do |row|
@@ -47,7 +49,7 @@ module PlannerHelper
 			if (type == "S")
 				session[:selected_stream] = id
 			elsif (type == "P")
-				if (id != 0)
+				if (id != 0) # <----- Modified in TASK EPW-314 <-----
 					session[:plan_units].push(id)
 				end
 				if (!session[:semesters][semID])
@@ -56,10 +58,14 @@ module PlannerHelper
 				session[:semesters][semID].push(id)
 			elsif (type == "D")
 				session[:done_units].push(id)
+			# ========== START TASK EPW-314 ============
 			elsif (type == "R")
 				session[:remain_units].push(id)
+			# ========== END TASK EPW-314 ============
 			end
 		end
+		
+		# ========== START TASK EPW-314 ============
 		
 		# handle empty semester (first sem start)
 		if session[:semesters].empty?
@@ -71,6 +77,8 @@ module PlannerHelper
 		
 		#populate remaining units for given stream
 		#populate_remaining_units(session[:plan_units].concat(session[:done_units]))
+		
+		# ========== END TASK EPW-314 ============
 		
 		redirect_to enrolment_planner_planner_index_path, notice: "Session Restored Successfully"
 		
