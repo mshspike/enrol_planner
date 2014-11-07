@@ -15,7 +15,7 @@ class PlannerController < ApplicationController
 		@sembox.each_with_index {|sem,index|
 		# Enrolment that start from Semester 1
 
-			if (@Enrol_semStart > -1)# Enrolment started from semester 1 has first array value > -1.
+			if (@Enrol_semStart != -1 )# Enrolment started from semester 1 has first array value > -1.
 			
 				# Semester 2
 				if  (@sem_start_at == 2)
