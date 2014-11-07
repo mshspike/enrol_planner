@@ -11,7 +11,6 @@ class Unit < ActiveRecord::Base
                              inclusion: { :in => [0,1,2], message: " can only be either 0, 1 or 2!" }
     
 
-################ START OF TASK EPW-214 ################
     def self.import(file)
         @proceed = false
     
@@ -80,10 +79,8 @@ class Unit < ActiveRecord::Base
         end
         return 1    # if imported successfully, return true
     end
-################ END OF TASK EPW-214 ################
 
 
-################ START OF TASK EPW-29 ################
     def self.to_csv
         CSV.generate do |csv|
             csv << ["unitCode", "unitName", "preUnit", "creditPoints", "semAvailable"]
@@ -113,7 +110,6 @@ class Unit < ActiveRecord::Base
         end
     end
 
-################ END OF TASK EPW-29 ################
     
     def self.open_spreadsheet(file)
         #check the file extension to verity if it is a valid import file type.

@@ -4,7 +4,6 @@ class Stream < ActiveRecord::Base
 						   format: { :with => /\A[a-zA-Z]{4}-[a-zA-Z]{5}\z/i, message: " is in incorrect format!" }
 	validates :streamName, presence: { strict: true, message: " cannot be empty!" }
 	
-################ START OF TASK EPW-214 ################
 	def self.import(file)
 		@proceed = false
 
@@ -84,9 +83,7 @@ class Stream < ActiveRecord::Base
 		# Import all succeed
 		return 1
 	end
-################ END OF TASK EPW-214 ################
 
-################ START OF TASK EPW-29 ################
 
 	def self.to_csv
 		file = CSV.generate do |csv|
@@ -111,7 +108,6 @@ class Stream < ActiveRecord::Base
 		end
 	end
 
-################ END OF TASK EPW-29 ################
 
 	def self.open_spreadsheet(file)
 		case File.extname(file.original_filename)
