@@ -36,7 +36,6 @@ EnrolPlanner::Application.configure do
     enable_starttls_auto: true,
     user_name: "enrolplanner@gmail.com",
     password: "enrolplanner1234"
-	
   }
 
 end
