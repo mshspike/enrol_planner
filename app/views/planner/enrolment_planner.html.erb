@@ -1,5 +1,9 @@
 <style type="text/css">
-    label {font-weight: normal !important};
+    label { font-weight: normal !important }
+    table { margin-top: 0px; }
+    .cred-cell { text-align:center;
+                 padding-right: 8px;
+                 padding-left: 8px; }
 </style>
 <script type="text/javascript">
     function changeFlag(flag) {
@@ -318,7 +322,7 @@
             <div class="panel panel-info">
                 
                 <div class="panel-heading">
-                    <h3 class="panel-title"><center>Download & Email</center></h3>
+                    <div class="panel-title"><center>Download & Email</center></div>
                 </div>
                 
                 <div class="panel-body" style="height: 115px">
@@ -347,7 +351,7 @@
             <div class="panel panel-info">
                 
                 <div class="panel-heading">
-                    <h3 class="panel-title"><center>Upload your CSV</center></h3>
+                    <div class="panel-title"><center>Upload your CSV</center></div>
                 </div>      
                 
                 <div class="panel-body" style="height: 110px; margin-top: 5px">
@@ -365,9 +369,28 @@
         <div class="col-md-4"> <!-- credit points -->
             <div class="panel panel-info">               
                 <div class="panel-heading">
-                    <h3 class="panel-title"><center>Credit Points</center></h3>
+                    <div class="panel-title"><center>Credit Points</center></div>
                 </div>
-                <%= render partial: "master_layouts/creditpoints" %>            
+                <div class="panel-body" style="height: 105px; margin-top: 10px">
+                    <center>
+                        <table>
+                            <tr>
+                                <td class="cred-cell">
+                                    <p>Completed</p>
+                                    <%= text_field_tag "disabledInput", nil, class: "form-control", id: "done-pts", disabled: true, placeholder: calc_credits("completed"), style: "width: 80px; text-align: center" %>
+                                </td>
+                                <td class="cred-cell">
+                                    <p>Planned</p>
+                                    <%= text_field_tag "disabledInput", nil, class: "form-control", id: "plan-pts", disabled: true, placeholder: calc_credits("planned"), style: "width: 80px; text-align: center" %>
+                                </td>
+                                <td class="cred-cell">
+                                    <p>Remaining</p>
+                                    <%= text_field_tag "disabledInput", nil, class: "form-control", id: "rem-pts", disabled: true, placeholder: calc_credits("remaining"), style: "width: 80px; text-align: center" %>
+                                </td>
+                            </tr>
+                        </table>
+                    </center>
+                </div>        
             </div>
         </div>      <!-- end of credit points -->
     

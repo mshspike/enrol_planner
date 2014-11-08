@@ -1,10 +1,10 @@
 <% admin_controller = ["admin","users","units","streams","user_sessions"] %>
-<div class = "navbar navbar-default navbar-static-top">
-	<div class = "container">
-		<div class = ".navbar-header">
+<div class="navbar navbar-default navbar-static-top navbar-collapse">
+	<div class="container">
+		<div class="navbar-header">
 			<%= link_to "Enrolment Planner", planner_index_path, class: "navbar-brand" %>
 		</div>
-		<ul class = "nav navbar-nav navbar-right">
+		<ul class="nav navbar-nav navbar-right">
 			<% if params[:controller] == "planner" %>
 				<li class="active"><%= link_to 'Planner', planner_index_path %></li>
 				<li><%= link_to 'Admin Portal', admin_index_path %></li>

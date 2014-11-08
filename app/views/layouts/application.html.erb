@@ -12,12 +12,14 @@
   <div>
 	<%= render partial: "master_layouts/navbar" %>
   </div>
-	<div class="container">
+	<center>
+  <div style="width:80%; text-align:left;">
 	<div class="row">
 		<%= render partial: "master_layouts/messages"%>
 	</div>
 	<%= yield %>
 	</div>
+  </center>
 <%= render partial: "master_layouts/footer" %>
 </body>
 </html>

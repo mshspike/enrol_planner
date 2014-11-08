@@ -1,6 +1,26 @@
 <style type="text/css">
 	label { font-weight: normal !important }
 	th { background-color: #F4FAFD; }
+    
+    .separator {
+        background-color: #FCFEFE;
+        border-top-style: solid;
+        border-bottom-style: solid;
+        border-width: 1px;
+        border-color: #BBD1DD;
+        color: #245c7e;
+        font-size: 16px;
+        margin-bottom: 20px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .input-group-addon {
+        background-color: #D0E8F6;
+        color: #245c7e;
+        min-width: 100px;
+        text-align: right;
+    }
 </style>
 <script type="text/javascript">
 	function countElec() {
@@ -222,8 +242,8 @@ $(".countElec").click(function(){
 	</div>
 <!-- END Panel -->
 </center>
-<!-- Modal 1-->
 
+<!-- Modal 1-->
 <div class="modal fade" id="myElec1" tabindex="-1" role="dialog" aria-labelledby="myElec1Label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -234,19 +254,19 @@ $(".countElec").click(function(){
       <div class="modal-body">
         <!-- Optional Units -->
 		<div class="col-md-15"> 
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
-                    <h3 class="panel-title"><center> Optional-Units </center></h3>
+                    <h3 class="panel-title">Optional-Units</h3>
                 </div>
                 
                 <div class="panel-body" style="height:250px; overflow:auto;">
                     <table class="table table-condensed table-hover unitsList" id="optionUnits">
                         <thead><tr class="showinforow">
 							<th> </th>
-                            <th style="font-size:11px; text-align:center;">Code</th>
-                            <th style="font-size:11px;">Unit Name</th>
-                            <th style="font-size:11px; text-align:center;">Sem</th>
+                            <th>Code</th>
+                            <th>Unit Name</th>
+                            <th>Sem</th>
                         </tr></thead>
 						<tbody>
 						<div class="btn-group" data-toggle="buttons">
@@ -254,14 +274,16 @@ $(".countElec").click(function(){
 						<% @electives_available.each do |unit| %>
 						
 							<tr>
-								<td><%= check_box_tag 'elective_unitID1', unit.id, false, {class:'elective1checkbox'}%>
-                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
+								<td>
+                                    <%= check_box_tag 'elective_unitID1', unit.id, false, {class:'elective1checkbox'}%>
+                                </td>
+                                <td style="text-align: center; font-size: 11px;"> <!-- unit code -->
                                     <%= get_unit_code(unit.id) %>
                                 </td>
-                                <td style="font-size:11px"> <!-- unit name -->
+                                <td style="font-size: 11px;"> <!-- unit name -->
                                     <%= get_unit_name(unit.id) %>
                                 </td>
-                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                <td style="text-align: center; font-size: 11px;"> <!-- semester -->
                                     <%= get_unit_semavailable(unit.id) %>
                                 </td>
                             </tr>
@@ -276,43 +298,44 @@ $(".countElec").click(function(){
             </div>
         </div> 
 		<!-- end of Optional Units -->
-		<h4 align="center">     OR     </h4>
+
+		<div class="separator">OR</div>
+
 		<!-- User input Units -->
-		<br />
-		
-					<div class="row">
-					<div class="col-lg-9">
-					<div class="input-group">
-						<div class="input-group-addon">
-						<%= text_field_tag :elecUnitName1, nil, {placeholder:'Unit Name', class:'form-control'}%>
-						</div>
-					</div>
-					</div>
-					</div>
-					<br />
-					<div class="row">
-					<div class="col-lg-9">
-					<div class="input-group">
-						<div class="input-group-addon">
-						<%= text_field_tag :elecUnitCode1, nil, {placeholder:'Unit Code', class:'form-control'}%>
-						</div>
-					</div>
-					</div>
-					</div>
-					<br />
-	    <!-- End of User input Unit -->
-		<div class="modal-footer">
-		<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default">
-							<input type="radio" name="doneElec1" value="1"> Done
-						</label>
-						<label class="btn btn-default">
-							<input type="radio" name="doneElec1" value="2"> Not Yet Done
-						</label>
+		<div class="row" align="center">
+			<div style="width:90%">
+                <div class="form-group">
+    				<div class="input-group">
+    					<div class="input-group-addon">Unit Name</div>
+    					<%= text_field_tag :elecUnitName1, nil, {placeholder:'Unit Name', class:'form-control'}%>
+    				</div>
+    			</div>
+            </div>
 		</div>
-		<br><br/>
+		<div class="row" align="center">
+			<div style="width:90%">
+                <div class="form-group">
+    				<div class="input-group">
+    					<div class="input-group-addon">Unit Code</div>
+    					<%= text_field_tag :elecUnitCode1, nil, {placeholder:'Unit Code', class:'form-control'}%>
+    				</div>
+    			</div>
+			</div>
+		</div>
+	    <!-- End of User input Unit -->
+        <div style="width:90%;" align="right">
+    		<div class="btn-group" data-toggle="buttons">
+    			<label class="btn btn-default">
+    				<input type="radio" name="doneElec1" value="1"> Done
+    			</label>
+    			<label class="btn btn-default">
+    				<input type="radio" name="doneElec1" value="2"> Not Yet Done
+    			</label>
+    		</div>
+        </div><br />
+        <div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+				<button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
 		</div>
       </div>
   </div>
@@ -321,7 +344,6 @@ $(".countElec").click(function(){
 <!--END of Modal 1-->
 
 <!-- Modal 2 -->
-
 <div class="modal fade" id="myElec2" tabindex="-1" role="dialog" aria-labelledby="myElec2Label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -332,7 +354,7 @@ $(".countElec").click(function(){
       <div class="modal-body">
         <!-- Optional Units -->
 		<div class="col-md-15"> 
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
                     <h3 class="panel-title"><center> Optional-Units </center></h3>
@@ -342,9 +364,9 @@ $(".countElec").click(function(){
                     <table class="table table-condensed table-hover unitsList" id="optionUnits">
                         <thead><tr class="showinforow">
 							<th> </th>
-                            <th style="font-size:11px; text-align:center;">Code</th>
-                            <th style="font-size:11px;">Unit Name</th>
-                            <th style="font-size:11px; text-align:center;">Sem</th>
+                            <th>Code</th>
+                            <th>Unit Name</th>
+                            <th>Sem</th>
                         </tr></thead>
 						<tbody>
 						<div class="btn-group" data-toggle="buttons">
@@ -352,14 +374,16 @@ $(".countElec").click(function(){
 						<% @electives_available.each do |unit| %>
 						
 							<tr>
-								<td><%= check_box_tag 'elective_unitID2', unit.id, false, {class:'elective2checkbox'}%>
-                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
+								<td>
+                                    <%= check_box_tag 'elective_unitID2', unit.id, false, {class:'elective2checkbox'}%>
+                                </td>
+                                <td style="text-align: center; font-size: 11px;"> <!-- unit code -->
                                     <%= get_unit_code(unit.id) %>
                                 </td>
-                                <td style="font-size:11px"> <!-- unit name -->
+                                <td style="font-size: 11px;"> <!-- unit name -->
                                     <%= get_unit_name(unit.id) %>
                                 </td>
-                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                <td style="text-align: center; font-size: 11px;"> <!-- semester -->
                                     <%= get_unit_semavailable(unit.id) %>
                                 </td>
                             </tr>
@@ -374,39 +398,43 @@ $(".countElec").click(function(){
             </div>
         </div> 
 		<!-- end of Optional Units -->
-		<h4 align="center">     OR     </h4>
+		<div class="separator">OR</div>
 		<!-- User input Units -->
-		<br />
-					<div class="row">
-					<div class="col-lg-9">
-						<div class="input-group-addon">
-							<%= text_field_tag :elecUnitName2, nil, {placeholder:'Unit Name', class:'form-control'}%>
-						</div>
-					</div>
-					</div>
-					<br />
-					<div class="row">
-					<div class="col-lg-9">
-						<div class="input-group-addon">
-							<%= text_field_tag :elecUnitCode2, nil, {placeholder:'Unit Code', class:'form-control'}%>
-						</div>
-					</div>
-					</div>
-					<br />
+		<div class="row" align="center">
+            <div style="width:90%">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">Unit Name</div>
+                        <%= text_field_tag :elecUnitName2, nil, {placeholder:'Unit Name', class:'form-control'}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" align="center">
+            <div style="width:90%">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">Unit Code</div>
+                        <%= text_field_tag :elecUnitCode2, nil, {placeholder:'Unit Code', class:'form-control'}%>
+                    </div>
+                </div>
+            </div>
+        </div>
 	    <!-- End of User input Unit -->
-		<div class="modal-footer">
-		<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default">
-							<input type="radio" name="doneElec2" value="1"> Done
-						</label>
-						<label class="btn btn-default">
-							<input type="radio" name="doneElec2" value="2"> Not Yet Done
-						</label>
-		</div>
-		<br><br/>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
-		</div>
+		<div style="width:90%;" align="right">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default">
+                    <input type="radio" name="doneElec2" value="1"> Done
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="doneElec2" value="2"> Not Yet Done
+                </label>
+            </div>
+        </div><br />
+        <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
+        </div>
       </div>
   </div>
 </div>
@@ -424,7 +452,7 @@ $(".countElec").click(function(){
       <div class="modal-body">
         <!-- Optional Units -->
 		<div class="col-md-15"> 
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 
                 <div class="panel-heading">
                     <h3 class="panel-title"><center> Optional-Units </center></h3>
@@ -434,9 +462,9 @@ $(".countElec").click(function(){
                     <table class="table table-condensed table-hover unitsList" id="optionUnits">
                         <thead><tr class="showinforow">
 							<th> </th>
-                            <th style="font-size:11px; text-align:center;">Code</th>
-                            <th style="font-size:11px;">Unit Name</th>
-                            <th style="font-size:11px; text-align:center;">Sem</th>
+                            <th>Code</th>
+                            <th>Unit Name</th>
+                            <th>Sem</th>
                         </tr></thead>
 						<tbody>
 						<div class="btn-group" data-toggle="buttons">
@@ -444,14 +472,16 @@ $(".countElec").click(function(){
 						<% @electives_available.each do |unit| %>
 						
 							<tr>
-								<td><%= check_box_tag 'elective_unitID3', unit.id, false, {class:'elective3checkbox'}%>
-                                <td style="font-size:11px; text-align:center;"> <!-- unit code -->
+								<td>
+                                    <%= check_box_tag 'elective_unitID3', unit.id, false, {class:'elective3checkbox'}%>
+                                </td>
+                                <td style="text-align: center; font-size: 11px;"> <!-- unit code -->
                                     <%= get_unit_code(unit.id) %>
                                 </td>
-                                <td style="font-size:11px"> <!-- unit name -->
+                                <td style="font-size: 11px;"> <!-- unit name -->
                                     <%= get_unit_name(unit.id) %>
                                 </td>
-                                <td style="font-size:11px; text-align:center;"> <!-- semester -->
+                                <td style="text-align:center; font-size: 11px;"> <!-- semester -->
                                     <%= get_unit_semavailable(unit.id) %>
                                 </td>
                             </tr>
@@ -466,39 +496,43 @@ $(".countElec").click(function(){
             </div>
         </div> 
 		<!-- end of Optional Units -->
-		<h4 align="center">     OR     </h4>
+		<div class="separator">OR</div>
 		<!-- User input Units -->
-		<br />
-					<div class="row">
-					<div class="col-lg-9">
-						<div class="input-group-addon">
-							<%= text_field_tag :elecUnitName3, nil, {placeholder:'Unit Name', class:'form-control'}%>
-						</div>
-					</div>
-					</div>
-					<br />
-					<div class="row">
-					<div class="col-lg-9">
-						<div class="input-group-addon">
-							<%= text_field_tag :elecUnitCode3, nil, {placeholder:'Unit Code', class:'form-control'}%>
-						</div>
-					</div>
-					</div>
-					<br />
+		<div class="row" align="center">
+            <div style="width:90%">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">Unit Name</div>
+                        <%= text_field_tag :elecUnitName3, nil, {placeholder:'Unit Name', class:'form-control'}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" align="center">
+            <div style="width:90%">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">Unit Code</div>
+                        <%= text_field_tag :elecUnitCode3, nil, {placeholder:'Unit Code', class:'form-control'}%>
+                    </div>
+                </div>
+            </div>
+        </div>
 	    <!-- End of User input Unit -->
-		<div class="modal-footer">
-		<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default">
-							<input type="radio" name="doneElec3" value="1"> Done
-						</label>
-						<label class="btn btn-default">
-							<input type="radio" name="doneElec3" value="2"> Not Yet Done
-						</label>
-		</div>
-		<br><br/>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
-		</div>
+		<div style="width:90%;" align="right">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default">
+                    <input type="radio" name="doneElec3" value="1"> Done
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="doneElec3" value="2"> Not Yet Done
+                </label>
+            </div>
+        </div><br />
+        <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
+        </div>
       </div>
   </div>
 </div>
