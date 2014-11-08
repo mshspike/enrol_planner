@@ -259,7 +259,7 @@ $(".countElec").click(function(){
 						<tbody>
 						<div class="btn-group" data-toggle="buttons">
 						
-						<% @units.each do |unit| %>
+						<% @electives_available.each do |unit| %>
 						
 							<tr>
 								<td><%= check_box_tag 'elective_unitID1', unit.id, false, {class:'elective1checkbox'}%>
@@ -357,7 +357,7 @@ $(".countElec").click(function(){
 						<tbody>
 						<div class="btn-group" data-toggle="buttons">
 						
-						<% @units.each do |unit| %>
+						<% @electives_available.each do |unit| %>
 						
 							<tr>
 								<td><%= check_box_tag 'elective_unitID2', unit.id, false, {class:'elective2checkbox'}%>
@@ -449,7 +449,7 @@ $(".countElec").click(function(){
 						<tbody>
 						<div class="btn-group" data-toggle="buttons">
 						
-						<% @units.each do |unit| %>
+						<% @electives_available.each do |unit| %>
 						
 							<tr>
 								<td><%= check_box_tag 'elective_unitID3', unit.id, false, {class:'elective3checkbox'}%>

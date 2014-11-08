@@ -114,6 +114,18 @@ class PlannerController < ApplicationController
             session[:selected_stream] = params[:streamSelect].to_i
             @proceed = true
         end
+		
+		all_units_in_stream = StreamUnit.where(:stream_id => session[:selected_stream]).pluck(:unit_id)
+		electives_available = Unit.all.pluck(:id) - all_units_in_stream
+		@electives_available = Unit.where(:id => electives_available)
+		
+		print "    Units.all: "
+		puts "[" + Unit.all.pluck(:id).join(',') + "]"
+		print "    stream_units: "
+		puts "[" + all_units_in_stream.join(',') + "]"
+		print "    electives_available: "
+		puts "[" + electives_available.join(',') + "]"
+
 
         if (@proceed)
             # Get the full list of units of selected stream
