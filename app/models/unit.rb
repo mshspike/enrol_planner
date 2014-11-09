@@ -104,7 +104,7 @@ class Unit < ActiveRecord::Base
                 end
 
                 row = unit.attributes.values_at(*["unitCode", "unitName", "creditPoints", "semAvailable"])
-                row.insert(2, prereq_groups_string.join(','))
+                row.insert(2, prereq_groups_string.join(';'))
                 csv << row
             end
         end
