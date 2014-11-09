@@ -5,7 +5,7 @@ numUnits = session[:semesters][count].length
 %>
 
 <% if (session[:semesters][count][0].to_i >= 0) %>
-<div class="col-md-6">
+<div class="col-md-6<%=push!=0 ? " col-md-offset-6" : "" %>">
 	<div class="thumbnail">
 		<div style="text-align: center; font-size: 14px;">Year <%=year%> Semester <%=sem%></div>
 

@@ -210,7 +210,7 @@
                 <div class="panel-body" id="planner-body" style="height:500px; overflow:auto;overflow-x;hidden;" >
                     <% session[:semesters].length.times do |i| %>
                         <% if (i%2 == 0) %><div class="row" year-id="<%=(i+2)/2 %>"><%end%>
-                            <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i } %>
+                            <%= render partial: "master_layouts/sembox", locals: { semester: (i+1), count: i, push: ((i==1 && session[:semesters][0][0]==-1) ? 1 : 0) } %>
                         <% if ((i%2 == 1)||(i==session[:semesters].length-1)) %></div><%end%>
                     <% end %>
                 </div>
