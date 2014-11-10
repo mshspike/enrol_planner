@@ -15,5 +15,6 @@
 //= require turbolinks
 //= require jquery-ui.min
 //= require bootstrap-sprockets
+//= require jquery.ui.touch-punch.min
 //= require_tree .
 
